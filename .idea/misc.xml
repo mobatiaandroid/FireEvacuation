@@ -6,7 +6,7 @@
         <entry key="app/src/main/res/drawable/rounded_bg.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_create_account.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_sign_in.xml" value="0.36875" />
-        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.22" />
       </map>
     </option>
   </component>

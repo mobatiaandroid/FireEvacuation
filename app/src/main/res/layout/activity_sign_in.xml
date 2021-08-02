@@ -30,7 +30,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
 
-    <TextView
+    <com.nas.fireevacuation.common.custom_views.textview.CustomFontDJ5TextBlack
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,12 +73,15 @@
         app:layout_constraintTop_toBottomOf="@id/textView5"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_bg">
         <EditText
             android:id="@+id/emailID"
+            android:layout_marginStart="16dp"
              android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:background="@drawable/rounded_bg"/>
+            android:background="@null"
+            android:inputType="textEmailAddress"/>
     </LinearLayout>
 
     <TextView
@@ -100,12 +103,14 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp">
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded_bg">
         <EditText
             android:id="@+id/password"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:background="@drawable/rounded_bg"
+            android:layout_marginStart="16dp"
+            android:background="@null"
             android:inputType="textPassword"/>
     </LinearLayout>
 
@@ -129,18 +134,17 @@
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout2" />
 
-    <TextView
+    <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
         android:id="@+id/textView9"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:text="SIGN IN"
         android:textColor="@color/white"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
         android:layout_marginTop="16dp"
-
         android:background="@drawable/rounded_sign_in"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -155,13 +159,13 @@
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
-    <TextView
+    <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
         android:id="@+id/textView11"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:text="CREATE ACCOUNT"
         android:textColor="@color/white"
-        android:textSize="16dp"
+        android:textSize="18dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center"
@@ -176,6 +180,7 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:elevation="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/backgroud_logo" />
