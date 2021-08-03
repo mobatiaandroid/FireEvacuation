@@ -197,7 +197,7 @@
             app:layout_constraintStart_toEndOf="@+id/password"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <TextView
+    <!--<TextView
     android:id="@+id/textView9"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -240,7 +240,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/confrimPassword"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
         android:id="@+id/createAccount"
@@ -258,7 +258,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearlayout5" />
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout4" />
 
 
 

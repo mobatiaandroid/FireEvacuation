@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
@@ -63,6 +64,7 @@ class SignInActivity : AppCompatActivity() {
             }
         }
         createAccount.setOnClickListener {
+            Toast.makeText(context,"Pressed",Toast.LENGTH_SHORT).show()
             val intent = Intent(context, CreateAccountActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
@@ -78,6 +80,13 @@ class SignInActivity : AppCompatActivity() {
             }
 
         })
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(context, WelcomeActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(0,0)
+        finish()
     }
 
     private fun callLoginApi(email: String, pswd: String) {

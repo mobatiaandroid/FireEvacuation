@@ -20,10 +20,10 @@ class CreateAccountActivity : AppCompatActivity() {
     lateinit var name: EditText
     lateinit var emailID: EditText
     lateinit var password: EditText
-    lateinit var confirmPassword: EditText
+//    lateinit var confirmPassword: EditText
     lateinit var mobileNo: EditText
     lateinit var showHide1: TextView
-    lateinit var showHide2: TextView
+//    lateinit var showHide2: TextView
     lateinit var createAccount: TextView
     lateinit var backButton: ImageView
     var passwordShowHide1:Boolean=false
@@ -35,10 +35,10 @@ class CreateAccountActivity : AppCompatActivity() {
         name = findViewById(R.id.name)
         emailID = findViewById(R.id.emailID)
         password = findViewById(R.id.password)
-        confirmPassword = findViewById(R.id.confrimPassword)
+//        confirmPassword = findViewById(R.id.confrimPassword)
         mobileNo = findViewById(R.id.mobileNo)
         showHide1 = findViewById(R.id.showHide1)
-        showHide2 = findViewById(R.id.showHide2)
+//        showHide2 = findViewById(R.id.showHide2)
         createAccount = findViewById(R.id.createAccount)
         backButton = findViewById(R.id.back_button)
         showHide1.setOnClickListener(View.OnClickListener {
@@ -51,16 +51,16 @@ class CreateAccountActivity : AppCompatActivity() {
             }
 
         })
-        showHide2.setOnClickListener(View.OnClickListener {
-            if (passwordShowHide2) {
-                passwordShowHide2 = false
-                confirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-            } else {
-                passwordShowHide2 = true
-                confirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance();
-            }
-
-        })
+//        showHide2.setOnClickListener(View.OnClickListener {
+//            if (passwordShowHide2) {
+//                passwordShowHide2 = false
+//                confirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+//            } else {
+//                passwordShowHide2 = true
+//                confirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance();
+//            }
+//
+//        })
         createAccount.setOnClickListener {
             if (name.text.toString().equals("") || emailID.text.toString().equals("") || mobileNo.text.toString().equals("")){
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be left Empty")
@@ -71,9 +71,11 @@ class CreateAccountActivity : AppCompatActivity() {
                 } else {
                     if (password.text.toString().equals("")) {
                         CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be empty.")
-                    } else if (password.text.toString() == confirmPassword.text.toString()) {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Passwords do not match")
-                    } else {
+                    }
+//                    else if (password.text.toString() == confirmPassword.text.toString()) {
+//                        CommonMethods.showLoginErrorPopUp(context,"Alert","Passwords do not match")
+//                    }
+                    else {
 
                         if (CommonMethods.isInternetAvailable(context)) {
                             callCreateAccountApi()
@@ -92,6 +94,13 @@ class CreateAccountActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(context, WelcomeActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(0,0)
+        finish()
     }
 
     private fun callCreateAccountApi() {

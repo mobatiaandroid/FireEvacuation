@@ -35,4 +35,6 @@ class WelcomeActivity : AppCompatActivity() {
             finish()
         }
     }
+
+
 }
