@@ -31,7 +31,7 @@
         app:layout_constraintGuide_percent="0.20" />
 
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontDJ5TextBlack
-        android:id="@+id/textView"
+        android:id="@+id/createAccount"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
@@ -47,7 +47,7 @@
         android:layout_marginStart="20dp"
         android:text="Login to your NAS Dubai Teachers mobile application"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/createAccount" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
         android:textColor="#C4C4C4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearlayout1"
         android:layout_height="45dp"
         android:layout_width="fill_parent"
@@ -75,14 +75,18 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/rounded_bg">
+
         <EditText
             android:id="@+id/emailID"
-            android:layout_marginStart="16dp"
-             android:layout_height="match_parent"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@null"
-            android:inputType="textEmailAddress"/>
-    </LinearLayout>
+            android:inputType="textEmailAddress"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="8dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView6"
@@ -95,7 +99,7 @@
         android:textColor="#C4C4C4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout1" />
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearlayout2"
         android:layout_height="45dp"
         android:layout_width="fill_parent"
@@ -106,20 +110,30 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/rounded_bg"
         android:orientation="horizontal">
+
         <EditText
             android:id="@+id/password"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
-            android:layout_width="300dp"
-            android:layout_marginStart="16dp"
             android:background="@null"
-            android:inputType="textPassword"/>
+            android:inputType="textPassword"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/showHide"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:visibility="gone"
-            android:text="SHOW"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="SHOW"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/password"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/textView7"
@@ -142,7 +156,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearlayout2" />
 
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
-        android:id="@+id/textView9"
+        android:id="@+id/signIn"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:text="SIGN IN"
@@ -165,7 +179,7 @@
         android:text="Don’t you have an account ?  "
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/signIn" />
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
         android:id="@+id/textView11"
         android:layout_width="0dp"
