@@ -38,6 +38,7 @@ class SignInActivity : AppCompatActivity() {
             val intent = Intent(context, WelcomeActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
+            finish()
         }
         signIn.setOnClickListener {
             if (emailID.text.toString().equals("")) {
@@ -65,6 +66,7 @@ class SignInActivity : AppCompatActivity() {
             val intent = Intent(context, CreateAccountActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
+            finish()
         }
         showHide.setOnClickListener(View.OnClickListener {
             if (passwordShowHide) {

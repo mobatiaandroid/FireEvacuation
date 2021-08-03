@@ -204,5 +204,5 @@
         android:elevation="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/backgroud_logo" />
+        app:srcCompat="@drawable/background_logo" />
 </androidx.constraintlayout.widget.ConstraintLayout>

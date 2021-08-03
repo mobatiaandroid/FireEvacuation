@@ -89,6 +89,7 @@ class CreateAccountActivity : AppCompatActivity() {
             val intent = Intent(context, WelcomeActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
+            finish()
         }
 
     }

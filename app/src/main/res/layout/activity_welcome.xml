@@ -42,7 +42,7 @@
     <TextView
         android:id="@+id/textView4"
         android:layout_width="270dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:text="Welcome to NAS Dubai Teachers Mobile Application "
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -64,25 +64,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/haveAnAccount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Already have an account ?"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/signIn"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getStarted" />
 
-    <TextView
-        android:id="@+id/signIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign In"
-        android:textColor="#EA3056"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toBottomOf="@+id/getStarted" />
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -90,6 +80,6 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/backgroud_logo"
+        app:srcCompat="@drawable/background_logo"
         android:elevation="-10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

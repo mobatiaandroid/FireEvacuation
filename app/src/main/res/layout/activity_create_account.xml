@@ -44,7 +44,7 @@
     <TextView
         android:id="@+id/textView2"
         android:layout_width="270dp"
-        android:layout_height="35dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:text="Create profile and start using NAS Dubai Teachers mobile application"
         app:layout_constraintStart_toStartOf="parent"
@@ -147,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
