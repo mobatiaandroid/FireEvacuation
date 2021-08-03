@@ -10,15 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FireEvacuation">
         <activity
-            android:name=".activity.welcome.WelcomeActivity"
+            android:name=".activity.create_account.CreateAccountActivity"
             android:exported="true" />
         <activity
+            android:name=".activity.welcome.WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".activity.sign_in.SignInActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="true" >
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
