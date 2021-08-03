@@ -1,14 +1,18 @@
 package com.nas.fireevacuation.activity.create_account
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.CommonMethods
 
 class CreateAccountActivity : AppCompatActivity() {
@@ -21,6 +25,7 @@ class CreateAccountActivity : AppCompatActivity() {
     lateinit var showHide1: TextView
     lateinit var showHide2: TextView
     lateinit var createAccount: TextView
+    lateinit var backButton: ImageView
     var passwordShowHide1:Boolean=false
     var passwordShowHide2:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +40,7 @@ class CreateAccountActivity : AppCompatActivity() {
         showHide1 = findViewById(R.id.showHide1)
         showHide2 = findViewById(R.id.showHide2)
         createAccount = findViewById(R.id.createAccount)
+        backButton = findViewById(R.id.back_button)
         showHide1.setOnClickListener(View.OnClickListener {
             if (passwordShowHide1) {
                 passwordShowHide1 = false
@@ -78,6 +84,11 @@ class CreateAccountActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+        backButton.setOnClickListener {
+            val intent = Intent(context, WelcomeActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
         }
 
     }
