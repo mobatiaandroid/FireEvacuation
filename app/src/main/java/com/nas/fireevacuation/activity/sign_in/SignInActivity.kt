@@ -1,9 +1,12 @@
 package com.nas.fireevacuation.activity.sign_in
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings.Secure.*
+
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
@@ -14,7 +17,15 @@ import android.widget.Toast
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
+import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
+import com.nas.fireevacuation.common.constants.PreferenceManager
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.security.AccessController.getContext
 
 class SignInActivity : AppCompatActivity() {
     lateinit var backButton: ImageView
@@ -89,7 +100,32 @@ class SignInActivity : AppCompatActivity() {
         finish()
     }
 
+    @SuppressLint("HardwareIds")
     private fun callLoginApi(email: String, pswd: String) {
+        val androidID = getString(
+            this.contentResolver,
+            ANDROID_ID
+        )
+        val call: Call<ResponseBody> = ApiClient.getClient.loginAPICall(
+            PreferenceManager.getAccessToken(context),
+            email,
+            pswd,
+            androidID,
+            "1"
+        )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                val responseData = response.body()
+                if (responseData != null) {
+                    val jsonObject = JSONObject(responseData.string())
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
 
     }
 }

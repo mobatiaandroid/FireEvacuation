@@ -3,6 +3,7 @@
     package="com.nas.fireevacuation">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,15 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FireEvacuation">
         <activity
-            android:name=".activity.create_account.CreateAccountActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name=".activity.staff_home.StaffHomeActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".activity.welcome.WelcomeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,11 +23,22 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".activity.create_account.CreateAccountActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.welcome.WelcomeActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        </activity>
+        <activity
             android:name=".activity.sign_in.SignInActivity"
             android:exported="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
     </application>
 
 </manifest>

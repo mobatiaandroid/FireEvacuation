@@ -3,15 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/create_account_disabled.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/dialog_bottom_curve_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/dialog_top_curve_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_baseline_error.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/notification_badge.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/round.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_bg.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_create_account.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_sign_in.xml" value="0.36875" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_staff_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/dialog_alert.xml" value="0.3428442028985507" />
       </map>

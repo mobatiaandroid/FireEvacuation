@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
 import com.nas.fireevacuation.activity.sign_in.SignInActivity
+import com.nas.fireevacuation.common.constants.CommonMethods
 
 class WelcomeActivity : AppCompatActivity() {
     lateinit var getStarted: TextView
@@ -20,6 +21,7 @@ class WelcomeActivity : AppCompatActivity() {
         context = this
         getStarted = findViewById(R.id.getStarted)
         haveAnAccount = findViewById(R.id.haveAnAccount)
+        CommonMethods.getAccessTokenAPICall(context)
         var haveAnAccountString="<font color=#000000>Already Have An Account ? </font> <font color=#EA3056>Sign In</font>"
         haveAnAccount.text = Html.fromHtml(haveAnAccountString)
         haveAnAccount.setOnClickListener {

@@ -11,6 +11,11 @@ import android.view.View
 import android.view.Window
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CommonMethods {
     companion object{
@@ -56,6 +61,35 @@ class CommonMethods {
                 }
             }
             return result
+        }
+        fun getAccessTokenAPICall(context: Context) {
+            val call: Call<ResponseBody> = ApiClient.getClient.accessToken(
+                "password",
+                "testclient",
+                "testpass",
+                "krishnaraj.s@mobatia.com",
+                "admin123"
+            )
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val jsonObject = JSONObject(responseData.string())
+                        if (jsonObject != null) {
+                            val accessToken: String = jsonObject.optString("access_token")
+                            PreferenceManager.setAccessToken(context, accessToken)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    TODO("Not yet implemented")
+                }
+
+            })
         }
     }
 }
