@@ -130,7 +130,7 @@ class SignInActivity : AppCompatActivity() {
                     if (signInResponse.responsecode.equals("200")) {
                         if (signInResponse.response.statuscode.equals("303")) {
                             CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")
-                            showSelectSessionPopUp()
+//                            showSelectSessionPopUp()
                             val intent = Intent(context, StaffHomeActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0,0)
