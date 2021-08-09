@@ -1,4 +1,4 @@
-package com.nas.fireevacuation.activity.sign_in.model
+package com.nas.fireevacuation.activity.sign_in.model.sign_in_model
 
 data class Data(
     val isams_id: String,

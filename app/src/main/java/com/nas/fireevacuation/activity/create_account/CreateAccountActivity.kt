@@ -8,20 +8,16 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.TextView
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
-import com.nas.fireevacuation.activity.sign_in.model.SignInModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
+import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -39,6 +35,7 @@ class CreateAccountActivity : AppCompatActivity() {
     lateinit var backButton: ImageView
     var passwordShowHide1:Boolean=false
     var passwordShowHide2:Boolean=false
+    var progressBarDialog: ProgressBarDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
@@ -52,6 +49,7 @@ class CreateAccountActivity : AppCompatActivity() {
 //        showHide2 = findViewById(R.id.showHide2)
         createAccount = findViewById(R.id.createAccount)
         backButton = findViewById(R.id.back_button)
+        progressBarDialog = ProgressBarDialog(context)
 //        showHide1.setOnClickListener(View.OnClickListener {
 //            if (passwordShowHide1) {
 //                passwordShowHide1 = false
@@ -149,11 +147,13 @@ class CreateAccountActivity : AppCompatActivity() {
             androidID,
             "1"
         )
+        progressBarDialog!!.show()
         call.enqueue(object : Callback<CreateAccountModel> {
             override fun onResponse(
                 call: Call<CreateAccountModel>,
                 response: Response<CreateAccountModel>
             ) {
+                progressBarDialog!!.hide()
                 if(!response.body()!!.equals("")) {
                     createAccountResponse = response.body()!!
                     if (createAccountResponse.responsecode == "200") {
@@ -174,6 +174,7 @@ class CreateAccountActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<CreateAccountModel>, t: Throwable) {
+                progressBarDialog!!.hide()
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
                 CommonMethods.getAccessTokenAPICall(context)
             }

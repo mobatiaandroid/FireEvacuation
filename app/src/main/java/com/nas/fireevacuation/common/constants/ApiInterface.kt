@@ -2,7 +2,8 @@ package com.nas.fireevacuation.common.constants
 
 
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
-import com.nas.fireevacuation.activity.sign_in.model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.sign_in_model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -41,4 +42,11 @@ interface ApiInterface {
         @Field("deviceid") deviceID: String,
         @Field("devicetype") deviceType: String
     ): Call<SignInModel>
+
+    /***Year Groups***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/year_groups")
+    fun yearGroupsAPICall(
+        @Field("access_token") accessToken: String
+    ): Call<YearGroups>
 }

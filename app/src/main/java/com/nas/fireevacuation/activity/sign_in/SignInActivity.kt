@@ -1,6 +1,7 @@
 package com.nas.fireevacuation.activity.sign_in
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,18 +18,18 @@ import android.widget.TextView
 import android.widget.Toast
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
-import com.nas.fireevacuation.activity.sign_in.model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.sign_in_model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
+import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
-import okhttp3.ResponseBody
-import org.json.JSONObject
+import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.security.AccessController.getContext
 
 class SignInActivity : AppCompatActivity() {
     lateinit var backButton: ImageView
@@ -38,6 +39,7 @@ class SignInActivity : AppCompatActivity() {
     lateinit var signIn: TextView
     lateinit var createAccount: TextView
     lateinit var showHide: TextView
+    var progressBarDialog: ProgressBarDialog? = null
     var passwordShowHide:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,7 @@ class SignInActivity : AppCompatActivity() {
         signIn = findViewById(R.id.signIn)
         createAccount = findViewById(R.id.createAccount)
         showHide = findViewById(R.id.showHide)
+        progressBarDialog = ProgressBarDialog(context)
         backButton.setOnClickListener {
             val intent = Intent(context, WelcomeActivity::class.java)
             startActivity(intent)
@@ -117,21 +120,24 @@ class SignInActivity : AppCompatActivity() {
             androidID,
             "1"
         )
+        progressBarDialog!!.show()
         call.enqueue(object : Callback<SignInModel> {
             override fun onResponse(call: Call<SignInModel>, response: Response<SignInModel>) {
+                progressBarDialog!!.hide()
                 if(!response.body()!!.equals("")) {
                     signInResponse = response.body()!!
                     Log.e("Sign In Response", response.body().toString())
-                    if (signInResponse.responsecode == "200") {
-                        if (signInResponse.response.statuscode == "303") {
+                    if (signInResponse.responsecode.equals("200")) {
+                        if (signInResponse.response.statuscode.equals("303")) {
                             CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")
+                            showSelectSessionPopUp()
                             val intent = Intent(context, StaffHomeActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0,0)
                             finish()
-                        } else if (signInResponse.response.statuscode == "306") {
+                        } else if (signInResponse.response.statuscode.equals("306")) {
                             CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect username")
-                        } else if (signInResponse.response.statuscode == "305") {
+                        } else if (signInResponse.response.statuscode.equals("305")) {
                             CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect Password")
                         }
                     } else {
@@ -142,6 +148,7 @@ class SignInActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<SignInModel>, t: Throwable) {
+                progressBarDialog!!.hide()
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
                 CommonMethods.getAccessTokenAPICall(context)
             }
@@ -149,5 +156,58 @@ class SignInActivity : AppCompatActivity() {
 
         })
 
+    }
+
+    private fun showSelectSessionPopUp() {
+        var yearGroupsResponse: YearGroups
+        var yearGroupsArrayList: ArrayList<Lists>
+        var yearGroupsList: ArrayList<String>
+        var i: Int = 0
+        val call: Call<YearGroups> = ApiClient.getClient.yearGroupsAPICall(
+            PreferenceManager.getAccessToken(context),
+        )
+        progressBarDialog!!.show()
+        call.enqueue(object : Callback<YearGroups> {
+            override fun onResponse(call: Call<YearGroups>, response: Response<YearGroups>) {
+                progressBarDialog!!.hide()
+                if (!response.body()!!.equals("")) {
+                    yearGroupsResponse = response.body()!!
+                    if (yearGroupsResponse.responsecode.equals("200")) {
+                        if (yearGroupsResponse.response.response.equals("success")) {
+                            if (yearGroupsResponse.response.statuscode.equals("303")) {
+                                yearGroupsArrayList = yearGroupsResponse.response.data.lists as ArrayList<Lists>
+                                yearGroupsList = ArrayList()
+                                while(i<yearGroupsArrayList.size) {
+                                    yearGroupsList.add(yearGroupsArrayList[i].year_group)
+                                }
+                                var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
+                                val builder = AlertDialog.Builder(context)
+                                builder.setTitle("Select Session")
+                                var checkedItem = -1
+                                builder.setSingleChoiceItems(yearGroupsSelector, checkedItem) { dialog, which ->
+                                    checkedItem = which
+                                }
+                                builder.setPositiveButton("OK") { dialog, which ->
+//                                    branch.text = yearGroupsSelector[checkedItem]
+                                }
+                                builder.setNegativeButton("Cancel", null)
+                                val dialog = builder.create()
+                                dialog.show()
+                            }
+                        }
+                    } else if(yearGroupsResponse.responsecode.equals("402")) {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid Access Token")
+                        CommonMethods.getAccessTokenAPICall(context)
+                    } else {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                    }
+                }
+            }
+            override fun onFailure(call: Call<YearGroups>, t: Throwable) {
+                progressBarDialog!!.hide()
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+            }
+
+        })
     }
 }
