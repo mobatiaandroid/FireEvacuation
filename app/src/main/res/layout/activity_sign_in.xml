@@ -181,7 +181,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signIn" />
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
-        android:id="@+id/textView11"
+        android:id="@+id/createAccount"
         android:layout_width="0dp"
         android:layout_height="45dp"
         android:text="CREATE ACCOUNT"

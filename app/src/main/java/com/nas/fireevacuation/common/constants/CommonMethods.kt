@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
@@ -78,15 +79,14 @@ class CommonMethods {
                     val responseData = response.body()
                     if (responseData != null) {
                         val jsonObject = JSONObject(responseData.string())
-                        if (jsonObject != null) {
-                            val accessToken: String = jsonObject.optString("access_token")
-                            PreferenceManager.setAccessToken(context, accessToken)
-                        }
+                        Log.e("Response",response.body().toString())
+                        val accessToken: String = jsonObject.optString("access_token")
+                        PreferenceManager.setAccessToken(context, accessToken)
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    TODO("Not yet implemented")
+                    showLoginErrorPopUp(context,"Alert","Invalid Grant")
                 }
 
             })

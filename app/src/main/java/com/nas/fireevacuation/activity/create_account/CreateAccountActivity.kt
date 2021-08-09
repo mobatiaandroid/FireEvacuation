@@ -1,9 +1,11 @@
 package com.nas.fireevacuation.activity.create_account
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
@@ -14,8 +16,15 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
+import com.nas.fireevacuation.activity.sign_in.model.SignInModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
+import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
+import com.nas.fireevacuation.common.constants.PreferenceManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class CreateAccountActivity : AppCompatActivity() {
     lateinit var context: Context
@@ -127,7 +136,48 @@ class CreateAccountActivity : AppCompatActivity() {
         finish()
     }
 
+    @SuppressLint("HardwareIds")
     private fun callCreateAccountApi() {
-        TODO("Not yet implemented")
+        val androidID = Settings.Secure.getString(
+            this.contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
+        var createAccountResponse: CreateAccountModel
+        val call: Call<CreateAccountModel> = ApiClient.getClient.signUpAPICall(
+            PreferenceManager.getAccessToken(context),
+            emailID.text.toString(),
+            androidID,
+            "1"
+        )
+        call.enqueue(object : Callback<CreateAccountModel> {
+            override fun onResponse(
+                call: Call<CreateAccountModel>,
+                response: Response<CreateAccountModel>
+            ) {
+                if(!response.body()!!.equals("")) {
+                    createAccountResponse = response.body()!!
+                    if (createAccountResponse.responsecode == "200") {
+                        if (createAccountResponse.response.statuscode == "304") {
+                            CommonMethods.showLoginErrorPopUp(context,"Alert","Already Registered")
+                            val intent = Intent(context, WelcomeActivity::class.java)
+                            startActivity(intent)
+                            overridePendingTransition(0,0)
+                            finish()
+                        } else if (createAccountResponse.response.statuscode == "306") {
+                            CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid User")
+                        }
+                    } else if (createAccountResponse.responsecode == "402") {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                        CommonMethods.getAccessTokenAPICall(context)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CreateAccountModel>, t: Throwable) {
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                CommonMethods.getAccessTokenAPICall(context)
+            }
+
+        })
     }
 }

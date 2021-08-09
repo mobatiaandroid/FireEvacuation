@@ -9,6 +9,7 @@ import android.provider.Settings.Secure.*
 
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -16,6 +17,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
+import com.nas.fireevacuation.activity.sign_in.model.SignInModel
+import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
@@ -106,24 +109,43 @@ class SignInActivity : AppCompatActivity() {
             this.contentResolver,
             ANDROID_ID
         )
-        val call: Call<ResponseBody> = ApiClient.getClient.loginAPICall(
+        var signInResponse: SignInModel
+        val call: Call<SignInModel> = ApiClient.getClient.loginAPICall(
             PreferenceManager.getAccessToken(context),
             email,
             pswd,
             androidID,
             "1"
         )
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                val responseData = response.body()
-                if (responseData != null) {
-                    val jsonObject = JSONObject(responseData.string())
+        call.enqueue(object : Callback<SignInModel> {
+            override fun onResponse(call: Call<SignInModel>, response: Response<SignInModel>) {
+                if(!response.body()!!.equals("")) {
+                    signInResponse = response.body()!!
+                    Log.e("Sign In Response", response.body().toString())
+                    if (signInResponse.responsecode == "200") {
+                        if (signInResponse.response.statuscode == "303") {
+                            CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")
+                            val intent = Intent(context, StaffHomeActivity::class.java)
+                            startActivity(intent)
+                            overridePendingTransition(0,0)
+                            finish()
+                        } else if (signInResponse.response.statuscode == "306") {
+                            CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect username")
+                        } else if (signInResponse.response.statuscode == "305") {
+                            CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect Password")
+                        }
+                    } else {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                        CommonMethods.getAccessTokenAPICall(context)
+                    }
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<SignInModel>, t: Throwable) {
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                CommonMethods.getAccessTokenAPICall(context)
             }
+
 
         })
 

@@ -1,6 +1,8 @@
 package com.nas.fireevacuation.common.constants
 
 
+import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
+import com.nas.fireevacuation.activity.sign_in.model.SignInModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -27,16 +29,16 @@ interface ApiInterface {
         @Field("email") emailID: String,
         @Field("deviceid") deviceID: String,
         @Field("devicetype") deviceType: String
-    ): Call<ResponseBody>
+    ): Call<CreateAccountModel>
 
     /***Log In***/
     @FormUrlEncoded
-    @POST("")
+    @POST("api/StaffApp/login")
     fun loginAPICall(
         @Field("access_token") accessToken: String,
         @Field("email") emailID: String,
         @Field("password") password: String,
         @Field("deviceid") deviceID: String,
         @Field("devicetype") deviceType: String
-    ): Call<ResponseBody>
+    ): Call<SignInModel>
 }
