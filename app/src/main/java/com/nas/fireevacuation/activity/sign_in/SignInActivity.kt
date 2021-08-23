@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
+import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
 import com.nas.fireevacuation.activity.sign_in.model.sign_in_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
@@ -131,7 +132,7 @@ class SignInActivity : AppCompatActivity() {
                         if (signInResponse.response.statuscode.equals("303")) {
                             CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")
 //                            showSelectSessionPopUp()
-                            val intent = Intent(context, StaffHomeActivity::class.java)
+                            val intent = Intent(context, SessionSelectActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0,0)
                             finish()
@@ -158,56 +159,5 @@ class SignInActivity : AppCompatActivity() {
 
     }
 
-    private fun showSelectSessionPopUp() {
-        var yearGroupsResponse: YearGroups
-        var yearGroupsArrayList: ArrayList<Lists>
-        var yearGroupsList: ArrayList<String>
-        var i: Int = 0
-        val call: Call<YearGroups> = ApiClient.getClient.yearGroupsAPICall(
-            PreferenceManager.getAccessToken(context),
-        )
-        progressBarDialog!!.show()
-        call.enqueue(object : Callback<YearGroups> {
-            override fun onResponse(call: Call<YearGroups>, response: Response<YearGroups>) {
-                progressBarDialog!!.hide()
-                if (!response.body()!!.equals("")) {
-                    yearGroupsResponse = response.body()!!
-                    if (yearGroupsResponse.responsecode.equals("200")) {
-                        if (yearGroupsResponse.response.response.equals("success")) {
-                            if (yearGroupsResponse.response.statuscode.equals("303")) {
-                                yearGroupsArrayList = yearGroupsResponse.response.data.lists as ArrayList<Lists>
-                                yearGroupsList = ArrayList()
-                                while(i<yearGroupsArrayList.size) {
-                                    yearGroupsList.add(yearGroupsArrayList[i].year_group)
-                                }
-                                var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
-                                val builder = AlertDialog.Builder(context)
-                                builder.setTitle("Select Session")
-                                var checkedItem = -1
-                                builder.setSingleChoiceItems(yearGroupsSelector, checkedItem) { dialog, which ->
-                                    checkedItem = which
-                                }
-                                builder.setPositiveButton("OK") { dialog, which ->
-//                                    branch.text = yearGroupsSelector[checkedItem]
-                                }
-                                builder.setNegativeButton("Cancel", null)
-                                val dialog = builder.create()
-                                dialog.show()
-                            }
-                        }
-                    } else if(yearGroupsResponse.responsecode.equals("402")) {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid Access Token")
-                        CommonMethods.getAccessTokenAPICall(context)
-                    } else {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
-                    }
-                }
-            }
-            override fun onFailure(call: Call<YearGroups>, t: Throwable) {
-                progressBarDialog!!.hide()
-                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
-            }
 
-        })
-    }
 }

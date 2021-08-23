@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "351983106668",
+    "project_id": "fireevacuation-21eaf",
+    "storage_bucket": "fireevacuation-21eaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:351983106668:android:b03b7e6c69eb622aab3649",
+        "android_client_info": {
+          "package_name": "com.nas.fireevacuation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "351983106668-vl8lvm663f67n2iut89dip60rh8f7ufe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_b19ngLLyNACZXiPp-kGarQdBMsL_69A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "351983106668-vl8lvm663f67n2iut89dip60rh8f7ufe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

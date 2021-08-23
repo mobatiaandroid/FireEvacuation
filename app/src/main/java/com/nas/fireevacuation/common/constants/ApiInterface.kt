@@ -49,4 +49,31 @@ interface ApiInterface {
     fun yearGroupsAPICall(
         @Field("access_token") accessToken: String
     ): Call<YearGroups>
+
+
+    /***Students***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/students")
+    fun  studentsAPICall(
+        @Field("access_token") accessToken: String,
+        @Field("class_id") classID: String
+    ): Call<ResponseBody>
+
+
+    /***Assembly Points***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/assembly_points_V1")
+    fun assemblyPoints(
+        @Field("access_token") accessToken: String
+    ): Call<ResponseBody>
+
+    /***Evacuation Start***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/evacuation_start_V1")
+    fun evacuationStart(
+        @Field("access_token") accessToken: String,
+        @Field("staff_id") staffID: String,
+        @Field("class_id") classID: String,
+        @Field("assembly_point_id") assemblyID: String
+    ): Call<ResponseBody>
 }

@@ -200,10 +200,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout"></androidx.viewpager.widget.ViewPager>
 
-    <androidx.cardview.widget.CardView
+    <!--<androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="70dp"
         app:cardCornerRadius="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline1"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout">
@@ -228,8 +229,10 @@
 
             <RelativeLayout
                 android:id="@+id/shape_layout"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/rounded_profile_textview"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -238,18 +241,19 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/myCardView"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     app:cardCornerRadius="50dp">
 
                     <ImageView
                         android:id="@+id/roundedimag"
-                        android:layout_width="match_parent"
+                        android:layout_width="40dp"
+                        android:layout_gravity="center"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/profile_icon" />
+                        android:src="@drawable/main_logo" />
                 </androidx.cardview.widget.CardView>
             </RelativeLayout>
 
@@ -284,6 +288,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="ALEX PAUL"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/textView29"
                 app:layout_constraintStart_toEndOf="@+id/shape_layout"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -293,12 +299,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="F2345556"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/shape_layout"
+                app:layout_constraintStart_toStartOf="@+id/textView23"
                 app:layout_constraintTop_toBottomOf="@+id/textView23" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>-->
 
     <com.nas.fireevacuation.common.custom_views.textview.CustomFontDJ5TextBlack
         android:id="@+id/TextView1"
