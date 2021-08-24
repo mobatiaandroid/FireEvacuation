@@ -115,6 +115,7 @@ class SessionSelectActivity : AppCompatActivity() {
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
                 intent.putExtra("classID", yearGroupsArrayList[position].id)
+                intent.putExtra("className", selectedSession.text)
                 startActivity(intent)
                 overridePendingTransition(0,0)
                 finish()

@@ -181,7 +181,7 @@
                         app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
-                        android:id="@+id/textView17"
+                        android:id="@+id/absentStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="02"
@@ -201,7 +201,7 @@
                         app:layout_constraintTop_toTopOf="@+id/guideline10" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
-                        android:id="@+id/textView19"
+                        android:id="@+id/presentStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="36"
@@ -210,7 +210,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
-                        android:id="@+id/textView20"
+                        android:id="@+id/className"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -221,42 +221,40 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView21"
+                        android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="12/03/2003"
                         android:textColor="#b2b2b2"
-                        app:layout_constraintStart_toStartOf="@+id/textView20"
-                        app:layout_constraintTop_toBottomOf="@+id/textView20" />
+                        app:layout_constraintStart_toStartOf="@+id/className"
+                        app:layout_constraintTop_toBottomOf="@+id/className" />
 
                     <ProgressBar
-                        android:id="@+id/progressBar"
+                        android:id="@+id/progressBarPresent"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:progressTint="#4ECB71"
-                        android:progress="94"
                         app:layout_constraintEnd_toStartOf="@+id/guideline9"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+                        app:layout_constraintTop_toBottomOf="@+id/presentStudents" />
 
                     <ProgressBar
-                        android:id="@+id/progressBar2"
+                        android:id="@+id/progressBarAbsent"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:progressTint="#EA3056"
-                        android:progress="5"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
-                        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+                        app:layout_constraintTop_toBottomOf="@+id/absentStudents" />
 
                     <ImageView
                         android:id="@+id/imageA"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        app:layout_constraintStart_toStartOf="@+id/textView21"
-                        app:layout_constraintTop_toBottomOf="@+id/textView21"
+                        app:layout_constraintStart_toStartOf="@+id/date"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
                         app:srcCompat="@android:drawable/gallery_thumb" />
                     <ImageView
                         android:id="@+id/imageB"
@@ -264,7 +262,7 @@
                         android:layout_height="30dp"
                         android:layout_marginStart="4dp"
                         app:layout_constraintStart_toEndOf="@+id/imageA"
-                        app:layout_constraintTop_toBottomOf="@+id/textView21"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
                         app:srcCompat="@android:drawable/gallery_thumb" />
                     <ImageView
                         android:id="@+id/imageC"
@@ -272,7 +270,7 @@
                         android:layout_height="30dp"
                         android:layout_marginStart="4dp"
                         app:layout_constraintStart_toEndOf="@+id/imageB"
-                        app:layout_constraintTop_toBottomOf="@+id/textView21"
+                        app:layout_constraintTop_toBottomOf="@+id/date"
                         app:srcCompat="@android:drawable/gallery_thumb" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
@@ -285,11 +283,11 @@
                         android:background="#EA3056"
                         android:layout_marginStart="4dp"
                         app:layout_constraintStart_toEndOf="@+id/imageC"
-                        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                        app:layout_constraintTop_toBottomOf="@+id/date" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearlayout3"
+                android:id="@+id/assemblyAreaSelector"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="24dp"
