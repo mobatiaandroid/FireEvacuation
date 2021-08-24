@@ -17,17 +17,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.account_recovery.RecoverAccountActivity
 import com.nas.fireevacuation.activity.create_account.CreateAccountActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
-import com.nas.fireevacuation.activity.sign_in.model.sign_in_model.SignInModel
-import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
-import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
-import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
+import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,6 +39,9 @@ class SignInActivity : AppCompatActivity() {
     lateinit var signIn: TextView
     lateinit var createAccount: TextView
     lateinit var showHide: TextView
+    lateinit var staffName: String
+    lateinit var staffID: String
+    lateinit var recoverAccount: TextView
     var progressBarDialog: ProgressBarDialog? = null
     var passwordShowHide:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,13 @@ class SignInActivity : AppCompatActivity() {
         createAccount = findViewById(R.id.createAccount)
         showHide = findViewById(R.id.showHide)
         progressBarDialog = ProgressBarDialog(context)
+        recoverAccount = findViewById(R.id.recoverAccount)
+        recoverAccount.setOnClickListener {
+            val intent = Intent(context, RecoverAccountActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
+        }
         backButton.setOnClickListener {
             val intent = Intent(context, WelcomeActivity::class.java)
             startActivity(intent)
@@ -128,20 +137,22 @@ class SignInActivity : AppCompatActivity() {
                 if(!response.body()!!.equals("")) {
                     signInResponse = response.body()!!
                     Log.e("Sign In Response", response.body().toString())
-                    if (signInResponse.responsecode.equals("200")) {
-                        if (signInResponse.response.statuscode.equals("303")) {
+                    if (signInResponse.responsecode.equals("100")) {
+                        if (signInResponse.message.equals("success")) {
                             CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")
 //                            showSelectSessionPopUp()
+                            staffID = signInResponse.data.user_details.staff_id
+                            staffName = signInResponse.data.user_details.name
+                            PreferenceManager.setStaffID(context, staffID)
+                            PreferenceManager.setStaffName(context, staffName)
                             val intent = Intent(context, SessionSelectActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0,0)
                             finish()
-                        } else if (signInResponse.response.statuscode.equals("306")) {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect username")
-                        } else if (signInResponse.response.statuscode.equals("305")) {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect Password")
                         }
-                    } else {
+                    } else if (signInResponse.responsecode.equals("110")) {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Incorrect username or password")
+                    }  else {
                         CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
                         CommonMethods.getAccessTokenAPICall(context)
                     }

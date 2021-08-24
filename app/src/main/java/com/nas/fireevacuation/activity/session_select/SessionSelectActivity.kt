@@ -12,6 +12,7 @@ import android.view.View
 import android.view.Window
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.sign_in.SignInActivity
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
@@ -29,17 +30,18 @@ class SessionSelectActivity : AppCompatActivity() {
     var progressBarDialog: ProgressBarDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        context = this
         setContentView(R.layout.activity_session_select)
         progressBarDialog = ProgressBarDialog(context)
         showSelectSessionPopUp()
     }
     private fun showSelectSessionPopUp() {
         var yearGroupsResponse: YearGroups
-        var yearGroupsArrayList: ArrayList<Lists>
+        var yearGroupsArrayList: ArrayList<Lists> = ArrayList()
         var i: Int = 0
         var yearGroupsList: ArrayList<String> = ArrayList()
         val call: Call<YearGroups> = ApiClient.getClient.yearGroupsAPICall(
-            PreferenceManager.getAccessToken(context),
+            PreferenceManager.getAccessToken(context)
         )
         progressBarDialog!!.show()
         call.enqueue(object : Callback<YearGroups> {
@@ -83,6 +85,8 @@ class SessionSelectActivity : AppCompatActivity() {
         var selectedSubject = dialog.findViewById<View>(R.id.selectedSubject) as TextView
         var closeButton = dialog.findViewById<View>(R.id.close)
         var checkInButton = dialog.findViewById<View>(R.id.checkIn)
+        var position = -1
+        dialog.show()
         sessionSelect.setOnClickListener {
             var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
             val builder = AlertDialog.Builder(context)
@@ -93,16 +97,24 @@ class SessionSelectActivity : AppCompatActivity() {
             }
             builder.setPositiveButton("OK") { dialog, which ->
                                     selectedSession.text = yearGroupsSelector[checkedItem]
+                                    position = checkedItem
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
             dialog.show()
+        }
+        closeButton.setOnClickListener {
+            val intent = Intent(context, SignInActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
         }
         checkInButton.setOnClickListener {
             if(selectedSession.text.equals("")) {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Session")
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
+                intent.putExtra("classID", yearGroupsArrayList[position].id)
                 startActivity(intent)
                 overridePendingTransition(0,0)
                 finish()

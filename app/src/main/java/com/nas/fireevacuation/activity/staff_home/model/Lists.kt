@@ -4,6 +4,6 @@ data class Lists(
     val id: String,
     val name: String,
     val photo: String,
-    val present: Int,
+    val present: String,
     val registration_id: String
 )

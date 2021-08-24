@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
+import com.nas.fireevacuation.activity.sign_in.SignInActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
@@ -156,17 +157,15 @@ class CreateAccountActivity : AppCompatActivity() {
                 progressBarDialog!!.hide()
                 if(!response.body()!!.equals("")) {
                     createAccountResponse = response.body()!!
-                    if (createAccountResponse.responsecode == "200") {
-                        if (createAccountResponse.response.statuscode == "304") {
+                    if (createAccountResponse.responsecode == "121") {
                             CommonMethods.showLoginErrorPopUp(context,"Alert","Already Registered")
-                            val intent = Intent(context, WelcomeActivity::class.java)
+                            val intent = Intent(context, SignInActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0,0)
                             finish()
-                        } else if (createAccountResponse.response.statuscode == "306") {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid User")
-                        }
-                    } else if (createAccountResponse.responsecode == "402") {
+                    } else if (createAccountResponse.responsecode == "114") {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid User")
+                    }else if (createAccountResponse.responsecode == "402") {
                         CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
                         CommonMethods.getAccessTokenAPICall(context)
                     }

@@ -198,7 +198,10 @@
         app:layout_constraintBottom_toTopOf="@id/cardview2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout"></androidx.viewpager.widget.ViewPager>
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+
+
+    </androidx.viewpager.widget.ViewPager>
 
     <!--<androidx.cardview.widget.CardView
         android:layout_width="0dp"

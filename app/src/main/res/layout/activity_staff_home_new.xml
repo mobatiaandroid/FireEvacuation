@@ -161,7 +161,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
-                        android:id="@+id/textView15"
+                        android:id="@+id/totalStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="38"
@@ -252,30 +252,31 @@
                         app:layout_constraintTop_toBottomOf="@+id/textView17" />
 
                     <ImageView
-                        android:id="@+id/imageView8"
+                        android:id="@+id/imageA"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         app:layout_constraintStart_toStartOf="@+id/textView21"
                         app:layout_constraintTop_toBottomOf="@+id/textView21"
                         app:srcCompat="@android:drawable/gallery_thumb" />
                     <ImageView
-                        android:id="@+id/imageView9"
+                        android:id="@+id/imageB"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginStart="4dp"
-                        app:layout_constraintStart_toEndOf="@+id/imageView8"
+                        app:layout_constraintStart_toEndOf="@+id/imageA"
                         app:layout_constraintTop_toBottomOf="@+id/textView21"
                         app:srcCompat="@android:drawable/gallery_thumb" />
                     <ImageView
-                        android:id="@+id/imageView10"
+                        android:id="@+id/imageC"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginStart="4dp"
-                        app:layout_constraintStart_toEndOf="@+id/imageView9"
+                        app:layout_constraintStart_toEndOf="@+id/imageB"
                         app:layout_constraintTop_toBottomOf="@+id/textView21"
                         app:srcCompat="@android:drawable/gallery_thumb" />
 
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
+                        android:id="@+id/count"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:textSize="14dp"
@@ -283,7 +284,7 @@
                         android:gravity="center"
                         android:background="#EA3056"
                         android:layout_marginStart="4dp"
-                        app:layout_constraintStart_toEndOf="@+id/imageView10"
+                        app:layout_constraintStart_toEndOf="@+id/imageC"
                         app:layout_constraintTop_toBottomOf="@+id/textView21" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

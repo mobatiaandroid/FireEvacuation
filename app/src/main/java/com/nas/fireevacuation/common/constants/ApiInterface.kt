@@ -2,11 +2,14 @@ package com.nas.fireevacuation.common.constants
 
 
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
-import com.nas.fireevacuation.activity.sign_in.model.sign_in_model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
+import com.nas.fireevacuation.activity.staff_home.model.StudentModel
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 
 interface ApiInterface {
@@ -24,7 +27,7 @@ interface ApiInterface {
 
     /***Sign Up***/
     @FormUrlEncoded
-    @POST("api/StaffApp/signup")
+    @POST("api/StaffApp/signup_V1")
     fun signUpAPICall(
         @Field("access_token") accessToken: String,
         @Field("email") emailID: String,
@@ -34,7 +37,7 @@ interface ApiInterface {
 
     /***Log In***/
     @FormUrlEncoded
-    @POST("api/StaffApp/login")
+    @POST("api/StaffApp/login_V1")
     fun loginAPICall(
         @Field("access_token") accessToken: String,
         @Field("email") emailID: String,
@@ -53,11 +56,11 @@ interface ApiInterface {
 
     /***Students***/
     @FormUrlEncoded
-    @POST("api/StaffApp/students")
+    @POST("api/StaffApp/students_V1")
     fun  studentsAPICall(
         @Field("access_token") accessToken: String,
         @Field("class_id") classID: String
-    ): Call<ResponseBody>
+    ): Call<StudentModel>
 
 
     /***Assembly Points***/

@@ -1,6 +1,6 @@
-package com.nas.fireevacuation.activity.create_account.model
+package com.nas.fireevacuation.activity.sign_in.model.signin_model
 
-data class CreateAccountModel(
+data class SignInModel(
     val data: Data,
     val message: String,
     val responsecode: String,

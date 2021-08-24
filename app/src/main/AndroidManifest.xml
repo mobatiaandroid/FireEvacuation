@@ -16,11 +16,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FireEvacuation">
         <activity
-            android:name=".activity.evacutation.EvacuationActivity"
+            android:name=".activity.account_recovery.RecoverAccountActivity"
             android:exported="true" />
         <activity
+            android:name=".activity.evacutation.EvacuationActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
             android:name=".activity.session_select.SessionSelectActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.staff_attendance.StaffAttendanceActivity"
             android:exported="true"
