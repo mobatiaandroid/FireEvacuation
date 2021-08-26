@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="80dp"
+    app:cardCornerRadius="8dp"
+    android:padding="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +44,7 @@
                 app:cardCornerRadius="50dp">
 
                 <ImageView
-                    android:id="@+id/roundedimag"
+                    android:id="@+id/studentImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
@@ -62,7 +64,7 @@
             app:trackTint="#EA3056" />
 
         <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
-            android:id="@+id/textView13"
+            android:id="@+id/presentOrAbsent"
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_marginRight="8dp"
@@ -76,22 +78,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
-            android:id="@+id/textView23"
+            android:id="@+id/studentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/textView29"
+            app:layout_constraintBottom_toTopOf="@+id/studentID"
             app:layout_constraintStart_toEndOf="@+id/shape_layout"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewRegularBlack
-            android:id="@+id/textView29"
+            android:id="@+id/studentID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/shape_layout"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintTop_toBottomOf="@+id/studentName" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

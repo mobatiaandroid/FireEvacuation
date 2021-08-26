@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
+
 
 class PreferenceManager {
     companion object {
@@ -82,42 +86,58 @@ class PreferenceManager {
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
-            editor.putString("absent_list", absentList.toString())
+            val gson = Gson()
+            val json = gson.toJson(absentList)
+            editor.putString("absent_list", json)
             editor.apply()
         }
-        fun getAbsentList(context: Context): String {
-            val absentList: String
+        fun getAbsentList(context: Context): ArrayList<Lists> {
+            val absentList: ArrayList<Lists>
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            absentList = sharedPreferences.getString("absent_list", "").toString()
+            val gson = Gson()
+            val json = sharedPreferences.getString("absent_list", null)
+            val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
+            absentList = gson.fromJson<Any>(json, type) as ArrayList<Lists>
             return absentList
         }
         fun setPresentList(context: Context, presentList:ArrayList<Lists>) {
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
-            editor.putString("present_list", presentList.toString())
+            val gson = Gson()
+            val json = gson.toJson(presentList)
+            editor.putString("present_list", json)
             editor.apply()
         }
-        fun getPresentList(context: Context): String {
-            val presentList: String
+        fun getPresentList(context: Context): ArrayList<Lists> {
+            val presentList: ArrayList<Lists>
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            presentList = sharedPreferences.getString("present_list", "").toString()
+            val gson = Gson()
+            val json = sharedPreferences.getString("present_list", null)
+            val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
+            presentList = gson.fromJson<Any>(json, type) as ArrayList<Lists>
             return presentList
         }
         fun setStudentList(context: Context, studentlist:ArrayList<Lists>) {
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
-            editor.putString("student_list", studentlist.toString())
+            val gson = Gson()
+            val json = gson.toJson(studentlist)
+            editor.putString("student_list", json)
             editor.apply()
+
         }
-        fun getStudentList(context: Context): String {
-            val studentList: String
+        fun getStudentList(context: Context): ArrayList<Lists> {
+            val studentList: ArrayList<Lists>
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            studentList = sharedPreferences.getString("student_list", "").toString()
+            val gson = Gson()
+            val json = sharedPreferences.getString("student_list", null)
+            val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
+            studentList = gson.fromJson<Any>(json, type) as ArrayList<Lists>
             return studentList
         }
     }
