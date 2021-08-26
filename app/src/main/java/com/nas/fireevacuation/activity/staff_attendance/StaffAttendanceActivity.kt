@@ -8,6 +8,7 @@ import android.widget.ImageView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 
@@ -23,11 +24,17 @@ class StaffAttendanceActivity : AppCompatActivity() {
         context = this
         homeButton = findViewById(R.id.homeButton)
         backButton = findViewById(R.id.back_button)
-        tabLayout = findViewById<TabLayout>(R.id.tabLayout)
-        viewPager = findViewById<ViewPager>(R.id.viewPager)
-        tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
-        tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"))
-        tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"))
+        tabLayout = findViewById(R.id.tabLayout)
+        viewPager = findViewById(R.id.viewPager)
+//        tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
+//        tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"))
+//        tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"))
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.add(AllStudentsFragment(), "ALL")
+        viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
+        viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
+        viewPager!!.adapter = viewPagerAdapter
+        tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         homeButton.setOnClickListener {
             val intent = Intent(context, StaffHomeActivity::class.java)

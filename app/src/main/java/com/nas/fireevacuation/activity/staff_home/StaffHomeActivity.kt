@@ -14,13 +14,13 @@ import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
-import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Data
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
+import com.squareup.okhttp.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,30 +78,27 @@ class StaffHomeActivity : AppCompatActivity() {
         absentStudentList = ArrayList()
 
         assemblyAreaSelector.setOnClickListener {
-/*
-            var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
-*/
-            var assemblyPointsData: Data?
-            assemblyPointsData = assemblyPointsCall()
-            var assemblyPointsList: ArrayList<String> = ArrayList()
-            Log.e("Assembly Points in selector", assemblyPointsCall().toString())
-            var i = 0
-            var assemblyPointsStringList: ArrayList<String> = ArrayList()
-            while (i< assemblyPointsData!!.lists.size){
-                assemblyPointsList.add(assemblyPointsData.lists[i].assembly_point)
-            }
-            val builder = AlertDialog.Builder(context)
-            builder.setTitle("Select Session")
-            var checkedItem = -1
-            builder.setSingleChoiceItems(assemblyPointsList.toTypedArray(), checkedItem) { dialog, which ->
-                checkedItem = which
-            }
-            builder.setPositiveButton("OK") { dialog, which ->
-                area.text = assemblyPointsList[checkedItem]
-            }
-            builder.setNegativeButton("Cancel", null)
-            val dialog = builder.create()
-            dialog.show()
+
+//            var assemblyPointsList: ArrayList<Lists> = java.util.ArrayList()
+//            assemblyPointsList = assemblyPointsCall()
+//            Log.e("Assembly Points in selector", assemblyPointsCall().toString())
+//            var i = 0
+//            var assemblyPointsStringList: ArrayList<String> = ArrayList()
+//            while (i<assemblyPointsList.size){
+//                assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
+//            }
+//            val builder = AlertDialog.Builder(context)
+//            builder.setTitle("Select Session")
+//            var checkedItem = -1
+//            builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
+//                checkedItem = which
+//            }
+//            builder.setPositiveButton("OK") { dialog, which ->
+//                area.text = assemblyPointsStringList[checkedItem]
+//            }
+//            builder.setNegativeButton("Cancel", null)
+//            val dialog = builder.create()
+//            dialog.show()
         }
         attendenceButton.setOnClickListener{
             val intent = Intent(context, StaffAttendanceActivity::class.java)
@@ -115,7 +112,6 @@ class StaffHomeActivity : AppCompatActivity() {
             overridePendingTransition(0,0)
             finish()
         }
-//        extras = intent.extras!!
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -128,45 +124,45 @@ class StaffHomeActivity : AppCompatActivity() {
         studentListCall(classID)
     }
 
-    private fun assemblyPointsCall(): Data? {
-        var assemblyPointsResponse: AssemblyPointsModel
-        assemblyPointsResponse = AssemblyPointsModel(null,null,null,null)
-        var assemblyPointsList: ArrayList<Lists> = ArrayList()
-        var assemblyPointsString: ArrayList<String> = ArrayList()
-        var i = 0
-        val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
-            PreferenceManager.getAccessToken(context)
-        )
-        call.enqueue(object : Callback<AssemblyPointsModel> {
-            override fun onResponse(
-                call: Call<AssemblyPointsModel>,
-                response: Response<AssemblyPointsModel>
-            ) {
-                if (!response.body()!!.equals("")) {
-                    assemblyPointsResponse = response.body()!!
-                    if (assemblyPointsResponse.responsecode.equals("100")) {
-                        if (assemblyPointsResponse.message.equals("success")) {
-                            while (i < assemblyPointsResponse.data!!.lists.size) {
-                                assemblyPointsList.add(assemblyPointsResponse.data!!.lists[i])
-                                i++
-                            }
-                            Log.e("Assembly Points1", assemblyPointsList.toString())
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
-            }
-
-        })
-        i = 0
-//        while (i < assemblyPointsList.size) {
-//            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
-//        }
-        Log.e("Assembly Points2", assemblyPointsList.toString())
-        return assemblyPointsResponse.data
-    }
+//    private fun assemblyPointsCall(): ArrayList<Lists> {
+//        var assemblyPointsResponse: AssemblyPointsModel
+//        var assemblyPointsList: ArrayList<Lists> = ArrayList()
+//        var assemblyPointsString: ArrayList<String> = ArrayList()
+//        var i = 0
+//        val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
+//            PreferenceManager.getAccessToken(context)
+//        )
+//        call.enqueue(object : Callback<AssemblyPointsModel> {
+//            override fun onResponse(
+//                call: Call<AssemblyPointsModel>,
+//                response: Response<AssemblyPointsModel>
+//            ) {
+//                if (!response.body()!!.equals("")) {
+//                    assemblyPointsResponse = response.body()!!
+//                    if (assemblyPointsResponse.responsecode.equals("100")) {
+//                        if (assemblyPointsResponse.message.equals("success")) {
+//                            while (i < assemblyPointsResponse.data.lists.size) {
+//                                assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
+//                                i++
+//                            }
+//                            Log.e("Assembly Points1", assemblyPointsList.toString())
+//                            return
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
+//            }
+//
+//        })
+//        i = 0
+////        while (i < assemblyPointsList.size) {
+////            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
+////        }
+//        Log.e("Assembly Points2", assemblyPointsList.toString())
+//        return assemblyPointsList
+//    }
 
     private fun studentListCall(classID: String) {
         var studentsResponse: StudentModel
