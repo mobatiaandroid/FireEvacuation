@@ -326,7 +326,7 @@
                 android:background="@drawable/rounded_sign_in"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
-                app:layout_constraintTop_toBottomOf="@+id/linearlayout3">
+                app:layout_constraintTop_toBottomOf="@+id/assemblyAreaSelector">
 
                 <View
                     android:id="@+id/view"

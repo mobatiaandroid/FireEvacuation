@@ -1,6 +1,6 @@
-package com.nas.fireevacuation.activity.staff_home.model
+package com.nas.fireevacuation.activity.staff_home.model.assembly_points_model
 
-data class StudentModel(
+data class AssemblyPointsModel(
     val `data`: Data,
     val message: String,
     val responsecode: String,

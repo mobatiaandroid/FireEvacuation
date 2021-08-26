@@ -48,5 +48,33 @@ class PreferenceManager {
             staffID = sharedPreferences.getString("staff_id", "").toString()
             return staffID
         }
+        fun setClassID(context: Context, classID:String) {
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("class_id", classID)
+            editor.apply()
+        }
+        fun getClassID(context: Context?): String {
+            val classID: String
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            classID = sharedPreferences.getString("class_id", "").toString()
+            return classID
+        }
+        fun setClassName(context: Context, className: String) {
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("class_name", className)
+            editor.apply()
+        }
+        fun getClassName(context: Context): String {
+            val className: String
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            className = sharedPreferences.getString("class_name", "").toString()
+            return className
+        }
     }
 }

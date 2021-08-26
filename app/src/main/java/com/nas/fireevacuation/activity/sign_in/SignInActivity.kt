@@ -72,7 +72,7 @@ class SignInActivity : AppCompatActivity() {
             if (emailID.text.toString().equals("")) {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be empty.")
             } else {
-                var emailPattern = CommonMethods.isEmailValid(emailID.text.toString())
+                val emailPattern = CommonMethods.isEmailValid(emailID.text.toString())
                 if (!emailPattern) {
                     CommonMethods.showLoginErrorPopUp(context,"Alert","Enter a Valid Email.")
                 } else {

@@ -16,7 +16,6 @@ import com.nas.fireevacuation.activity.sign_in.SignInActivity
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
-import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
@@ -114,8 +113,10 @@ class SessionSelectActivity : AppCompatActivity() {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Session")
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
-                intent.putExtra("classID", yearGroupsArrayList[position].id)
-                intent.putExtra("className", selectedSession.text)
+                PreferenceManager.setClassID(context, yearGroupsArrayList[position].id)
+                PreferenceManager.setClassName(context, selectedSession.text.toString())
+//                intent.putExtra("classID", yearGroupsArrayList[position].id)
+//                intent.putExtra("className", selectedSession.text)
                 startActivity(intent)
                 overridePendingTransition(0,0)
                 finish()

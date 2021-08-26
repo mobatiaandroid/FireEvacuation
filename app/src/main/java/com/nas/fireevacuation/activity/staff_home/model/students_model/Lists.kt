@@ -1,4 +1,4 @@
-package com.nas.fireevacuation.activity.staff_home.model
+package com.nas.fireevacuation.activity.staff_home.model.students_model
 
 data class Lists(
     val id: String,

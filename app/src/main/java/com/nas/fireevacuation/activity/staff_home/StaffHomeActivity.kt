@@ -1,9 +1,7 @@
 package com.nas.fireevacuation.activity.staff_home
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
-import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,13 +9,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
-import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
-import com.nas.fireevacuation.activity.staff_attendance.AbsentStudentsFragment
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
-import com.nas.fireevacuation.activity.staff_home.model.StudentModel
+import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
+import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
+import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
@@ -26,10 +24,8 @@ import com.squareup.okhttp.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
 import kotlin.collections.ArrayList
 
 class StaffHomeActivity : AppCompatActivity() {
@@ -52,8 +48,8 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var date: TextView
     lateinit var assemblyAreaSelector: View
     lateinit var area: TextView
-    lateinit var presentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.Lists>
-    lateinit var absentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.Lists>
+    lateinit var presentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
+    lateinit var absentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
     var progressBarDialog: ProgressBarDialog? = null
 
 
@@ -85,34 +81,25 @@ class StaffHomeActivity : AppCompatActivity() {
 /*
             var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
 */
-            val call: Call<ResponseBody> = ApiClient.getClient.assemblyPoints(
-                PreferenceManager.getAccessToken(context)
-            )
-            call.enqueue(object : Callback<ResponseBody> {
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    TODO("Not yet implemented")
-                }
-
-            })
-            /*val builder = AlertDialog.Builder(context)
+            var assemblyPointsList: ArrayList<Lists> = java.util.ArrayList()
+            assemblyPointsList = assemblyPointsCall()
+            var i = 0
+            var assemblyPointsStringList: ArrayList<String> = ArrayList()
+            while (i<assemblyPointsList.size){
+                assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
+            }
+            val builder = AlertDialog.Builder(context)
             builder.setTitle("Select Session")
             var checkedItem = -1
-            builder.setSingleChoiceItems(*//*yearGroupsSelector*//*, checkedItem) { dialog, which ->
+            builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
                 checkedItem = which
             }
             builder.setPositiveButton("OK") { dialog, which ->
-                area.text = *//*yearGroupsSelector*//*[checkedItem]
+                area.text = assemblyPointsStringList[checkedItem]
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
-            dialog.show()*/
+            dialog.show()
         }
         attendenceButton.setOnClickListener{
             val intent = Intent(context, StaffAttendanceActivity::class.java)
@@ -126,22 +113,61 @@ class StaffHomeActivity : AppCompatActivity() {
             overridePendingTransition(0,0)
             finish()
         }
-        extras = intent.extras!!
+//        extras = intent.extras!!
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted = current.format(formatter)
         date.text = formatted
-        classID = extras.getString("classID").toString()
-        className.text = extras.getString("className").toString()
+        classID = PreferenceManager.getClassID(context)
+        className.text = PreferenceManager.getClassName(context)
         staffName.text = PreferenceManager.getStaffName(context)
         Log.e("Class ID:",classID)
         studentListCall(classID)
     }
 
+    private fun assemblyPointsCall(): ArrayList<Lists> {
+        var assemblyPointsResponse: AssemblyPointsModel
+        var assemblyPointsList: ArrayList<Lists> = ArrayList()
+        var assemblyPointsString: ArrayList<String> = ArrayList()
+        var i = 0
+        val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
+            PreferenceManager.getAccessToken(context)
+        )
+        call.enqueue(object : Callback<AssemblyPointsModel> {
+            override fun onResponse(
+                call: Call<AssemblyPointsModel>,
+                response: Response<AssemblyPointsModel>
+            ) {
+                if (!response.body()!!.equals("")) {
+                    assemblyPointsResponse = response.body()!!
+                    if (assemblyPointsResponse.responsecode.equals("100")) {
+                        if (assemblyPointsResponse.message.equals("success")) {
+                            while (i < assemblyPointsResponse.data.lists.size) {
+                                assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
+                                i++
+                            }
+                            Log.e("Assembly Points", assemblyPointsList.toString())
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
+            }
+
+        })
+        i = 0
+//        while (i < assemblyPointsList.size) {
+//            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
+//        }
+        Log.e("Assembly Points3", assemblyPointsString.toString())
+        return assemblyPointsList
+    }
+
     private fun studentListCall(classID: String) {
         var studentsResponse: StudentModel
-        var studentsArrayList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.Lists> = ArrayList()
+        var studentsArrayList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists> = ArrayList()
         var i: Int = 0
         val call: Call<StudentModel> = ApiClient.getClient.studentsAPICall(
             PreferenceManager.getAccessToken(context),

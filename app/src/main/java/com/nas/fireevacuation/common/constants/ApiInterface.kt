@@ -4,8 +4,9 @@ package com.nas.fireevacuation.common.constants
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
 import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
-import com.nas.fireevacuation.activity.staff_home.model.StudentModel
-import com.squareup.okhttp.ResponseBody
+import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
+import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -68,7 +69,7 @@ interface ApiInterface {
     @POST("api/StaffApp/assembly_points_V1")
     fun assemblyPoints(
         @Field("access_token") accessToken: String
-    ): Call<ResponseBody>
+    ): Call<AssemblyPointsModel>
 
     /***Evacuation Start***/
     @FormUrlEncoded
