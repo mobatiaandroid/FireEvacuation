@@ -187,11 +187,14 @@ class StaffHomeActivity : AppCompatActivity() {
                                 i++
                             }
                             i = 0
+                            PreferenceManager.setStudentList(context,studentsArrayList)
                             while (i<studentsArrayList.size){
                                 if (studentsArrayList[i].present.equals("1")) {
                                     presentStudentList.add(studentsArrayList[i])
+                                    PreferenceManager.setPresentList(context,presentStudentList)
                                 } else {
                                     absentStudentList.add(studentsArrayList[i])
+                                    PreferenceManager.setAbsentList(context,absentStudentList)
                                 }
                                 i++
                             }
