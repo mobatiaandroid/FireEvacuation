@@ -14,13 +14,13 @@ import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
+import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Data
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
-import com.squareup.okhttp.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,21 +81,23 @@ class StaffHomeActivity : AppCompatActivity() {
 /*
             var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
 */
-            var assemblyPointsList: ArrayList<Lists> = java.util.ArrayList()
-            assemblyPointsList = assemblyPointsCall()
+            var assemblyPointsData: Data?
+            assemblyPointsData = assemblyPointsCall()
+            var assemblyPointsList: ArrayList<String> = ArrayList()
+            Log.e("Assembly Points in selector", assemblyPointsCall().toString())
             var i = 0
             var assemblyPointsStringList: ArrayList<String> = ArrayList()
-            while (i<assemblyPointsList.size){
-                assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
+            while (i< assemblyPointsData!!.lists.size){
+                assemblyPointsList.add(assemblyPointsData.lists[i].assembly_point)
             }
             val builder = AlertDialog.Builder(context)
             builder.setTitle("Select Session")
             var checkedItem = -1
-            builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
+            builder.setSingleChoiceItems(assemblyPointsList.toTypedArray(), checkedItem) { dialog, which ->
                 checkedItem = which
             }
             builder.setPositiveButton("OK") { dialog, which ->
-                area.text = assemblyPointsStringList[checkedItem]
+                area.text = assemblyPointsList[checkedItem]
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
@@ -126,8 +128,9 @@ class StaffHomeActivity : AppCompatActivity() {
         studentListCall(classID)
     }
 
-    private fun assemblyPointsCall(): ArrayList<Lists> {
+    private fun assemblyPointsCall(): Data? {
         var assemblyPointsResponse: AssemblyPointsModel
+        assemblyPointsResponse = AssemblyPointsModel(null,null,null,null)
         var assemblyPointsList: ArrayList<Lists> = ArrayList()
         var assemblyPointsString: ArrayList<String> = ArrayList()
         var i = 0
@@ -143,11 +146,11 @@ class StaffHomeActivity : AppCompatActivity() {
                     assemblyPointsResponse = response.body()!!
                     if (assemblyPointsResponse.responsecode.equals("100")) {
                         if (assemblyPointsResponse.message.equals("success")) {
-                            while (i < assemblyPointsResponse.data.lists.size) {
-                                assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
+                            while (i < assemblyPointsResponse.data!!.lists.size) {
+                                assemblyPointsList.add(assemblyPointsResponse.data!!.lists[i])
                                 i++
                             }
-                            Log.e("Assembly Points", assemblyPointsList.toString())
+                            Log.e("Assembly Points1", assemblyPointsList.toString())
                         }
                     }
                 }
@@ -161,8 +164,8 @@ class StaffHomeActivity : AppCompatActivity() {
 //        while (i < assemblyPointsList.size) {
 //            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
 //        }
-        Log.e("Assembly Points3", assemblyPointsString.toString())
-        return assemblyPointsList
+        Log.e("Assembly Points2", assemblyPointsList.toString())
+        return assemblyPointsResponse.data
     }
 
     private fun studentListCall(classID: String) {
