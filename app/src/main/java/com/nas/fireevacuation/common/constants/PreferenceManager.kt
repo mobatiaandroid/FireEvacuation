@@ -114,11 +114,11 @@ class PreferenceManager {
             editor.apply()
         }
         fun getStudentList(context: Context): String {
-            val studentlist: String
+            val studentList: String
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            studentlist = sharedPreferences.getString("student_list", "").toString()
-            return studentlist
+            studentList = sharedPreferences.getString("student_list", "").toString()
+            return studentList
         }
     }
 }

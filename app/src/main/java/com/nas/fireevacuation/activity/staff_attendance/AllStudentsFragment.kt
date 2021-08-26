@@ -28,7 +28,9 @@ class AllStudentsFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
 
+/*
         studentList = PreferenceManager.getStudentList(context)
+*/
         return view
     }
 

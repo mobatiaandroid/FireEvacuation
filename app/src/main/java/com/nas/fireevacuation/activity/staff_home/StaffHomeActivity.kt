@@ -79,26 +79,25 @@ class StaffHomeActivity : AppCompatActivity() {
 
         assemblyAreaSelector.setOnClickListener {
 
-//            var assemblyPointsList: ArrayList<Lists> = java.util.ArrayList()
-//            assemblyPointsList = assemblyPointsCall()
-//            Log.e("Assembly Points in selector", assemblyPointsCall().toString())
-//            var i = 0
-//            var assemblyPointsStringList: ArrayList<String> = ArrayList()
-//            while (i<assemblyPointsList.size){
-//                assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
-//            }
-//            val builder = AlertDialog.Builder(context)
-//            builder.setTitle("Select Session")
-//            var checkedItem = -1
-//            builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
-//                checkedItem = which
-//            }
-//            builder.setPositiveButton("OK") { dialog, which ->
-//                area.text = assemblyPointsStringList[checkedItem]
-//            }
-//            builder.setNegativeButton("Cancel", null)
-//            val dialog = builder.create()
-//            dialog.show()
+            var assemblyPointsList: ArrayList<Lists> = assemblyPointsCall()
+            Log.e("Assembly Points in selector", assemblyPointsCall().toString())
+            var i = 0
+            var assemblyPointsStringList: ArrayList<String> = ArrayList()
+            while (i<assemblyPointsList.size){
+                assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
+            }
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Select Session")
+            var checkedItem = -1
+            builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
+                checkedItem = which
+            }
+            builder.setPositiveButton("OK") { dialog, which ->
+                area.text = assemblyPointsStringList[checkedItem]
+            }
+            builder.setNegativeButton("Cancel", null)
+            val dialog = builder.create()
+            dialog.show()
         }
         attendenceButton.setOnClickListener{
             val intent = Intent(context, StaffAttendanceActivity::class.java)
@@ -124,45 +123,45 @@ class StaffHomeActivity : AppCompatActivity() {
         studentListCall(classID)
     }
 
-//    private fun assemblyPointsCall(): ArrayList<Lists> {
-//        var assemblyPointsResponse: AssemblyPointsModel
-//        var assemblyPointsList: ArrayList<Lists> = ArrayList()
-//        var assemblyPointsString: ArrayList<String> = ArrayList()
-//        var i = 0
-//        val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
-//            PreferenceManager.getAccessToken(context)
-//        )
-//        call.enqueue(object : Callback<AssemblyPointsModel> {
-//            override fun onResponse(
-//                call: Call<AssemblyPointsModel>,
-//                response: Response<AssemblyPointsModel>
-//            ) {
-//                if (!response.body()!!.equals("")) {
-//                    assemblyPointsResponse = response.body()!!
-//                    if (assemblyPointsResponse.responsecode.equals("100")) {
-//                        if (assemblyPointsResponse.message.equals("success")) {
-//                            while (i < assemblyPointsResponse.data.lists.size) {
-//                                assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
-//                                i++
-//                            }
-//                            Log.e("Assembly Points1", assemblyPointsList.toString())
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
-//            }
-//
-//        })
-//        i = 0
-////        while (i < assemblyPointsList.size) {
-////            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
-////        }
-//        Log.e("Assembly Points2", assemblyPointsList.toString())
-//        return assemblyPointsList
-//    }
+    private fun assemblyPointsCall(): ArrayList<Lists> {
+        var assemblyPointsResponse: AssemblyPointsModel
+        var assemblyPointsList: ArrayList<Lists> = ArrayList()
+        var assemblyPointsString: ArrayList<String> = ArrayList()
+        var i = 0
+        val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
+            PreferenceManager.getAccessToken(context)
+        )
+        call.enqueue(object : Callback<AssemblyPointsModel> {
+            override fun onResponse(
+                call: Call<AssemblyPointsModel>,
+                response: Response<AssemblyPointsModel>
+            ) {
+                if (!response.body()!!.equals("")) {
+                    assemblyPointsResponse = response.body()!!
+                    if (assemblyPointsResponse.responsecode.equals("100")) {
+                        if (assemblyPointsResponse.message.equals("success")) {
+                            while (i < assemblyPointsResponse.data.lists.size) {
+                                assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
+                                i++
+                            }
+                            Log.e("Assembly Points1", assemblyPointsList.toString())
+                            return
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
+            }
+
+        })
+        i = 0
+//        while (i < assemblyPointsList.size) {
+//            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
+//        }
+        Log.e("Assembly Points2", assemblyPointsList.toString())
+        return assemblyPointsList
+    }
 
     private fun studentListCall(classID: String) {
         var studentsResponse: StudentModel
