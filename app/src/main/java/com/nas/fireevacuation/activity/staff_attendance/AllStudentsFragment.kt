@@ -8,9 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SortedList
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.staff_attendance.adapter.ChildRecyclerAdapter
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ParentRecyclerAdapter
+import com.nas.fireevacuation.activity.staff_home.model.sort_model.SortModel
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.PreferenceManager
 
@@ -20,33 +21,8 @@ class AllStudentsFragment : Fragment() {
     lateinit var parentRecyclerView: RecyclerView
     lateinit var childRecyclerView: RecyclerView
     lateinit var studentList: ArrayList<Lists>
-    lateinit var a:ArrayList<Lists>
-    lateinit var b:ArrayList<Lists>
-    lateinit var c:ArrayList<Lists>
-    lateinit var d:ArrayList<Lists>
-    lateinit var e:ArrayList<Lists>
-    lateinit var f:ArrayList<Lists>
-    lateinit var g:ArrayList<Lists>
-    lateinit var h:ArrayList<Lists>
-    lateinit var i:ArrayList<Lists>
-    lateinit var j:ArrayList<Lists>
-    lateinit var k:ArrayList<Lists>
-    lateinit var l:ArrayList<Lists>
-    lateinit var m:ArrayList<Lists>
-    lateinit var n:ArrayList<Lists>
-    lateinit var o:ArrayList<Lists>
-    lateinit var p:ArrayList<Lists>
-    lateinit var q:ArrayList<Lists>
-    lateinit var r:ArrayList<Lists>
-    lateinit var s:ArrayList<Lists>
-    lateinit var t:ArrayList<Lists>
-    lateinit var u:ArrayList<Lists>
-    lateinit var v:ArrayList<Lists>
-    lateinit var w:ArrayList<Lists>
-    lateinit var x:ArrayList<Lists>
-    lateinit var y:ArrayList<Lists>
-    lateinit var z:ArrayList<Lists>
-
+//    lateinit var sortedList: ArrayList<SortModel>
+    var studentItem: Lists= Lists("","","","","")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,105 +34,78 @@ class AllStudentsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
-        var loopVariable = 0
+        var i = 0
+        val sortedList: ArrayList<SortModel> = ArrayList()
+        sortedList.add(SortModel("",ArrayList()))
         parentRecyclerView = view.findViewById(R.id.parentRecyclerView)
         studentList = PreferenceManager.getStudentList(context!!)
-        a = ArrayList()
-        b = ArrayList()
-        c = ArrayList()
-        d = ArrayList()
-        e = ArrayList()
-        f = ArrayList()
-        g = ArrayList()
-        h = ArrayList()
-        i = ArrayList()
-        j = ArrayList()
-        k = ArrayList()
-        l = ArrayList()
-        m = ArrayList()
-        n = ArrayList()
-        o = ArrayList()
-        p = ArrayList()
-        q = ArrayList()
-        r = ArrayList()
-        s = ArrayList()
-        t = ArrayList()
-        u = ArrayList()
-        v = ArrayList()
-        w = ArrayList()
-        x = ArrayList()
-        y = ArrayList()
-        z = ArrayList()
-
-        while (loopVariable<studentList.size){
-            Log.e("First Letter",studentList[loopVariable].name[0].toString())
-            if (studentList[loopVariable].name[0].toString().equals("A")){
-                a.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("B")){
-                b.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("C")){
-                c.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("D")){
-                d.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("E")){
-                e.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("F")){
-                f.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("G")){
-                g.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("H")){
-                h.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("I")){
-                i.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("J")){
-                j.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("K")){
-                k.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("L")){
-                l.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("M")){
-                m.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("N")){
-                n.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("O")){
-                o.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("P")){
-                p.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("Q")){
-                q.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("R")){
-                r.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("S")){
-                s.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("T")){
-                t.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("U")){
-                u.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("V")){
-                v.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("W")){
-                w.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("X")){
-                x.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("Y")){
-                y.add(studentList[loopVariable])
-            } else if (studentList[loopVariable].name[0].toString().equals("Z")){
-                z.add(studentList[loopVariable])
+        i=0
+        while (i<studentList.size){
+            if (studentList[i].name[0].toString().equals("A")){
+                Log.e("Check",studentList[i].toString())
+                sortedList[0].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("B")){
+                sortedList[1].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("C")){
+                sortedList[2].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("D")){
+                sortedList[3].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("E")){
+                sortedList[4].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("F")){
+                sortedList[5].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("G")){
+                sortedList[6].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("H")){
+                sortedList[7].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("I")){
+                sortedList[8].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("J")){
+                sortedList[9].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("K")){
+                sortedList[10].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("L")){
+                sortedList[11].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("M")){
+                sortedList[12].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("N")){
+                sortedList[13].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("O")){
+                sortedList[14].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("P")){
+                sortedList[15].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("Q")){
+                sortedList[16].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("R")){
+                sortedList[17].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("S")){
+                sortedList[18].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("T")){
+                sortedList[19].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("U")){
+                sortedList[20].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("V")){
+                sortedList[21].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("W")){
+                sortedList[22].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("X")){
+                sortedList[23].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("Y")){
+                sortedList[24].list.add(studentList[i])
+            } else if (studentList[i].name[0].toString().equals("Z")){
+                sortedList[25].list.add(studentList[i])
             }
-        loopVariable++
+        i++
     }
-        Log.e("A",a.toString())
-        var loopVariableAlphabet = 'a'
-        while (loopVariableAlphabet <= 'z') {
-            val parentRecyclerAdapter = ParentRecyclerAdapter(context!!, a)
+
+        var j = 0
+        while (j < 26) {
+            val parentRecyclerAdapter = ParentRecyclerAdapter(context!!, sortedList[i].list)
             parentRecyclerView.hasFixedSize()
             parentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             parentRecyclerView.adapter = parentRecyclerAdapter
-            loopVariableAlphabet += 1
+            j++
         }
         return view
-
     }
-
-
 }

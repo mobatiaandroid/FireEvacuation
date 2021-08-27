@@ -1,9 +1,9 @@
 package com.nas.fireevacuation.activity.staff_home.model.students_model
 
 data class Lists(
-    val id: String,
-    val name: String,
-    val photo: String,
-    val present: String,
-    val registration_id: String
+    var id: String,
+    var name: String,
+    var photo: String,
+    var present: String,
+    var registration_id: String
 )
