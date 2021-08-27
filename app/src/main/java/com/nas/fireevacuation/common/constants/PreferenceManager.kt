@@ -154,6 +154,7 @@ class PreferenceManager {
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            Log.e("Assembly Points1", assemblyPointsList.toString())
             val gson = Gson()
             val json = gson.toJson(assemblyPointsList)
             editor.putString("assemblyPointsList", json)
@@ -164,7 +165,8 @@ class PreferenceManager {
             val sharedPreferences: SharedPreferences =
                 context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val gson = Gson()
-            val json = sharedPreferences.getString("student_list", null)
+            val json = sharedPreferences.getString("assemblyPointsList", null)
+            Log.e("Assembly Pref", json.toString())
             val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
             assemblyPointsList = gson.fromJson<Any>(json, type) as ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists>
             return assemblyPointsList

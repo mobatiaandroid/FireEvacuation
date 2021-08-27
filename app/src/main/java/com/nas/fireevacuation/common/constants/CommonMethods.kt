@@ -93,8 +93,6 @@ class CommonMethods {
             })
         }
 
-        fun setAbsentListEmpty(absentStudentList: ArrayList<Lists>) {
 
-        }
     }
 }
