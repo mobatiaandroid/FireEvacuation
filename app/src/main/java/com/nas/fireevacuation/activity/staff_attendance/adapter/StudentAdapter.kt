@@ -45,11 +45,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
         holder.studentID!!.text = studentList[position].id
         if (studentList[position].present == "1") {
             holder.absentOrPresent!!.text = "P"
+            holder.switch!!.isChecked = true
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
         } else {
             holder.absentOrPresent!!.text = "A"
+            holder.switch!!.isChecked = false
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
         }
+
     }
 
     override fun getItemCount(): Int {

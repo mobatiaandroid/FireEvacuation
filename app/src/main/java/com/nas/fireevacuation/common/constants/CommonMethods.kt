@@ -12,6 +12,7 @@ import android.view.View
 import android.view.Window
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -90,6 +91,10 @@ class CommonMethods {
                 }
 
             })
+        }
+
+        fun setAbsentListEmpty(absentStudentList: ArrayList<Lists>) {
+
         }
     }
 }

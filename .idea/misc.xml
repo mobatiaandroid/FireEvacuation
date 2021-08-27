@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/custom_preview.xml" value="0.5712962962962963" />
         <entry key="app/src/main/res/drawable-mdpi/curved_rectangle_white_bottom.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/create_account_disabled.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/curved_rectangle_green.xml" value="0.36875" />

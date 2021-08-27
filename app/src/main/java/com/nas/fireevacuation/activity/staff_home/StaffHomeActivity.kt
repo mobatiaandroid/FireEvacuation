@@ -2,7 +2,6 @@ package com.nas.fireevacuation.activity.staff_home
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,8 +9,10 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
@@ -20,18 +21,18 @@ import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
-import com.squareup.okhttp.ResponseBody
+import com.ncorti.slidetoact.SlideToActView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.collections.ArrayList
+
 
 class StaffHomeActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var attendenceButton: ImageView
-    lateinit var backButton: ImageView
+//    lateinit var backButton: ImageView
     lateinit var  extras: Bundle
     lateinit var classID: String
     lateinit var staffName: TextView
@@ -48,6 +49,7 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var date: TextView
     lateinit var assemblyAreaSelector: View
     lateinit var area: TextView
+    lateinit var slider: SlideToActView
     lateinit var presentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
     lateinit var absentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
     var progressBarDialog: ProgressBarDialog? = null
@@ -59,7 +61,7 @@ class StaffHomeActivity : AppCompatActivity() {
         context = this
         progressBarDialog = ProgressBarDialog(context)
         attendenceButton = findViewById(R.id.attendence)
-        backButton = findViewById(R.id.back_button)
+//        backButton = findViewById(R.id.back_button)
         staffName = findViewById(R.id.staffName)
         imageA = findViewById(R.id.imageA)
         imageB = findViewById(R.id.imageB)
@@ -74,12 +76,24 @@ class StaffHomeActivity : AppCompatActivity() {
         date = findViewById(R.id.date)
         assemblyAreaSelector = findViewById(R.id.assemblyAreaSelector)
         area = findViewById(R.id.area)
+        slider = findViewById(R.id.slider)
+        var slideCompleteListener: OnSlideCompleteListener
         presentStudentList = ArrayList()
         absentStudentList = ArrayList()
 
+        slider.onSlideCompleteListener = object : OnSlideCompleteListener,
+            SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(view: SlideToActView) {
+                val intent = Intent(context, SessionSelectActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+                finish()
+            }
+        }
         assemblyAreaSelector.setOnClickListener {
 
-            var assemblyPointsList: ArrayList<Lists> = assemblyPointsCall()
+            assemblyPointsCall()
+            var assemblyPointsList: ArrayList<Lists> = PreferenceManager.getAssemblyPoints(context)
             Log.e("Assembly Points in selector", assemblyPointsCall().toString())
             var i = 0
             var assemblyPointsStringList: ArrayList<String> = ArrayList()
@@ -105,12 +119,14 @@ class StaffHomeActivity : AppCompatActivity() {
             overridePendingTransition(0,0)
             finish()
         }
-        backButton.setOnClickListener{
-            val intent = Intent(context, WelcomeActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
-        }
+//        backButton.setOnClickListener{
+//            val intent = Intent(context, WelcomeActivity::class.java)
+//            startActivity(intent)
+//            overridePendingTransition(0,0)
+//            finish()
+//        }
+
+
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -123,7 +139,7 @@ class StaffHomeActivity : AppCompatActivity() {
         studentListCall(classID)
     }
 
-    private fun assemblyPointsCall(): ArrayList<Lists> {
+    private fun assemblyPointsCall() {
         var assemblyPointsResponse: AssemblyPointsModel
         var assemblyPointsList: ArrayList<Lists> = ArrayList()
         var assemblyPointsString: ArrayList<String> = ArrayList()
@@ -144,8 +160,8 @@ class StaffHomeActivity : AppCompatActivity() {
                                 assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
                                 i++
                             }
-                            Log.e("Assembly Points1", assemblyPointsList.toString())
-                            return
+                            PreferenceManager.setAssemblyPoints(context, assemblyPointsList)
+
                         }
                     }
                 }
@@ -159,8 +175,6 @@ class StaffHomeActivity : AppCompatActivity() {
 //        while (i < assemblyPointsList.size) {
 //            assemblyPointsString.add(assemblyPointsList[i].assembly_point)
 //        }
-        Log.e("Assembly Points2", assemblyPointsList.toString())
-        return assemblyPointsList
     }
 
     private fun studentListCall(classID: String) {
@@ -190,12 +204,23 @@ class StaffHomeActivity : AppCompatActivity() {
                             while (i<studentsArrayList.size){
                                 if (studentsArrayList[i].present.equals("1")) {
                                     presentStudentList.add(studentsArrayList[i])
-                                    PreferenceManager.setPresentList(context,presentStudentList)
                                 } else {
                                     absentStudentList.add(studentsArrayList[i])
-                                    PreferenceManager.setAbsentList(context,absentStudentList)
+
                                 }
                                 i++
+                            }
+                            if (presentStudentList.size > 0){
+                                PreferenceManager.setPresentList(context,presentStudentList)
+                            } else {
+                                presentStudentList = ArrayList()
+                                PreferenceManager.setPresentList(context,presentStudentList)
+                            }
+                            if (absentStudentList.size > 0){
+                                PreferenceManager.setAbsentList(context, absentStudentList)
+                            } else {
+                                absentStudentList = ArrayList()
+                                PreferenceManager.setAbsentList(context,absentStudentList)
                             }
                             progressBarPresent.progressDrawable.setColorFilter(
                                 context.resources.getColor(R.color.green), android.graphics.PorterDuff.Mode.SRC_IN)
@@ -239,3 +264,8 @@ class StaffHomeActivity : AppCompatActivity() {
         finish()
     }
 }
+interface OnSlideCompleteListener {
+
+    fun onSlideComplete(view: SlideToActView)
+}
+

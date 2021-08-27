@@ -5,17 +5,23 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
+import com.nas.fireevacuation.common.constants.PreferenceManager
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var homeButton: ImageView
     lateinit var backButton: ImageView
+    lateinit var className: TextView
+    lateinit var date: TextView
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +32,13 @@ class StaffAttendanceActivity : AppCompatActivity() {
         backButton = findViewById(R.id.back_button)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
+        date = findViewById(R.id.date)
+        className = findViewById(R.id.className)
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatted = current.format(formatter)
+        date.text = formatted
+        className.text = PreferenceManager.getClassName(context)
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"))
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"))
@@ -43,7 +56,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
             finish()
         }
         backButton.setOnClickListener {
-            val intent = Intent(context, WelcomeActivity::class.java)
+            val intent = Intent(context, StaffHomeActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
             finish()

@@ -26,15 +26,15 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.06" />
 
-    <ImageView
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_black" />
+<!--    <ImageView-->
+<!--        android:id="@+id/back_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="24dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/arrow_black" />-->
 
     <ImageView
         android:id="@+id/imageView4"
@@ -417,6 +417,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>-->
         <com.ncorti.slidetoact.SlideToActView
+            android:id="@+id/slider"
             android:layout_height="50dp"
             android:layout_width="0dp"
             app:border_radius="8dp"

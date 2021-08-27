@@ -2,8 +2,8 @@ package com.nas.fireevacuation.common.constants
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
-import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -78,32 +78,41 @@ class PreferenceManager {
         fun getClassName(context: Context): String {
             val className: String
             val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             className = sharedPreferences.getString("class_name", "").toString()
             return className
         }
-        fun setAbsentList(context: Context, absentList:ArrayList<Lists>) {
+        fun setAbsentList(context: Context, absentList: ArrayList<Lists>?) {
             val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            var absentList2: ArrayList<Lists>
+            absentList2 = absentList!!
             val gson = Gson()
-            val json = gson.toJson(absentList)
+            if (absentList2 == null) {
+                absentList2 = ArrayList()
+            }
+            val json = gson.toJson(absentList2)
             editor.putString("absent_list", json)
             editor.apply()
         }
         fun getAbsentList(context: Context): ArrayList<Lists> {
-            val absentList: ArrayList<Lists>
+            var absentList: ArrayList<Lists> = ArrayList()
             val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val gson = Gson()
             val json = sharedPreferences.getString("absent_list", null)
+            Log.e("Absent",json.toString())
             val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
             absentList = gson.fromJson<Any>(json, type) as ArrayList<Lists>
+            if (absentList == null) {
+                absentList = ArrayList()
+            }
             return absentList
         }
         fun setPresentList(context: Context, presentList:ArrayList<Lists>) {
             val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val editor: SharedPreferences.Editor = sharedPreferences.edit()
             val gson = Gson()
             val json = gson.toJson(presentList)
@@ -133,12 +142,32 @@ class PreferenceManager {
         fun getStudentList(context: Context): ArrayList<Lists> {
             val studentList: ArrayList<Lists>
             val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val gson = Gson()
             val json = sharedPreferences.getString("student_list", null)
             val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
             studentList = gson.fromJson<Any>(json, type) as ArrayList<Lists>
             return studentList
+        }
+
+        fun setAssemblyPoints(context: Context, assemblyPointsList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists>) {
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            val gson = Gson()
+            val json = gson.toJson(assemblyPointsList)
+            editor.putString("assemblyPointsList", json)
+            editor.apply()
+        }
+        fun getAssemblyPoints(context: Context): ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists> {
+            val assemblyPointsList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists>
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val gson = Gson()
+            val json = sharedPreferences.getString("student_list", null)
+            val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
+            assemblyPointsList = gson.fromJson<Any>(json, type) as ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists>
+            return assemblyPointsList
         }
     }
 }
