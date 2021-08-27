@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.staff_attendance.adapter.StudentAdapter
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ChildRecyclerAdapter
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.PreferenceManager
 
@@ -31,7 +31,7 @@ class AbsentStudentsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         studentList = PreferenceManager.getAbsentList(context!!)
         studentList = ArrayList()
-        val studentAdapter = StudentAdapter(context!!, studentList)
+        val studentAdapter = ChildRecyclerAdapter(context!!, studentList)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         recyclerView.adapter = studentAdapter

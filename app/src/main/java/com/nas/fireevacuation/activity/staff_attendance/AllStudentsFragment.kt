@@ -9,14 +9,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.staff_attendance.adapter.StudentAdapter
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ChildRecyclerAdapter
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ParentRecyclerAdapter
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.PreferenceManager
 
 
 class AllStudentsFragment : Fragment() {
 
-    lateinit var recyclerView: RecyclerView
+    lateinit var parentRecyclerView: RecyclerView
+    lateinit var childRecyclerView: RecyclerView
     lateinit var studentList: ArrayList<Lists>
     lateinit var a:ArrayList<Lists>
     lateinit var b:ArrayList<Lists>
@@ -57,7 +59,7 @@ class AllStudentsFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
         var loopVariable = 0
-        recyclerView = view.findViewById(R.id.recyclerView)
+        parentRecyclerView = view.findViewById(R.id.parentRecyclerView)
         studentList = PreferenceManager.getStudentList(context!!)
         a = ArrayList()
         b = ArrayList()
@@ -144,12 +146,16 @@ class AllStudentsFragment : Fragment() {
         loopVariable++
     }
         Log.e("A",a.toString())
-        val studentAdapter = StudentAdapter(context!!, studentList)
-        recyclerView.hasFixedSize()
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = studentAdapter
-        Log.e("Student List", studentList.toString())
+        var loopVariableAlphabet = 'a'
+        while (loopVariableAlphabet <= 'z') {
+            val parentRecyclerAdapter = ParentRecyclerAdapter(context!!, a)
+            parentRecyclerView.hasFixedSize()
+            parentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            parentRecyclerView.adapter = parentRecyclerAdapter
+            loopVariableAlphabet += 1
+        }
         return view
+
     }
 
 

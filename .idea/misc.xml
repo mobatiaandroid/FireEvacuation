@@ -30,6 +30,7 @@
         <entry key="app/src/main/res/layout/fragment_absent_students.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_all_students.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_present_students.xml" value="0.18125" />
+        <entry key="app/src/main/res/layout/parent_recycler_items.xml" value="0.33" />
         <entry key="app/src/main/res/layout/progress_bar_dialog.xml" value="0.31476449275362317" />
         <entry key="app/src/main/res/layout/session_select_popup.xml" value="0.5" />
         <entry key="app/src/main/res/layout/student_adapter.xml" value="0.6093943139678616" />
