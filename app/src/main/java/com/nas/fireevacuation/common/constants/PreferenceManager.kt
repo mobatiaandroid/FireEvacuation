@@ -171,5 +171,19 @@ class PreferenceManager {
             assemblyPointsList = gson.fromJson<Any>(json, type) as ArrayList<com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists>
             return assemblyPointsList
         }
+        fun setAssemblyPoint(context: Context, assemblyPoint: String) {
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("assemblyPoint", assemblyPoint)
+            editor.apply()
+        }
+        fun getAssemblyPoint(context: Context): String {
+            val assemblyPoint: String
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            assemblyPoint = sharedPreferences.getString("assemblyPoint", "").toString()
+            return assemblyPoint
+        }
     }
 }

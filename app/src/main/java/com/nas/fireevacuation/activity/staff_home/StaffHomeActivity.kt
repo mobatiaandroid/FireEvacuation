@@ -142,6 +142,7 @@ class StaffHomeActivity : AppCompatActivity() {
                                 }
                                 builder.setPositiveButton("OK") { dialog, which ->
                                     area.text = assemblyPointsStringList[checkedItem]
+                                    PreferenceManager.setAssemblyPoint(context, assemblyPointsList[checkedItem].id)
                                 }
                                 builder.setNegativeButton("Cancel", null)
                                 val dialog = builder.create()
