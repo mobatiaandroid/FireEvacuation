@@ -75,18 +75,16 @@
             </RelativeLayout>
 
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
+            <Switch
                 android:id="@+id/switch1"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="8dp"
-                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:track="@drawable/track_selector"
+                android:thumb="@drawable/circle_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:thumbTint="@color/white"
-                app:trackTint="@color/green"
-                app:useMaterialThemeColors="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldWhite
                 android:id="@+id/presentOrAbsent"

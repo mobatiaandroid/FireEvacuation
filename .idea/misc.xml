@@ -5,8 +5,10 @@
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.5712962962962963" />
         <entry key="app/src/main/res/drawable-mdpi/curved_rectangle_white_bottom.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/circle_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/create_account_disabled.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/curved_rectangle_green.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/custom_switch.xml" value="0.17962962962962964" />
         <entry key="app/src/main/res/drawable/dialog_bottom_curve_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/dialog_top_curve_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/ic_baseline_error.xml" value="0.36875" />
@@ -18,6 +20,8 @@
         <entry key="app/src/main/res/drawable/rounded_light_green_rectangle.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_profile_textview.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/rounded_sign_in.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/thumb_selector.xml" value="0.17962962962962964" />
+        <entry key="app/src/main/res/drawable/track_selector.xml" value="0.17962962962962964" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/activity_evacuation.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.3380208333333333" />
@@ -28,6 +32,7 @@
         <entry key="app/src/main/res/layout/activity_staff_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_staff_home_new.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/custom_switch_off.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_alert.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/fragment_absent_students.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/fragment_all_students.xml" value="0.19583333333333333" />
@@ -35,7 +40,7 @@
         <entry key="app/src/main/res/layout/parent_recycler_items.xml" value="0.33" />
         <entry key="app/src/main/res/layout/progress_bar_dialog.xml" value="0.31476449275362317" />
         <entry key="app/src/main/res/layout/session_select_popup.xml" value="0.5" />
-        <entry key="app/src/main/res/layout/student_adapter.xml" value="0.6093943139678616" />
+        <entry key="app/src/main/res/layout/student_adapter.xml" value="0.44" />
       </map>
     </option>
   </component>

@@ -18,6 +18,7 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evacuation)

@@ -22,6 +22,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var homeButton: ImageView
     lateinit var backButton: ImageView
     lateinit var myProfile: ImageView
+    lateinit var search: ImageView
     lateinit var className: TextView
     lateinit var date: TextView
     var tabLayout: TabLayout? = null
@@ -32,6 +33,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
         context = this
         homeButton = findViewById(R.id.homeButton)
         backButton = findViewById(R.id.back_button)
+        search = findViewById(R.id.search)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         myProfile = findViewById(R.id.myProfile)
@@ -57,6 +59,9 @@ class StaffAttendanceActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0,0)
             finish()
+        }
+        search.setOnClickListener {
+
         }
         myProfile.setOnClickListener {
             val intent = Intent(context, MyProfileActivity::class.java)

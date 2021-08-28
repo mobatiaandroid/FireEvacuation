@@ -37,7 +37,6 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var attendenceButton: ImageView
     lateinit var myProfile: ImageView
-    lateinit var search: ImageView
 //    lateinit var backButton: ImageView
     lateinit var  extras: Bundle
     lateinit var classID: String
@@ -69,7 +68,6 @@ class StaffHomeActivity : AppCompatActivity() {
         progressBarDialog = ProgressBarDialog(context)
         attendenceButton = findViewById(R.id.attendence)
         myProfile = findViewById(R.id.myProfile)
-        search = findViewById(R.id.search)
 //        backButton = findViewById(R.id.back_button)
         staffName = findViewById(R.id.staffName)
         imageA = findViewById(R.id.imageA)
@@ -91,9 +89,6 @@ class StaffHomeActivity : AppCompatActivity() {
         presentStudentList = ArrayList()
         absentStudentList = ArrayList()
 
-        search.setOnClickListener {
-
-        }
 
         myProfile.setOnClickListener {
             val intent = Intent(context, MyProfileActivity::class.java)
@@ -279,9 +274,9 @@ class StaffHomeActivity : AppCompatActivity() {
 
                             presentStudents.text = presentStudentList.size.toString()
                             absentStudents.text = absentStudentList.size.toString()
-                            progressBarPresent.progress = (presentStudentList.size/studentsArrayList.size)*100
+                            progressBarPresent.progress = ((presentStudentList.size.toFloat()/studentsArrayList.size.toFloat())*100).toInt()
                             Log.e("progress",((progressBarPresent.progress).toString()))
-                            progressBarAbsent.progress = (absentStudentList.size/studentsArrayList.size)*100
+                            progressBarAbsent.progress = ((absentStudentList.size.toFloat()/studentsArrayList.size.toFloat())*100).toInt()
                             Log.e("list",studentsResponse.data.lists.toString())
                             Glide.with(context)
                                 .load(studentsArrayList[0].photo)

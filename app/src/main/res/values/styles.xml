@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <style name="Theme.App" parent="Theme.MaterialComponentS">-->
-<!--        ...-->
-<!--        <item name="colorOnSurface">@color/green</item>-->
-<!--        <item name="colorSecondary">@color/pink</item>-->
-<!--    </style>-->
+    <style name="mySwitch">
+        <item name="colorControlActivated">@color/green</item>
+    </style>
 </resources>

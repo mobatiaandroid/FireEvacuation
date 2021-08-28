@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +21,13 @@ class ChildRecyclerAdapter(var context: Context, var studentList: ArrayList<List
         var studentName: TextView? = null
         var studentID: TextView? = null
         var absentOrPresent: TextView? = null
-        var switch: SwitchMaterial? = null
+        var switch: Switch? = null
         init {
             studentImage = itemView.findViewById<View>(R.id.studentImage) as ImageView?
             studentName = itemView.findViewById<View>(R.id.studentName) as TextView?
             studentID = itemView.findViewById<View>(R.id.studentID) as TextView?
             absentOrPresent = itemView.findViewById<View>(R.id.presentOrAbsent) as TextView?
-            switch = itemView.findViewById<View>(R.id.switch1) as SwitchMaterial?
+            switch = itemView.findViewById<View>(R.id.switch1) as Switch?
         }
     }
 
