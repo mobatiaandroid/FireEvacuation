@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.EvacuationActivity
+import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
@@ -35,6 +36,8 @@ import java.time.format.DateTimeFormatter
 class StaffHomeActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var attendenceButton: ImageView
+    lateinit var myProfile: ImageView
+    lateinit var search: ImageView
 //    lateinit var backButton: ImageView
     lateinit var  extras: Bundle
     lateinit var classID: String
@@ -65,6 +68,8 @@ class StaffHomeActivity : AppCompatActivity() {
         context = this
         progressBarDialog = ProgressBarDialog(context)
         attendenceButton = findViewById(R.id.attendence)
+        myProfile = findViewById(R.id.myProfile)
+        search = findViewById(R.id.search)
 //        backButton = findViewById(R.id.back_button)
         staffName = findViewById(R.id.staffName)
         imageA = findViewById(R.id.imageA)
@@ -86,6 +91,16 @@ class StaffHomeActivity : AppCompatActivity() {
         presentStudentList = ArrayList()
         absentStudentList = ArrayList()
 
+        search.setOnClickListener {
+
+        }
+
+        myProfile.setOnClickListener {
+            val intent = Intent(context, MyProfileActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
+        }
         slider.onSlideCompleteListener = object : OnSlideCompleteListener,
             SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(view: SlideToActView) {

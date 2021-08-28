@@ -81,4 +81,24 @@ interface ApiInterface {
         @Field("class_id") classID: String,
         @Field("assembly_point_id") assemblyID: String
     ): Call<EvacuationModel>
+
+    /***Log Out***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/logout_V1")
+    fun logOut(
+        @Field("access_token") accessToken: String,
+        @Field("staff_id") staffID: String,
+        @Field("deviceid") deviceID: String,
+        @Field("devicetype") deviceType: String
+    ): Call<ResponseBody>
+
+    /***Change Password***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/change_password_V1")
+    fun changePassword(
+        @Field("access_token") accessToken: String,
+        @Field("staff_id") staffID: String,
+        @Field("current_password") currentPassword: String,
+        @Field("new_password") newPassword: String
+    ): Call<ResponseBody>
 }

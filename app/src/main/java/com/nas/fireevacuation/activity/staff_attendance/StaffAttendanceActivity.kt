@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.welcome.WelcomeActivity
@@ -20,6 +21,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var homeButton: ImageView
     lateinit var backButton: ImageView
+    lateinit var myProfile: ImageView
     lateinit var className: TextView
     lateinit var date: TextView
     var tabLayout: TabLayout? = null
@@ -32,6 +34,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
         backButton = findViewById(R.id.back_button)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
+        myProfile = findViewById(R.id.myProfile)
         date = findViewById(R.id.date)
         className = findViewById(R.id.className)
         val current = LocalDateTime.now()
@@ -51,6 +54,12 @@ class StaffAttendanceActivity : AppCompatActivity() {
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         homeButton.setOnClickListener {
             val intent = Intent(context, StaffHomeActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
+        }
+        myProfile.setOnClickListener {
+            val intent = Intent(context, MyProfileActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
             finish()

@@ -46,25 +46,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/title_logo" />
 
-    <ImageView
-        android:id="@+id/notificationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bell_icon" />
+<!--    <ImageView-->
+<!--        android:id="@+id/notificationButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="24dp"-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:srcCompat="@drawable/bell_icon" />-->
 
-    <TextView
-        android:id="@+id/notification"
-        android:layout_width="6dp"
-        android:layout_height="6dp"
-        android:background="@drawable/notification_badge"
-        android:text=""
-        android:layout_marginTop="32dp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <TextView-->
+<!--        android:id="@+id/notification"-->
+<!--        android:layout_width="6dp"-->
+<!--        android:layout_height="6dp"-->
+<!--        android:background="@drawable/notification_badge"-->
+<!--        android:text=""-->
+<!--        android:layout_marginTop="32dp"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
         android:layout_width="wrap_content"
@@ -495,14 +495,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView15"
+                app:layout_constraintEnd_toStartOf="@+id/myProfile"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/attendence"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/gallery_icon" />
 
             <ImageView
-                android:id="@+id/imageView15"
+                android:id="@+id/myProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
