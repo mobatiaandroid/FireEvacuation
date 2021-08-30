@@ -3,9 +3,15 @@ package com.nas.fireevacuation.activity.evacutation
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
 import com.nas.fireevacuation.activity.evacutation.model.EvacuationModel
+import com.nas.fireevacuation.activity.staff_attendance.AbsentStudentsFragment
+import com.nas.fireevacuation.activity.staff_attendance.AllStudentsFragment
+import com.nas.fireevacuation.activity.staff_attendance.PresentStudentsFragment
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
@@ -18,12 +24,23 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
+    var tabLayout: TabLayout? = null
+    var viewPager: ViewPager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evacuation)
         context = this
+        tabLayout = findViewById(R.id.tabLayout)
+        viewPager = findViewById(R.id.viewPager)
         progressBarDialog = ProgressBarDialog(context)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.add(AllStudentsFragment(), "ALL")
+        viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
+        viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
+        viewPager!!.adapter = viewPagerAdapter
+        tabLayout!!.setupWithViewPager(viewPager)
+        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         firebaseID = String()
         firebaseReference = String()
         evacuationCall()

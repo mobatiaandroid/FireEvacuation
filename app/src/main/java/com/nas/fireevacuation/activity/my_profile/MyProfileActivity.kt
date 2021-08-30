@@ -6,6 +6,8 @@ import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.nas.fireevacuation.R
@@ -24,28 +26,47 @@ import retrofit2.Response
 
 class MyProfileActivity : AppCompatActivity() {
     lateinit var context: Context
-    lateinit var backButton: ImageView
     lateinit var homeButton: ImageView
     lateinit var attendanceButton: ImageView
     lateinit var notifications: TextView
     lateinit var checkout: TextView
     lateinit var settings: TextView
+    lateinit var editButton: ImageView
+    lateinit var staffName: EditText
+    lateinit var staffDesignation: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_profile)
         context = this
-        backButton = findViewById(R.id.back_button)
         homeButton = findViewById(R.id.home)
         attendanceButton = findViewById(R.id.attendence)
         notifications = findViewById(R.id.notifications)
         settings = findViewById(R.id.settings)
         checkout = findViewById(R.id.checkout)
-        backButton.setOnClickListener {
-            val intent = Intent(context, StaffAttendanceActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
+        editButton = findViewById(R.id.edit)
+        staffName = findViewById(R.id.staffName)
+        staffDesignation = findViewById(R.id.staffDesignation)
+        staffName.setOnKeyListener(null)
+        staffDesignation.setOnKeyListener(null)
+        staffName.text = Editable.Factory.getInstance().newEditable(PreferenceManager.getStaffName(context))
+        var click = 1
+        editButton.setOnClickListener {
+            if (click == 1){
+                staffName.isEnabled = true
+                staffDesignation.isEnabled = true
+                editButton.setImageResource(R.drawable.tick_icon)
+                staffName.text.clear()
+                staffName.hint = PreferenceManager.getStaffName(context)
+                staffDesignation.text.clear()
+                staffDesignation.hint = "English Lecturer"
+                click = 2
+            } else if(click == 2){
+                editButton.setImageResource(R.drawable.edit_icon)
+                click = 1
+            }
+
         }
+
         homeButton.setOnClickListener {
             val intent = Intent(context, StaffHomeActivity::class.java)
             startActivity(intent)
@@ -60,10 +81,7 @@ class MyProfileActivity : AppCompatActivity() {
         }
         checkout.setOnClickListener {
             signOutCall()
-            val intent = Intent(context, SignInActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
+
         }
     }
 
@@ -87,7 +105,10 @@ class MyProfileActivity : AppCompatActivity() {
                 if(!response.body()!!.equals("")) {
                     logoutResponse = response.body()!!
                     if (logoutResponse.responsecode.equals("100")) {
-
+                        val intent = Intent(context, SignInActivity::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(0,0)
+                        finish()
                     } else if (logoutResponse.responsecode.equals("103")) {
                         CommonMethods.showLoginErrorPopUp(context, "Alert", "Invalid Request")
                     } else if (logoutResponse.responsecode.equals("400")) {
