@@ -51,10 +51,17 @@ class ChildRecyclerAdapter(var context: Context, var studentList: ArrayList<List
             holder.switch!!.isChecked = false
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
         }
+        holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                
+            } else {
+
+            }
+        }
 
     }
 
     override fun getItemCount(): Int {
-        return studentList!!.size
+        return studentList.size
     }
 }

@@ -37,12 +37,12 @@ class EvacuationActivity : AppCompatActivity() {
             PreferenceManager.getClassID(context),
             PreferenceManager.getAssemblyPoint(context)
         )
-        progressBarDialog!!.show()
+        progressBarDialog.show()
         call.enqueue(object : Callback<EvacuationModel> {
             override fun onResponse(
                 call: Call<EvacuationModel>,
                 response: Response<EvacuationModel>){
-                progressBarDialog!!.hide()
+                progressBarDialog.hide()
                 if(!response.body()!!.equals("")) {
                     evacuationResponse = response.body()!!
                     if (evacuationResponse.responsecode.equals("100")) {
@@ -53,7 +53,7 @@ class EvacuationActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<EvacuationModel>, t: Throwable) {
-                progressBarDialog!!.hide()
+                progressBarDialog.hide()
             }
         })
     }

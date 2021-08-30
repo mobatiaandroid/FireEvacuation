@@ -3,6 +3,7 @@ package com.nas.fireevacuation.common.constants
 
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
 import com.nas.fireevacuation.activity.evacutation.model.EvacuationModel
+import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
@@ -90,7 +91,7 @@ interface ApiInterface {
         @Field("staff_id") staffID: String,
         @Field("deviceid") deviceID: String,
         @Field("devicetype") deviceType: String
-    ): Call<ResponseBody>
+    ): Call<LogoutModel>
 
     /***Change Password***/
     @FormUrlEncoded
