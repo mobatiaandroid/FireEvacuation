@@ -110,4 +110,45 @@ interface ApiInterface {
         @Field("access_token") accessToken:String,
         @Field("email") emailID: String
     ): Call<ResponseBody>
+
+    /***Mark Attendance***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/mark_attendance")
+    fun markAttendance(
+        @Field("access_token") accessToken: String,
+        @Field("student_id") studentID: String,
+        @Field("present") present: String
+    ): Call<ResponseBody>
+
+    /***Subjects***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/subjects")
+    fun subjectsAPICall(
+        @Field("access_token") accessToken: String
+    ): Call<ResponseBody>
+
+    /***Albums***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/albums")
+    fun albumsAPICall(
+        @Field("access_token") accessToken: String,
+        @Field("page_number") pageNumber: String
+    ): Call<ResponseBody>
+
+    /***Photos***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/photos")
+    fun photosAPICall(
+        @Field("access_token") accessToken: String,
+        @Field("album_id") albumID: String,
+        @Field("page_number") pageNumber: String
+    ): Call<ResponseBody>
+
+    /***Photos***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/videos")
+    fun videosAPICall(
+        @Field("access_token") accessToken: String,
+        @Field("page_number") pageNumber: String
+    ): Call<ResponseBody>
 }

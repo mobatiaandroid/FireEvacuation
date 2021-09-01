@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ChildRecyclerAdapter
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ParentRecyclerAdapter
+import com.nas.fireevacuation.activity.staff_attendance.adapter.StudentAdapter
 import com.nas.fireevacuation.activity.staff_home.model.sort_model.SortModel
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.PreferenceManager
@@ -105,4 +106,26 @@ class PresentStudentsFragment : Fragment() {
 //        }
 //        return view
 //    }
+    lateinit var recyclerView: RecyclerView
+    lateinit var studentList: ArrayList<Lists>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        studentList = PreferenceManager.getPresentList(context!!)
+        val studentAdapter = StudentAdapter(context!!, studentList)
+        recyclerView.hasFixedSize()
+        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        recyclerView.adapter = studentAdapter
+        Log.e("Student List", studentList.toString())
+        return view
+    }
 }

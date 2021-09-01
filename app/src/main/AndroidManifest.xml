@@ -16,10 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FireEvacuation">
         <activity
+            android:name=".activity.gallery.GalleryActivity"
+            android:exported="true" />
+        <activity
             android:name=".activity.my_profile.MyProfileActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.account_recovery.RecoverAccountActivity"
             android:exported="true"

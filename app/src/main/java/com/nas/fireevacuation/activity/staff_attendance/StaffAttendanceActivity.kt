@@ -52,8 +52,8 @@ class StaffAttendanceActivity : AppCompatActivity() {
         viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
         viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
         viewPager!!.adapter = viewPagerAdapter
-//        tabLayout!!.setupWithViewPager(viewPager)
-//        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
+        tabLayout!!.setupWithViewPager(viewPager)
+        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         homeButton.setOnClickListener {
             val intent = Intent(context, StaffHomeActivity::class.java)
             startActivity(intent)
