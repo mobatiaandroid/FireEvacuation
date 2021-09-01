@@ -22,7 +22,9 @@ import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
+import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,6 +40,7 @@ class MyProfileActivity : AppCompatActivity() {
     lateinit var editButton: ImageView
     lateinit var staffName: EditText
     lateinit var staffDesignation: EditText
+    var progressBarDialog: ProgressBarDialog? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_profile)
@@ -51,6 +54,7 @@ class MyProfileActivity : AppCompatActivity() {
         staffName = findViewById(R.id.staffName)
         staffDesignation = findViewById(R.id.staffDesignation)
         changePassword = findViewById(R.id.changePassword)
+        progressBarDialog = ProgressBarDialog(context)
         staffName.setOnKeyListener(null)
         staffDesignation.setOnKeyListener(null)
         staffName.text = Editable.Factory.getInstance().newEditable(PreferenceManager.getStaffName(context))
@@ -117,14 +121,24 @@ class MyProfileActivity : AppCompatActivity() {
             PreferenceManager.getAccessToken(context),PreferenceManager.getStaffID(context),
             current,new
         )
-//        progressBarDialog!!.show()
+        progressBarDialog!!.show()
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                TODO("Not yet implemented")
+                progressBarDialog!!.hide()
+                val responseData = response.body()
+                if (responseData != null) {
+                    val jsonObject = JSONObject(responseData.string())
+                    val responseCode: String = jsonObject.optString("responsecode")
+                    if (responseCode.equals("100")) {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Success")
+                    } else {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
+                    }
+                }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                TODO("Not yet implemented")
+                progressBarDialog!!.hide()
             }
         })
     }
