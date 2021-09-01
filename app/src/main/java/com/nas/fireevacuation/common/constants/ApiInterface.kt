@@ -2,7 +2,7 @@ package com.nas.fireevacuation.common.constants
 
 
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
-import com.nas.fireevacuation.activity.evacutation.model.EvacuationModel
+import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
@@ -101,5 +101,13 @@ interface ApiInterface {
         @Field("staff_id") staffID: String,
         @Field("current_password") currentPassword: String,
         @Field("new_password") newPassword: String
+    ): Call<ResponseBody>
+
+    /***Recover Account***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/forgot_password_V1")
+    fun forgotPassword(
+        @Field("access_token") accessToken:String,
+        @Field("email") emailID: String
     ): Call<ResponseBody>
 }

@@ -1,17 +1,20 @@
 package com.nas.fireevacuation.activity.my_profile
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.media.Image
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
+import android.view.View
+import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.evacutation.model.EvacuationModel
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.SignInActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
@@ -19,7 +22,7 @@ import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
-import com.squareup.okhttp.ResponseBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,6 +34,7 @@ class MyProfileActivity : AppCompatActivity() {
     lateinit var notifications: TextView
     lateinit var checkout: TextView
     lateinit var settings: TextView
+    lateinit var changePassword: TextView
     lateinit var editButton: ImageView
     lateinit var staffName: EditText
     lateinit var staffDesignation: EditText
@@ -46,6 +50,7 @@ class MyProfileActivity : AppCompatActivity() {
         editButton = findViewById(R.id.edit)
         staffName = findViewById(R.id.staffName)
         staffDesignation = findViewById(R.id.staffDesignation)
+        changePassword = findViewById(R.id.changePassword)
         staffName.setOnKeyListener(null)
         staffDesignation.setOnKeyListener(null)
         staffName.text = Editable.Factory.getInstance().newEditable(PreferenceManager.getStaffName(context))
@@ -66,6 +71,28 @@ class MyProfileActivity : AppCompatActivity() {
             }
 
         }
+        changePassword.setOnClickListener {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setContentView(R.layout.change_password_popup)
+            val currentPassword = dialog.findViewById<View>(R.id.currentPassword) as EditText
+            val newPassword = dialog.findViewById<View>(R.id.newPassword) as EditText
+            val confirmPassword = dialog.findViewById<View>(R.id.confirmPassword) as EditText
+            val submit = dialog.findViewById<View>(R.id.submit)
+            submit.setOnClickListener {
+                if (currentPassword.text.toString().equals("") || newPassword.text.toString().equals("") || confirmPassword.text.toString().equals("")) {
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be empty.")
+                } else if (!newPassword.text.toString().equals(confirmPassword.text.toString())){
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Passwords do not match")
+                } else {
+                    changePasswordAPICall(currentPassword.text.toString(),newPassword.text.toString())
+                }
+            }
+
+            dialog.show()
+        }
 
         homeButton.setOnClickListener {
             val intent = Intent(context, StaffHomeActivity::class.java)
@@ -83,6 +110,23 @@ class MyProfileActivity : AppCompatActivity() {
             signOutCall()
 
         }
+    }
+
+    private fun changePasswordAPICall(current: String, new: String) {
+        val call: Call<ResponseBody> = ApiClient.getClient.changePassword(
+            PreferenceManager.getAccessToken(context),PreferenceManager.getStaffID(context),
+            current,new
+        )
+//        progressBarDialog!!.show()
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     private fun signOutCall() {

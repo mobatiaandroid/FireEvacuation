@@ -1,4 +1,4 @@
-package com.nas.fireevacuation.activity.evacutation.model
+package com.nas.fireevacuation.activity.evacutation.model.evacuation_model
 
 data class EvacuationModel(
     val `data`: Data,

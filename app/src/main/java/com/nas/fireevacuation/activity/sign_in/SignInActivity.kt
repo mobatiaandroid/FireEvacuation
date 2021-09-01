@@ -2,8 +2,11 @@ package com.nas.fireevacuation.activity.sign_in
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings.Secure.*
@@ -12,6 +15,7 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -26,6 +30,8 @@ import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
+import okhttp3.ResponseBody
+import org.json.JSONObject
 import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
@@ -42,6 +48,7 @@ class SignInActivity : AppCompatActivity() {
     lateinit var staffName: String
     lateinit var staffID: String
     lateinit var recoverAccount: TextView
+
     var progressBarDialog: ProgressBarDialog? = null
     var passwordShowHide:Boolean=false
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,10 +64,26 @@ class SignInActivity : AppCompatActivity() {
         progressBarDialog = ProgressBarDialog(context)
         recoverAccount = findViewById(R.id.recoverAccount)
         recoverAccount.setOnClickListener {
-            val intent = Intent(context, RecoverAccountActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(true)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setContentView(R.layout.recover_account_popup)
+            val emailID = dialog.findViewById<View>(R.id.emailID) as EditText
+            val submit = dialog.findViewById<View>(R.id.submit)
+            submit.setOnClickListener {
+                if (emailID.text.toString().equals("")) {
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be empty.")
+                } else {
+                    val emailPattern = CommonMethods.isEmailValid(emailID.text.toString())
+                    if (!emailPattern) {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Enter a Valid Email.")
+                    } else {
+                        callAccountRecoveryAPI(emailID.text.toString())
+                    }
+            }
+            }
+            dialog.show()
         }
         backButton.setOnClickListener {
             val intent = Intent(context, WelcomeActivity::class.java)
@@ -106,6 +129,36 @@ class SignInActivity : AppCompatActivity() {
                 password.transformationMethod = HideReturnsTransformationMethod.getInstance();
             }
 
+        })
+    }
+
+    private fun callAccountRecoveryAPI(email: String) {
+        val call: Call<ResponseBody> = ApiClient.getClient.forgotPassword(
+            PreferenceManager.getAccessToken(context),
+            email
+        )
+        progressBarDialog!!.show()
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                progressBarDialog!!.hide()
+                val responseData = response.body()
+                if (responseData != null) {
+                    val jsonObject = JSONObject(responseData.string())
+                    val responseCode: String = jsonObject.optString("responsecode")
+                    if (responseCode.equals("100")) {
+                        Toast.makeText(context,"Code Sent", Toast.LENGTH_SHORT).show()
+                    } else {
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
+                    }
+                } else {
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                progressBarDialog!!.hide()
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
+            }
         })
     }
 

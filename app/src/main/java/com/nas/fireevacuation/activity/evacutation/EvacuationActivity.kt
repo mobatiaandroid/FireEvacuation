@@ -6,11 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.*
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
-import com.nas.fireevacuation.activity.evacutation.model.EvacuationModel
+import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
+import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.StudentX
 import com.nas.fireevacuation.activity.staff_attendance.AbsentStudentsFragment
 import com.nas.fireevacuation.activity.staff_attendance.AllStudentsFragment
 import com.nas.fireevacuation.activity.staff_attendance.PresentStudentsFragment
@@ -21,17 +20,6 @@ import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import com.google.firebase.database.DatabaseError
-
-import androidx.annotation.NonNull
-
-import com.google.firebase.firestore.auth.User
-
-import com.google.firebase.database.DataSnapshot
-
-import com.google.firebase.database.ValueEventListener
-import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
-import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 
 
 class EvacuationActivity : AppCompatActivity() {
@@ -39,8 +27,7 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
-    lateinit var studentList: ArrayList<EvacuationStudentModel>
-    lateinit var studentItem: EvacuationStudentModel
+    lateinit var studentList: HashMap<String,StudentX>
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -48,10 +35,9 @@ class EvacuationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evacuation)
         context = this
+        studentList = HashMap()
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
-        studentList = ArrayList()
-        studentItem = EvacuationStudentModel()
         progressBarDialog = ProgressBarDialog(context)
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPagerAdapter.add(AllStudentsFragment(), "ALL")
@@ -61,18 +47,26 @@ class EvacuationActivity : AppCompatActivity() {
         tabLayout!!.setupWithViewPager(viewPager)
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         firebaseID = String()
+        var assemblyPointID = ""
+        var classID = ""
+        var studentSnap = ""
+        var staffID = ""
+        var name = ""
+        var query: Query
+        var students: Map<String,StudentX> = mapOf()
+        var student = ""
         firebaseReference = String()
         evacuationCall()
-        val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations").child(firebaseReference.toString()).child("students")
-        databaseReference.addValueEventListener(object : ValueEventListener{
+        val evacuationRef = FirebaseDatabase.getInstance().reference.child("evacuations")
+        val currentRef = evacuationRef.child(firebaseReference)
+        currentRef.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.e("DataBase", snapshot.getValue(EvacuationStudentModel::class.java).toString())
-                studentList.clear()
-                for (snapshot in snapshot.children) {
-                    Log.e("DataBase", snapshot.toString())
-                    studentList.add(snapshot.getValue(EvacuationStudentModel::class.java)!!)
+                Log.e("Snap Value", snapshot.toString())
+                if (snapshot.value != null) {
+                    for (snapshot in snapshot.children) {
+                        Log.e("Snap Value", snapshot.value.toString())
+                    }
                 }
-                Log.e("Evac List",studentList.toString())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -80,6 +74,33 @@ class EvacuationActivity : AppCompatActivity() {
             }
 
         })
+//        databaseReference.addValueEventListener(object: ValueEventListener{
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                if (snapshot.value !=null) {
+//                    for (snapshot in snapshot.children) {
+//                        classID = snapshot.child("class_id").value.toString()
+//                        staffID = snapshot.child("staff_id").value.toString()
+//                        assemblyPointID = snapshot.child("assembly_point_id").value.toString()
+//                        student = snapshot.child("students").toString()
+//
+//                    }
+//                    Log.e("snapvalues", name)
+//                    Log.e("student", student)
+//
+//                }
+//                assemblyPointID = snapshot.child("assembly_point_id").value.toString()
+//                Log.e("Assembly Point", snapshot.toString())
+//                Log.e("Size", databaseList().size.toString())
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
+
+
 
     }
 
@@ -101,6 +122,7 @@ class EvacuationActivity : AppCompatActivity() {
                     evacuationResponse = response.body()!!
                     if (evacuationResponse.responsecode.equals("100")) {
                         firebaseReference = evacuationResponse.data.firebase_referance
+                        Log.e("Firebaseref", firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
                     }
                 }
