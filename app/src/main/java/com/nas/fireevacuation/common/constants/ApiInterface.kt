@@ -5,6 +5,7 @@ import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
+import com.nas.fireevacuation.activity.sign_in.model.subjects_model.SubjectsModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
@@ -13,6 +14,7 @@ import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.PUT
 
 
 interface ApiInterface {
@@ -125,7 +127,7 @@ interface ApiInterface {
     @POST("api/StaffApp/subjects")
     fun subjectsAPICall(
         @Field("access_token") accessToken: String
-    ): Call<ResponseBody>
+    ): Call<SubjectsModel>
 
     /***Albums***/
     @FormUrlEncoded
@@ -151,4 +153,6 @@ interface ApiInterface {
         @Field("access_token") accessToken: String,
         @Field("page_number") pageNumber: String
     ): Call<ResponseBody>
+
+
 }

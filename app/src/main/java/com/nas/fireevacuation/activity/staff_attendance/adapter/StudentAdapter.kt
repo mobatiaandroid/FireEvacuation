@@ -1,6 +1,7 @@
 package com.nas.fireevacuation.activity.staff_attendance.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
+import com.nas.fireevacuation.common.constants.PreferenceManager
+import java.lang.Exception
 
 class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
 
@@ -23,6 +26,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
         var studentID: TextView? = null
         var absentOrPresent: TextView? = null
         var switch: Switch? = null
+
         init {
             studentImage = itemView.findViewById<View>(R.id.studentImage) as ImageView?
             studentName = itemView.findViewById<View>(R.id.studentName) as TextView?
@@ -40,6 +44,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
+        var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
+        if (absentList.isEmpty()){
+            absentList = ArrayList()
+        }
+        if (presentList.isEmpty()){
+            presentList = ArrayList()
+        }
         Glide.with(context).load(studentList[position].photo).into(holder.studentImage!!)
         holder.studentName!!.text = studentList[position].name
         holder.studentID!!.text = studentList[position].id
@@ -51,6 +63,51 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
             holder.absentOrPresent!!.text = "A"
             holder.switch!!.isChecked = false
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+        }
+        holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            try {
+                if (isChecked) {
+                    Log.e("Abesnt",absentList.toString())
+                    Log.e("Present",presentList.toString())
+                var i = 0
+                    holder.absentOrPresent!!.text = "P"
+                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+                while (i< studentList.size) {
+                    if (studentList[position].id.equals(presentList[i].id)) {
+                        presentList.add(studentList[position])
+                        studentList[position].present = "1"
+                    }
+                    if (studentList[position].id.equals(absentList[i])) {
+                        absentList.remove(absentList[i])
+                    }
+                    PreferenceManager.setPresentList(context,presentList)
+                    PreferenceManager.setAbsentList(context,absentList)
+                    notifyDataSetChanged()
+                    i++
+                }
+            } else {
+                Log.e("Abesnt",absentList.toString())
+                Log.e("Present",presentList.toString())
+                var i = 0
+                    holder.absentOrPresent!!.text = "A"
+                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+                while (i< studentList.size) {
+                    if (studentList[position].id.equals(absentList[i].id)) {
+                        absentList.add(studentList[position])
+                    }
+                    if (studentList[position].id.equals(presentList[i].id)) {
+                        presentList.remove(presentList[i])
+                    }
+                    PreferenceManager.setPresentList(context,presentList)
+                    PreferenceManager.setAbsentList(context,absentList)
+                    notifyDataSetChanged()
+                    i++
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("Error", e.toString())
+            }
         }
     }
 

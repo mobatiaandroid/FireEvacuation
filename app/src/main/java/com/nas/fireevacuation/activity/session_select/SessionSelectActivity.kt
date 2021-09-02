@@ -8,11 +8,13 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.sign_in.SignInActivity
+import com.nas.fireevacuation.activity.sign_in.model.subjects_model.SubjectsModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.Lists
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
@@ -36,9 +38,41 @@ class SessionSelectActivity : AppCompatActivity() {
     }
     private fun showSelectSessionPopUp() {
         var yearGroupsResponse: YearGroups
+        var subjectResponse: SubjectsModel
         var yearGroupsArrayList: ArrayList<Lists> = ArrayList()
+        var subjectArrayList: ArrayList<String> = ArrayList()
         var i: Int = 0
         var yearGroupsList: ArrayList<String> = ArrayList()
+
+        val call2: Call<SubjectsModel> = ApiClient.getClient.subjectsAPICall(
+            PreferenceManager.getAccessToken(context)
+        )
+        progressBarDialog!!.show()
+        call2.enqueue(object : Callback<SubjectsModel> {
+            override fun onResponse(call: Call<SubjectsModel>, response: Response<SubjectsModel>) {
+                progressBarDialog!!.hide()
+                if (!response.body()!!.equals("")) {
+                    subjectResponse = response.body()!!
+                    if (subjectResponse.responsecode.equals("100")) {
+                        subjectArrayList = subjectResponse.data.lists as ArrayList<String>
+                        Log.e("subjects", subjectArrayList.toString())
+                    } else if (subjectResponse.responsecode.equals("402")){
+                        CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid Access Token")
+                        CommonMethods.getAccessTokenAPICall(context)
+                    }
+                } else {
+
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
+                }
+            }
+
+            override fun onFailure(call: Call<SubjectsModel>, t: Throwable) {
+                progressBarDialog!!.hide()
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")            }
+
+
+        })
+
         val call: Call<YearGroups> = ApiClient.getClient.yearGroupsAPICall(
             PreferenceManager.getAccessToken(context)
         )
@@ -86,6 +120,22 @@ class SessionSelectActivity : AppCompatActivity() {
         var checkInButton = dialog.findViewById<View>(R.id.checkIn)
         var position = -1
         dialog.show()
+        subjectSelect.setOnClickListener {
+            var subjectSelector: Array<String> = subjectArrayList.toTypedArray()
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle("Select Session")
+            var checkedItem = -1
+            builder.setSingleChoiceItems(subjectSelector, checkedItem) { dialog, which ->
+                checkedItem = which
+            }
+            builder.setPositiveButton("OK") { dialog, which ->
+                selectedSubject.text = subjectSelector[checkedItem]
+                position = checkedItem
+            }
+            builder.setNegativeButton("Cancel", null)
+            val dialog = builder.create()
+            dialog.show()
+        }
         sessionSelect.setOnClickListener {
             var yearGroupsSelector: Array<String> = yearGroupsList.toTypedArray()
             val builder = AlertDialog.Builder(context)
@@ -111,6 +161,8 @@ class SessionSelectActivity : AppCompatActivity() {
         checkInButton.setOnClickListener {
             if(selectedSession.text.equals("")) {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Session")
+            } else if(selectedSubject.text.equals("")) {
+                CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Subject")
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
                 PreferenceManager.setClassID(context, yearGroupsArrayList[position].id)
