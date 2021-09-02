@@ -104,16 +104,19 @@ class CreateAccountActivity : AppCompatActivity() {
         createAccount.setOnClickListener {
             if (name.text.toString().equals("") || emailID.text.toString().equals("") || mobileNo.text.toString().equals("")){
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be left Empty")
+                createAccount.setBackgroundResource(R.drawable.create_account_disabled)
             } else {
                 createAccount.setBackgroundResource(R.drawable.rounded_sign_in)
                 var emailPattern = CommonMethods.isEmailValid(emailID.text.toString())
                 if (!emailPattern) {
                     CommonMethods.showLoginErrorPopUp(context,"Alert","Enter a Valid Email.")
+                    createAccount.setBackgroundResource(R.drawable.create_account_disabled)
                 } else {
                         if (CommonMethods.isInternetAvailable(context)) {
                             callCreateAccountApi()
                         } else {
                             CommonMethods.showLoginErrorPopUp(context,"Alert","Network error occurred. Please check your internet connection and try again later.")
+                            createAccount.setBackgroundResource(R.drawable.create_account_disabled)
                         }
 
                 }

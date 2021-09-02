@@ -177,7 +177,6 @@ class StaffHomeActivity : AppCompatActivity() {
             val intent = Intent(context, StaffAttendanceActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
-            finish()
         }
 //        backButton.setOnClickListener{
 //            val intent = Intent(context, WelcomeActivity::class.java)
@@ -306,7 +305,6 @@ class StaffHomeActivity : AppCompatActivity() {
         val intent = Intent(context, WelcomeActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0,0)
-        finish()
     }
 }
 interface OnSlideCompleteListener {

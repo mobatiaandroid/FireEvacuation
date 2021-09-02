@@ -163,6 +163,7 @@ class MyProfileActivity : AppCompatActivity() {
                 if(!response.body()!!.equals("")) {
                     logoutResponse = response.body()!!
                     if (logoutResponse.responsecode.equals("100")) {
+                        PreferenceManager.setStaffID(context,"")
                         val intent = Intent(context, SignInActivity::class.java)
                         startActivity(intent)
                         overridePendingTransition(0,0)
