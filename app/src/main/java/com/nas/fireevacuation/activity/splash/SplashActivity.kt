@@ -22,9 +22,11 @@ class SplashActivity : AppCompatActivity() {
             if (PreferenceManager.getStaffID(context).equals("")) {
                 val intent: Intent = Intent(this, WelcomeActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
                 val intent: Intent = Intent(this, SessionSelectActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         },2000)
     }
