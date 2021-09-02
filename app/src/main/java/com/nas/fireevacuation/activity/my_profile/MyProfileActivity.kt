@@ -185,4 +185,11 @@ class MyProfileActivity : AppCompatActivity() {
 
         })
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(context, StaffAttendanceActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(0,0)
+        finish()
+    }
 }

@@ -79,7 +79,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(context, WelcomeActivity::class.java)
+        val intent = Intent(context, StaffHomeActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0,0)
         finish()
