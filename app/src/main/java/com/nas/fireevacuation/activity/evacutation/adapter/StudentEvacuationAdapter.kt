@@ -63,7 +63,6 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
                 CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
-                notifyDataSetChanged()
 
 //
             } else {

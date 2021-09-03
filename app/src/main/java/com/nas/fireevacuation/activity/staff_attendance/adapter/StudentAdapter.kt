@@ -17,7 +17,8 @@ import com.nas.fireevacuation.common.constants.PreferenceManager
 import java.lang.Exception
 
 class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
-
+    var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
+    var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var studentImage: ImageView? = null
         var studentName: TextView? = null
@@ -42,14 +43,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
-        var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
-        if (absentList.isEmpty()){
-            absentList = ArrayList()
-        }
-        if (presentList.isEmpty()){
-            presentList = ArrayList()
-        }
+
         Glide.with(context).load(studentList[position].photo).into(holder.studentImage!!)
         holder.studentName!!.text = studentList[position].name
         holder.studentID!!.text = studentList[position].id
@@ -64,48 +58,87 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
         }
         holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
 
-            try {
-                if (isChecked) {
-                    Log.e("Abesnt",absentList.toString())
-                    Log.e("Present",presentList.toString())
-                var i = 0
-                    holder.absentOrPresent!!.text = "P"
-                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
-                while (i< studentList.size) {
-                    if (studentList[position].id.equals(presentList[i].id)) {
-                        presentList.add(studentList[position])
-                        studentList[position].present = "1"
-                    }
-                    if (studentList[position].id.equals(absentList[i])) {
-                        absentList.remove(absentList[i])
-                    }
-                    PreferenceManager.setPresentList(context,presentList)
-                    PreferenceManager.setAbsentList(context,absentList)
-                    notifyDataSetChanged()
-                    i++
+            if (isChecked){
+                holder.absentOrPresent!!.text = "P"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+                if (!absentList.isEmpty()) {
+                    studentList[position].present = "1"
+                    absentList.remove(studentList[position])
+                    presentList.add(studentList[position])
+                    PreferenceManager.setAbsentList(context, absentList)
+                    PreferenceManager.setPresentList(context, presentList)
+                    notifyItemChanged(position)
                 }
-            } else {
-                Log.e("Abesnt",absentList.toString())
-                Log.e("Present",presentList.toString())
-                var i = 0
-                    holder.absentOrPresent!!.text = "A"
-                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
-                while (i< studentList.size) {
-                    if (studentList[position].id.equals(absentList[i].id)) {
-                        absentList.add(studentList[position])
-                    }
-                    if (studentList[position].id.equals(presentList[i].id)) {
-                        presentList.remove(presentList[i])
-                    }
-                    PreferenceManager.setPresentList(context,presentList)
-                    PreferenceManager.setAbsentList(context,absentList)
-                    notifyDataSetChanged()
-                    i++
-                    }
+
+            } else{
+                holder.absentOrPresent!!.text = "A"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+                if (!presentList.isEmpty()) {
+                    studentList[position].present = "0"
+                    absentList.add(studentList[position])
+                    presentList.remove(studentList[position])
+                    PreferenceManager.setAbsentList(context, absentList)
+                    PreferenceManager.setPresentList(context, presentList)
+                    notifyItemChanged(position)
                 }
-            } catch (e: Exception) {
-                Log.e("Error", e.toString())
+
+//                notifyItemChanged(position)
             }
+//            try {
+//                if (isChecked) {
+//                    Log.e("Absent1",absentList.toString())
+//                    Log.e("Present1",presentList.toString())
+//                var i = 0
+//                    holder.absentOrPresent!!.text = "P"
+//                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+//                while (i< studentList.size) {
+//                    if (absentList.isEmpty()){
+//                        absentList = ArrayList()
+//                    }
+//                    if (presentList.isEmpty()){
+//                        presentList = ArrayList()
+//                    }
+//                    if (studentList[position].id.equals(presentList[i].id)) {
+//                        presentList.add(studentList[position])
+//                        studentList[position].present = "1"
+//                    }
+//                    if (studentList[position].id.equals(absentList[i])) {
+//                        absentList.remove(absentList[i])
+//                    }
+//                    PreferenceManager.setPresentList(context,presentList)
+//                    PreferenceManager.setAbsentList(context,absentList)
+//                    notifyDataSetChanged()
+//                    i++
+//                }
+//            } else {
+//                Log.e("Abesnt2",absentList.toString())
+//                Log.e("Present2",presentList.toString())
+//                var i = 0
+//                    holder.absentOrPresent!!.text = "A"
+//                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+//                while (i< studentList.size) {
+//                    if (absentList.isEmpty()){
+//                        absentList = ArrayList()
+//                    }
+//                    if (presentList.isEmpty()){
+//                        presentList = ArrayList()
+//                    }
+//                    if (studentList[position].id.equals(absentList[i].id)) {
+//                        absentList.add(studentList[position])
+//                    }
+//                    if (studentList[position].id.equals(presentList[i].id)) {
+//                        presentList.remove(presentList[i])
+//                        Log.e("Present is removed",presentList[i].toString())
+//                    }
+//                    PreferenceManager.setPresentList(context,presentList)
+//                    PreferenceManager.setAbsentList(context,absentList)
+//                    notifyDataSetChanged()
+//                    i++
+//                    }
+//                }
+//            } catch (e: Exception) {
+//                Log.e("Error", e.toString())
+//            }
         }
     }
 

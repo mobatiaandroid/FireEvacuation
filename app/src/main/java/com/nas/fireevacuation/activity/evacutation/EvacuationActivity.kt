@@ -14,7 +14,6 @@ import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.Evacua
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
-import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
@@ -33,6 +32,8 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var studentList: ArrayList<EvacuationStudentModel>
     lateinit var className: TextView
     lateinit var date: TextView
+    lateinit var absentEvac: ArrayList<EvacuationStudentModel>
+    lateinit var presentEvac: ArrayList<EvacuationStudentModel>
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -46,6 +47,8 @@ class EvacuationActivity : AppCompatActivity() {
         progressBarDialog = ProgressBarDialog(context)
         date = findViewById(R.id.date)
         className = findViewById(R.id.className)
+        absentEvac = ArrayList()
+        presentEvac = ArrayList()
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted = current.format(formatter)
@@ -62,46 +65,57 @@ class EvacuationActivity : AppCompatActivity() {
         var student = ""
         firebaseReference = String()
         evacuationCall()
-//        val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-//        databaseReference.addValueEventListener(object: ValueEventListener{
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object: ValueEventListener{
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        for (snapshot in snapshot.children){
-//                            var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                "",
-//                                )
-//                            if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
-//                                studentItem.id = snapshot.child("id").value.toString()
-//                                studentItem.student_name = snapshot.child("student_name").value.toString()
-//                                studentItem.photo = snapshot.child("photo").value.toString()
-//                                studentItem.found = snapshot.child("found").value.toString()
-//                                studentItem.class_id = snapshot.child("class_id").value.toString()
-//                                studentList.add(studentItem)
-//                            }
-//                            Log.e("Students1",studentList.toString())
-//                        }
-//
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {}
-//                })
-//            }
-//            override fun onCancelled(error: DatabaseError) {}
-//        })
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+        databaseReference.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object: ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snapshot in snapshot.children){
+                            var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                )
+                            if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
+                                studentItem.id = snapshot.child("id").value.toString()
+                                studentItem.student_name = snapshot.child("student_name").value.toString()
+                                studentItem.photo = snapshot.child("photo").value.toString()
+                                studentItem.found = snapshot.child("found").value.toString()
+                                studentItem.class_id = snapshot.child("class_id").value.toString()
+                                studentList.add(studentItem)
+                            }
+                        }
+                        Log.e("Students1",studentList.toString())
+                        var i = 0
+                        while (i<studentList.size){
+                            if (studentList[i].found.equals("0")) {
+                                absentEvac.add(studentList[i])
+                            } else {
+                                presentEvac.add(studentList[i])
+                            }
+                            i++
+                        }
+                        PreferenceManager.setEvacStudentList(context,studentList)
+                        PreferenceManager.setNotFoundList(context,absentEvac)
+                        PreferenceManager.setFoundList(context,presentEvac)
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+            }
+            override fun onCancelled(error: DatabaseError) {}
+        })
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPagerAdapter.add(AllEvacuationFragment(), "ALL")
         viewPagerAdapter.add(FoundEvacuationFragment(), "FOUND")
