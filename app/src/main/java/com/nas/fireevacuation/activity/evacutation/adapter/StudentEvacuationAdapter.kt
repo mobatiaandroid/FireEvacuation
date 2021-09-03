@@ -1,6 +1,7 @@
 package com.nas.fireevacuation.activity.evacutation.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
+import com.nas.fireevacuation.common.constants.CommonMethods
 
 class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<EvacuationStudentModel>): RecyclerView.Adapter<StudentEvacuationAdapter.MyViewHolder>() {
 
@@ -56,54 +58,24 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             holder.switch!!.isChecked = false
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context, R.color.pink))
         }
-//        holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
-//            if (isChecked) {
-//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-//                databaseReference.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object:
-//                            ValueEventListener {
-//                            override fun onDataChange(snapshot: DataSnapshot) {
-//                                for (snapshot in snapshot.children){
-//                                    if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
-//                                        databaseReference.child("-MifUGjqDwIm397no97D").child(snapshot.child("id").toString()).child("found").setValue("1")
-//                                    }
-//                                }
+        holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                holder.absentOrPresent!!.text = "P"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+                CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
+                notifyDataSetChanged()
+
 //
-//                            }
-//                            override fun onCancelled(error: DatabaseError) {}
-//                        })
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {}
-//                })
-////
-//            } else {
-//                holder.absentOrPresent!!.text = "A"
-//                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
-//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-//                databaseReference.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object:
-//                            ValueEventListener {
-//                            override fun onDataChange(snapshot: DataSnapshot) {
-//                                for (snapshot in snapshot.children){
-//                                    if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
-//                                        databaseReference.child("-MifUGjqDwIm397no97D").child(snapshot.child("id").toString()).child("found").setValue("0")
-//                                    }
-//                                }
-//
-//                            }
-//                            override fun onCancelled(error: DatabaseError) {}
-//                        })
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {}
-//                })
-//            }
-//        }
-        notifyDataSetChanged()
+            } else {
+                holder.absentOrPresent!!.text = "A"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+                CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
+            }
+        }
     }
 
     override fun getItemCount(): Int {
-        return studentList!!.size
+        Log.e("List Size",studentList.size.toString())
+        return studentList.size
     }
 }

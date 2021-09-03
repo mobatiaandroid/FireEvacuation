@@ -44,49 +44,53 @@ class NotFoundEvacuationFragment : Fragment() {
                     ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
-                            var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                            )
-                            if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
-                                if (snapshot.child("found").value!!.equals("0")) {
-                                    studentItem.id = snapshot.child("id").value.toString()
-                                    studentItem.student_name =
-                                        snapshot.child("student_name").value.toString()
-                                    studentItem.photo = snapshot.child("photo").value.toString()
-                                    studentItem.found = snapshot.child("found").value.toString()
-                                    studentItem.class_id =
-                                        snapshot.child("class_id").value.toString()
-                                    studentList.add(studentItem)
+                            if (snapshot.child("class_id").value != null) {
+                                var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                    "",
+                                )
+                                if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
+                                    if (snapshot.child("found").value!!.equals("0")) {
+                                        studentItem.id = snapshot.child("id").value.toString()
+                                        studentItem.student_name =
+                                            snapshot.child("student_name").value.toString()
+                                        studentItem.photo = snapshot.child("photo").value.toString()
+                                        studentItem.found = snapshot.child("found").value.toString()
+                                        studentItem.class_id =
+                                            snapshot.child("class_id").value.toString()
+                                        studentList.add(studentItem)
+                                    }
                                 }
+                            } else{
+                                break
                             }
+
                         }
-                        Log.e("Item Added",studentList.toString())
+                        val studentAdapter = StudentEvacuationAdapter(context!!, studentList)
+                        recyclerView.hasFixedSize()
+                        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        studentAdapter.notifyDataSetChanged()
+                        recyclerView.adapter = studentAdapter
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-        val studentAdapter = StudentEvacuationAdapter(context!!, studentList)
-//        studentList = PreferenceManager.getStudentList(context!!)
-//        val studentAdapter = StudentAdapter(context!!, studentList)
-        recyclerView.hasFixedSize()
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = studentAdapter
+
         return view
     }
 }

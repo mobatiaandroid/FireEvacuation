@@ -110,6 +110,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
     }
 
     override fun getItemCount(): Int {
+        Log.e("List Size",studentList.size.toString())
         return studentList!!.size
     }
 }
