@@ -249,7 +249,7 @@ class PreferenceManager {
                 context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
             val gson = Gson()
             val json = sharedPreferences.getString("student_list", null)
-            val type: Type = object : TypeToken<ArrayList<Lists?>?>() {}.type
+            val type: Type = object : TypeToken<ArrayList<EvacuationStudentModel?>?>() {}.type
             studentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
             return studentList
         }

@@ -17,10 +17,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
+import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.CommonMethods
+import com.nas.fireevacuation.common.constants.PreferenceManager
 
 class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<EvacuationStudentModel>): RecyclerView.Adapter<StudentEvacuationAdapter.MyViewHolder>() {
-
+    var absentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getNotFoundList(context)
+    var presentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getFoundList(context)
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var studentImage: ImageView? = null
         var studentName: TextView? = null
@@ -62,12 +65,22 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             if (isChecked) {
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+                studentList[position].found = "1"
+                absentList.remove(studentList[position])
+                presentList.add(studentList[position])
+                PreferenceManager.setNotFoundList(context, absentList)
+                PreferenceManager.setFoundList(context, presentList)
                 CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
 
 //
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+                studentList[position].found = "1"
+                absentList.add(studentList[position])
+                presentList.remove(studentList[position])
+                PreferenceManager.setNotFoundList(context, absentList)
+                PreferenceManager.setFoundList(context, presentList)
                 CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
             }
         }
