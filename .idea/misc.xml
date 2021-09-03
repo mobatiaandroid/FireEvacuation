@@ -37,13 +37,17 @@
         <entry key="app/src/main/res/layout/custom_switch_off.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_alert.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/fragment_absent_students.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/fragment_all_evacuation.xml" value="0.3375" />
         <entry key="app/src/main/res/layout/fragment_all_students.xml" value="0.19583333333333333" />
+        <entry key="app/src/main/res/layout/fragment_found_evacuation.xml" value="0.3375" />
+        <entry key="app/src/main/res/layout/fragment_not_found_evacuation.xml" value="0.35208333333333336" />
         <entry key="app/src/main/res/layout/fragment_present_students.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/parent_recycler_items.xml" value="0.33" />
         <entry key="app/src/main/res/layout/progress_bar_dialog.xml" value="0.31476449275362317" />
         <entry key="app/src/main/res/layout/recover_account_popup.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/session_select_popup.xml" value="0.5" />
         <entry key="app/src/main/res/layout/student_adapter.xml" value="0.44" />
+        <entry key="app/src/main/res/layout/student_evacuation_adapter.xml" value="0.35208333333333336" />
       </map>
     </option>
   </component>

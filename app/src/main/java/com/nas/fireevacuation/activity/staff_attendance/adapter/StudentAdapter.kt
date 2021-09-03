@@ -9,10 +9,8 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.PreferenceManager

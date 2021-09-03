@@ -1,21 +1,28 @@
 package com.nas.fireevacuation.activity.evacutation
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.*
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
+import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
+import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
+import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class EvacuationActivity : AppCompatActivity() {
@@ -24,6 +31,8 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
     lateinit var studentList: ArrayList<EvacuationStudentModel>
+    lateinit var className: TextView
+    lateinit var date: TextView
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -35,13 +44,13 @@ class EvacuationActivity : AppCompatActivity() {
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         progressBarDialog = ProgressBarDialog(context)
-//        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-//        viewPagerAdapter.add(AllStudentsFragment(), "ALL")
-//        viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
-//        viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
-//        viewPager!!.adapter = viewPagerAdapter
-//        tabLayout!!.setupWithViewPager(viewPager)
-//        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
+        date = findViewById(R.id.date)
+        className = findViewById(R.id.className)
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatted = current.format(formatter)
+        date.text = formatted
+        className.text = PreferenceManager.getClassName(context)
         firebaseID = String()
         var assemblyPointID = ""
         var classID = ""
@@ -54,18 +63,8 @@ class EvacuationActivity : AppCompatActivity() {
         firebaseReference = String()
         evacuationCall()
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-        Log.e("databaseref", databaseReference.toString())
         databaseReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.e("Output0",snapshot.toString())
-                Log.e("Output1",snapshot.child("-MifUGjqDwIm397no97D").toString())
-                Log.e("Firebaseref", firebaseReference)
-//                Log.e("Output2",snapshot.child(firebaseReference).child("staff_id").value.toString())
-//                Log.e("Firebaseref", firebaseReference)
-//                Log.e("Output3",snapshot.child(firebaseReference).child("assembly_point_id").value.toString())
-//                Log.e("Firebaseref", firebaseReference)
-//
-//                Log.e("Output4",snapshot.child(firebaseReference).child("students").value.toString())
                 databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
@@ -85,38 +84,31 @@ class EvacuationActivity : AppCompatActivity() {
                                 "",
                                 "",
                                 "",
-                                "")
-                            Log.e("item added",snapshot.child("id").value.toString())
+                                )
                             if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
                                 studentItem.id = snapshot.child("id").value.toString()
-                                studentItem.name = snapshot.child("student_name").value.toString()
+                                studentItem.student_name = snapshot.child("student_name").value.toString()
                                 studentItem.photo = snapshot.child("photo").value.toString()
                                 studentItem.found = snapshot.child("found").value.toString()
+                                studentItem.class_id = snapshot.child("class_id").value.toString()
                                 studentList.add(studentItem)
-                                Log.e("item added",studentList.toString())
                             }
                         }
-                    }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
                     }
-
+                    override fun onCancelled(error: DatabaseError) {}
                 })
-//                classID = snapshot.child("class_id").value.toString()
-//                staffID = snapshot.child("staff_id").value.toString()
-//                assemblyPointID = snapshot.child("assembly_point_id").value.toString()
-
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
+            override fun onCancelled(error: DatabaseError) {}
         })
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.add(AllEvacuationFragment(), "ALL")
+        viewPagerAdapter.add(FoundEvacuationFragment(), "FOUND")
+        viewPagerAdapter.add(NotFoundEvacuationFragment(), "NOT FOUND")
+        viewPager!!.adapter = viewPagerAdapter
+        tabLayout!!.setupWithViewPager(viewPager)
+        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
         Log.e("Student Evac", studentList.toString())
-
-
     }
 
     private fun evacuationCall() {
@@ -137,7 +129,6 @@ class EvacuationActivity : AppCompatActivity() {
                     evacuationResponse = response.body()!!
                     if (evacuationResponse.responsecode.equals("100")) {
                         firebaseReference = evacuationResponse.data.firebase_referance
-                        Log.e("Firebaseref", firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
                     }
                 }
@@ -147,5 +138,12 @@ class EvacuationActivity : AppCompatActivity() {
                 progressBarDialog.hide()
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(context, StaffHomeActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }
