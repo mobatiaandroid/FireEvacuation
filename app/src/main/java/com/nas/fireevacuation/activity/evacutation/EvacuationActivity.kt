@@ -9,11 +9,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.*
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
-import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.StudentX
-import com.nas.fireevacuation.activity.staff_attendance.AbsentStudentsFragment
-import com.nas.fireevacuation.activity.staff_attendance.AllStudentsFragment
-import com.nas.fireevacuation.activity.staff_attendance.PresentStudentsFragment
-import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
+import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
@@ -27,7 +23,7 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
-    lateinit var studentList: HashMap<String,StudentX>
+    lateinit var studentList: ArrayList<EvacuationStudentModel>
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -35,7 +31,7 @@ class EvacuationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evacuation)
         context = this
-        studentList = HashMap()
+        studentList = ArrayList()
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         progressBarDialog = ProgressBarDialog(context)
@@ -53,7 +49,7 @@ class EvacuationActivity : AppCompatActivity() {
         var staffID = ""
         var name = ""
         var query: Query
-        var students: Map<String,StudentX> = mapOf()
+        var students: Map<String,EvacuationStudentModel> = mapOf()
         var student = ""
         firebaseReference = String()
         evacuationCall()
@@ -61,9 +57,52 @@ class EvacuationActivity : AppCompatActivity() {
         Log.e("databaseref", databaseReference.toString())
         databaseReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                Log.e("Output1",snapshot.child(firebaseReference).child("class_id").value.toString())
-                Log.e("Output2",snapshot.child(firebaseReference).child("staff_id").value.toString())
-                Log.e("Output3",snapshot.child(firebaseReference).child("assembly_point_id").value.toString())
+                Log.e("Output0",snapshot.toString())
+                Log.e("Output1",snapshot.child("-MifUGjqDwIm397no97D").toString())
+                Log.e("Firebaseref", firebaseReference)
+//                Log.e("Output2",snapshot.child(firebaseReference).child("staff_id").value.toString())
+//                Log.e("Firebaseref", firebaseReference)
+//                Log.e("Output3",snapshot.child(firebaseReference).child("assembly_point_id").value.toString())
+//                Log.e("Firebaseref", firebaseReference)
+//
+//                Log.e("Output4",snapshot.child(firebaseReference).child("students").value.toString())
+                databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object: ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        for (snapshot in snapshot.children){
+                            var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "")
+                            Log.e("item added",snapshot.child("id").value.toString())
+                            if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
+                                studentItem.id = snapshot.child("id").value.toString()
+                                studentItem.name = snapshot.child("student_name").value.toString()
+                                studentItem.photo = snapshot.child("photo").value.toString()
+                                studentItem.found = snapshot.child("found").value.toString()
+                                studentList.add(studentItem)
+                                Log.e("item added",studentList.toString())
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+
+                })
 //                classID = snapshot.child("class_id").value.toString()
 //                staffID = snapshot.child("staff_id").value.toString()
 //                assemblyPointID = snapshot.child("assembly_point_id").value.toString()
@@ -75,7 +114,7 @@ class EvacuationActivity : AppCompatActivity() {
             }
 
         })
-
+        Log.e("Student Evac", studentList.toString())
 
 
     }
