@@ -8,6 +8,7 @@ import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.subjects_model.SubjectsModel
 import com.nas.fireevacuation.activity.sign_in.model.year_groups_model.YearGroups
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
+import com.nas.fireevacuation.activity.staff_home.model.student_attendance_model.StudentAttendanceModel
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -154,5 +155,11 @@ interface ApiInterface {
         @Field("page_number") pageNumber: String
     ): Call<ResponseBody>
 
-
+    /***Update Attendance***/
+    @FormUrlEncoded
+    @POST("api/StaffApp/students_V1")
+    fun attendanceUpdate(
+        @Field("access_token") accessToken: String,
+        @Field("class_id") classID: String
+    ): Call<StudentAttendanceModel>
 }

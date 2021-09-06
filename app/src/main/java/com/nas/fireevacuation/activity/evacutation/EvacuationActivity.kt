@@ -68,7 +68,7 @@ class EvacuationActivity : AppCompatActivity() {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
         databaseReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                databaseReference.child("-MifUGjqDwIm397no97D").addValueEventListener(object: ValueEventListener{
+                databaseReference.child("-MitAE4FIWdT-QDtpOje").addValueEventListener(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
                             var studentItem: EvacuationStudentModel = EvacuationStudentModel("",
@@ -88,22 +88,30 @@ class EvacuationActivity : AppCompatActivity() {
                                 "",
                                 "",
                                 )
+                            Log.e("ClassIDValue errorcheck",snapshot.child("present").toString())
+                            Log.e("ClassIDValue errorcheck1",snapshot.toString())
                             if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
                                 studentItem.id = snapshot.child("id").value.toString()
                                 studentItem.student_name = snapshot.child("student_name").value.toString()
                                 studentItem.photo = snapshot.child("photo").value.toString()
                                 studentItem.found = snapshot.child("found").value.toString()
                                 studentItem.class_id = snapshot.child("class_id").value.toString()
-                                studentList.add(studentItem)
+                                if (!studentList.contains(studentItem)) {
+                                    studentList.add(studentItem)
+                                }
                             }
                         }
                         Log.e("Students1",studentList.toString())
                         var i = 0
                         while (i<studentList.size){
                             if (studentList[i].found.equals("0")) {
-                                absentEvac.add(studentList[i])
+                                if (!absentEvac.contains(studentList[i])) {
+                                    absentEvac.add(studentList[i])
+                                }
                             } else {
-                                presentEvac.add(studentList[i])
+                                if (!presentEvac.contains(studentList[i])) {
+                                    presentEvac.add(studentList[i])
+                                }
                             }
                             i++
                         }
