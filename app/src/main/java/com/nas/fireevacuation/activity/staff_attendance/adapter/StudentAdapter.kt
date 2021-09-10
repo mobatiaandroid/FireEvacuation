@@ -12,17 +12,13 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.student_attendance_model.StudentAttendanceModel
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
-import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 
 class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
     var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
@@ -52,10 +48,10 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        Glide.with(context).load(studentList[position].photo).into(holder.studentImage!!)
-        holder.studentName!!.text = studentList[position].name
-        holder.studentID!!.text = studentList[position].id
-        if (studentList[position].present == "1") {
+        Glide.with(context).load(studentList[holder.adapterPosition].photo).into(holder.studentImage!!)
+        holder.studentName!!.text = studentList[holder.adapterPosition].name
+        holder.studentID!!.text = studentList[holder.adapterPosition].id
+        if (studentList[holder.adapterPosition].present == "1") {
             holder.absentOrPresent!!.text = "P"
             holder.switch!!.isChecked = true
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
@@ -71,56 +67,54 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
                 if (!absentList.isEmpty()) {
 
-//                        var studentsResponse: StudentAttendanceModel
-//                        var studentsArrayList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.student_attendance_model.Lists> =
-//                            ArrayList()
-//                        var i = 0
-//                        val call: Call<StudentAttendanceModel> =
-//                            ApiClient.getClient.attendanceUpdate(
-//                                PreferenceManager.getAccessToken(context),
-//                                PreferenceManager.getClassID(context)
-//                            )
-//                        call.enqueue(object : Callback<StudentAttendanceModel> {
-//                            override fun onResponse(
-//                                call: Call<StudentAttendanceModel>,
-//                                response: Response<StudentAttendanceModel>
-//                            ) {
-//                                if (!response.body()!!.equals("")) {
-//                                    studentsResponse = response.body()!!
-//                                    Log.e("Response", response.body().toString())
-//                                    if (studentsResponse.responsecode.equals("100")) {
-//                                        if (studentsResponse.message.equals("success")) {
-//                                            while (i < studentsResponse.data.lists.size) {
-//                                                if (studentsResponse.data.lists[i].id.equals(
-//                                                        studentList[holder.adapterPosition].id
-//                                                    )
-//                                                ) {
-//                                                    studentsResponse.data.lists[i].present = "1"
-//                                                    Log.e(
-//                                                        "Success",
-//                                                        studentsResponse.data.lists[i].present.toString()
-//                                                    )
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            override fun onFailure(
-//                                call: Call<StudentAttendanceModel>,
-//                                t: Throwable
-//                            ) {
-//                                TODO("Not yet implemented")
-//                            }
-//
-//                        })
+                        var studentsResponse: StudentAttendanceModel
 
-                    studentList[position].present = "1"
-                    absentList.remove(studentList[position])
-                    presentList.add(studentList[position])
-                    PreferenceManager.setAbsentList(context, absentList)
-                    PreferenceManager.setPresentList(context, presentList)
+                        var i = 0
+                        val call: Call<StudentAttendanceModel> =
+                            ApiClient.getClient.attendanceUpdate(
+                                PreferenceManager.getAccessToken(context),
+                                studentList[holder.adapterPosition].id.toString(),"1"
+                            )
+                        call.enqueue(object : Callback<StudentAttendanceModel> {
+                            override fun onResponse(
+                                call: Call<StudentAttendanceModel>,
+                                response: Response<StudentAttendanceModel>
+                            ) {
+                                if (!response.body()!!.equals("")) {
+                                    studentsResponse = response.body()!!
+                                    Log.e("Response", response.body().toString())
+                                    if (studentsResponse.responsecode.equals("100")) {
+                                        if (studentsResponse.message.equals("success")) {
+                                            Log.e(
+                                                "Success", studentsResponse.toString())
+                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
+                                                studentList[holder.adapterPosition].present = "1"
+                                                absentList.remove(studentList[holder.adapterPosition])
+                                            }
+                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
+                                                studentList[holder.adapterPosition].present = "1"
+                                                presentList.add(studentList[holder.adapterPosition])
+                                            }
+//                    presentList.add(studentList[position])
+                                            notifyItemChanged(holder.adapterPosition)
+                                            PreferenceManager.setAbsentList(context, absentList)
+                                            PreferenceManager.setPresentList(context, presentList)
+                                        }
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<StudentAttendanceModel>,
+                                t: Throwable
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+
+
+
 
                     }
 
@@ -129,52 +123,58 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
                 if (!presentList.isEmpty()) {
 
-//                        var studentsResponse: StudentAttendanceModel
-//                        var studentsArrayList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.student_attendance_model.Lists> =
-//                            ArrayList()
-//                        var i = 0
-//                        val call: Call<StudentAttendanceModel> =
-//                            ApiClient.getClient.attendanceUpdate(
-//                                PreferenceManager.getAccessToken(context),
-//                                PreferenceManager.getClassID(context)
-//                            )
-//                        call.enqueue(object : Callback<StudentAttendanceModel> {
-//                            override fun onResponse(
-//                                call: Call<StudentAttendanceModel>,
-//                                response: Response<StudentAttendanceModel>
-//                            ) {
-//                                if (!response.body()!!.equals("")) {
-//                                    studentsResponse = response.body()!!
-//                                    Log.e("Response", response.body().toString())
-//                                    if (studentsResponse.responsecode.equals("100")) {
-//                                        if (studentsResponse.message.equals("success")) {
-//                                            while (i < studentsResponse.data.lists.size) {
-//                                                if (studentsResponse.data.lists[i].id.equals(
-//                                                        studentList[holder.adapterPosition].id
-//                                                    )
-//                                                ) {
-//                                                    studentsResponse.data.lists[i].present = "0"
-//                                                }
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            override fun onFailure(
-//                                call: Call<StudentAttendanceModel>,
-//                                t: Throwable
-//                            ) {
-//                                TODO("Not yet implemented")
-//                            }
-//
-//                        })
+                        var studentsResponse: StudentAttendanceModel
+                        var i = 0
+                        val call: Call<StudentAttendanceModel> =
+                            ApiClient.getClient.attendanceUpdate(
+                                PreferenceManager.getAccessToken(context),
+                                studentList[holder.adapterPosition].id.toString(),
+                                "0"
+                            )
+                    try {
+                        Log.e("Studnet ID", studentList[holder.adapterPosition].id)
 
-                    studentList[position].present = "0"
-                    absentList.add(studentList[position])
-                    presentList.remove(studentList[position])
-                    PreferenceManager.setAbsentList(context, absentList)
-                    PreferenceManager.setPresentList(context, presentList)
+                    }catch (e:Exception) {
+                        Log.e("exepr", e.toString())
+                    }
+                        call.enqueue(object : Callback<StudentAttendanceModel> {
+                            override fun onResponse(
+                                call: Call<StudentAttendanceModel>,
+                                response: Response<StudentAttendanceModel>
+                            ) {
+                                if (!response.body()!!.equals("")) {
+                                    studentsResponse = response.body()!!
+                                    Log.e("Response", response.body().toString())
+                                    if (studentsResponse.responsecode.equals("100")) {
+                                        if (studentsResponse.message.equals("success")) {
+                                            Log.e(
+                                                "Success", studentsResponse.toString())
+
+                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
+                                                studentList[holder.adapterPosition].present = "0"
+                                                absentList.add(studentList[holder.adapterPosition])                    }
+                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
+                                                studentList[holder.adapterPosition].present = "0"
+                                                presentList.remove(studentList[holder.adapterPosition])
+                                            }
+                                            notifyItemChanged(holder.adapterPosition)
+                                            PreferenceManager.setAbsentList(context, absentList)
+                                            PreferenceManager.setPresentList(context, presentList)
+                                        }
+                                    }
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: Call<StudentAttendanceModel>,
+                                t: Throwable
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+
+
                 }
 
 //                notifyItemChanged(position)
@@ -241,4 +241,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
         Log.e("List Size",studentList.size.toString())
         return studentList!!.size
     }
+//    private fun filter(text: String) {
+//        val filteredList: java.util.ArrayList<ResponseArray> = java.util.ArrayList<ResponseArray>()
+//        for (item in Response) {
+//            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+//                filteredList.add(item)
+//            }
+//        }
+//        adapter = ProductAdapter(filteredList, this@MainActivity)
+//        recyclerView.setAdapter(adapter)
+//    }
 }

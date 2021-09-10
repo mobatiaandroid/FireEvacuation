@@ -167,6 +167,7 @@ class SessionSelectActivity : AppCompatActivity() {
                 val intent = Intent(context, StaffHomeActivity::class.java)
                 PreferenceManager.setClassID(context, yearGroupsArrayList[position].id)
                 PreferenceManager.setClassName(context, selectedSession.text.toString())
+                PreferenceManager.setSubject(context, selectedSubject.text.toString())
 //                intent.putExtra("classID", yearGroupsArrayList[position].id)
 //                intent.putExtra("className", selectedSession.text)
                 startActivity(intent)

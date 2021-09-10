@@ -288,6 +288,7 @@ class StaffHomeActivity : AppCompatActivity() {
                                 .into(imageC)
                             count.text = ((studentsArrayList.size)-3).toString()+"+"
                             totalStudents.text = studentsArrayList.size.toString()
+                            Log.e("CLass ID",PreferenceManager.getClassID(context))
                         }
                     }
                 }

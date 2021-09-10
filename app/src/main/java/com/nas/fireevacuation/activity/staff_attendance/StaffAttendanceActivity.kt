@@ -2,10 +2,16 @@ package com.nas.fireevacuation.activity.staff_attendance
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
@@ -16,6 +22,7 @@ import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import javax.security.auth.Subject
 
 class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var context: Context
@@ -25,6 +32,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var search: ImageView
     lateinit var className: TextView
     lateinit var date: TextView
+    lateinit var subject: TextView
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,42 +46,79 @@ class StaffAttendanceActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPager)
         myProfile = findViewById(R.id.myProfile)
         date = findViewById(R.id.date)
+        subject = findViewById(R.id.subject)
         className = findViewById(R.id.className)
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted = current.format(formatter)
-        date.text = formatted
-        className.text = PreferenceManager.getClassName(context)
+        try {
+            date.text = formatted
+            className.text = PreferenceManager.getClassName(context)
+            subject.text = PreferenceManager.getSubject(context)
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"))
 //        tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"))
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPagerAdapter.add(AllStudentsFragment(), "ALL")
-        viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
-        viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
-        viewPager!!.adapter = viewPagerAdapter
-        tabLayout!!.setupWithViewPager(viewPager)
-        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
-        homeButton.setOnClickListener {
-            val intent = Intent(context, StaffHomeActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
+            val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+            viewPagerAdapter.add(AllStudentsFragment(), "ALL")
+            viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
+            viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
+            viewPager!!.adapter = viewPagerAdapter
+            tabLayout!!.setupWithViewPager(viewPager)
+            tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
+            homeButton.setOnClickListener {
+                val intent = Intent(context, StaffHomeActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+                finish()
+            }
+            search.setOnClickListener {
+//                searchBar.addTextChangedListener(object : TextWatcher {
+//                    override fun beforeTextChanged(
+//                        string: CharSequence,
+//                        start: Int,
+//                        count: Int,
+//                        after: Int
+//                    ) {
+//                    }
+//
+//                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+//
+//                    }
+//
+//                    @RequiresApi(api = Build.VERSION_CODES.M)
+//                    override fun afterTextChanged(s: Editable) {
+//                        f = 1
+//                        if (string.length == 3) {
+//                            closeKeyboard()
+//                        }
+//                        filter(string.toString())
+//                    }
+//                })
+            }
+            myProfile.setOnClickListener {
+                val intent = Intent(context, MyProfileActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+                finish()
+            }
+            backButton.setOnClickListener {
+                val intent = Intent(context, StaffHomeActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+                finish()
+            }
+        }catch (e:Exception) {
+            Log.e("Error",e.toString())
         }
-        search.setOnClickListener {
 
-        }
-        myProfile.setOnClickListener {
-            val intent = Intent(context, MyProfileActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
-        }
-        backButton.setOnClickListener {
-            val intent = Intent(context, StaffHomeActivity::class.java)
-            startActivity(intent)
-            overridePendingTransition(0,0)
-            finish()
+
+    }
+
+    private fun closeKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

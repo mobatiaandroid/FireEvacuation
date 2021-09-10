@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
+import com.nas.fireevacuation.activity.evacutation.model.post.Post
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
@@ -70,7 +71,51 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 presentList.add(studentList[position])
                 PreferenceManager.setNotFoundList(context, absentList)
                 PreferenceManager.setFoundList(context, presentList)
-                CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
+                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+                databaseReference.addValueEventListener(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        databaseReference.child("-MjD4ebOEfRmJRFXmZNF").addValueEventListener(object:
+                            ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (snapshot in snapshot.children){
+                                    if (snapshot.child("class_id").value  != null) {
+                                        Log.e("List ITem", studentList[holder.adapterPosition].id).toString()
+                                        if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
+                                            val studentItem = Post(
+                                                "1",
+                                                snapshot.child("found").value.toString(),
+                                                snapshot.child("id").value.toString(),
+                                                snapshot.child("photo").value.toString(),
+                                                snapshot.child("present").value.toString(),
+                                                snapshot.child("registration_id").value.toString(),
+                                                snapshot.child("assembly_point").value.toString(),
+                                                snapshot.child("assembly_point_id").value.toString(),
+                                                snapshot.child("class_id").value.toString(),
+                                                snapshot.child("class_name").value.toString(),
+                                                snapshot.child("created_at").value.toString(),
+                                                snapshot.child("section").value.toString(),
+                                                snapshot.child("staff_id").value.toString(),
+                                                snapshot.child("student_name").value.toString(),
+                                                snapshot.child("subject").value.toString(),
+                                                snapshot.child("updated_at").value.toString())
+                                            val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+                                            databaseReference.child("-MjD4ebOEfRmJRFXmZNF").child(snapshot.child("id").value.toString()).updateChildren(postValues)
+                                                .addOnSuccessListener { Log.e("Success","Success") }
+                                            break
+
+                                        }
+                                    } else {
+                                        break
+                                    }
+                                }
+
+                            }
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+//                CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
 
 //
             } else {
@@ -81,7 +126,50 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 presentList.remove(studentList[position])
                 PreferenceManager.setNotFoundList(context, absentList)
                 PreferenceManager.setFoundList(context, presentList)
-                CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
+                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+                databaseReference.addValueEventListener(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        databaseReference.child("-MjD4ebOEfRmJRFXmZNF").addValueEventListener(object:
+                            ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                for (snapshot in snapshot.children){
+                                    if (snapshot.child("class_id").value  != null) {
+                                        if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
+                                            val studentItem = Post(
+                                                "0",
+                                                snapshot.child("found").value.toString(),
+                                                snapshot.child("id").value.toString(),
+                                                snapshot.child("photo").value.toString(),
+                                                snapshot.child("present").value.toString(),
+                                                snapshot.child("registration_id").value.toString(),
+                                                snapshot.child("assembly_point").value.toString(),
+                                                snapshot.child("assembly_point_id").value.toString(),
+                                                snapshot.child("class_id").value.toString(),
+                                                snapshot.child("class_name").value.toString(),
+                                                snapshot.child("created_at").value.toString(),
+                                                snapshot.child("section").value.toString(),
+                                                snapshot.child("staff_id").value.toString(),
+                                                snapshot.child("student_name").value.toString(),
+                                                snapshot.child("subject").value.toString(),
+                                                snapshot.child("updated_at").value.toString())
+                                            val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+                                            databaseReference.child("-MjD4ebOEfRmJRFXmZNF").child(snapshot.child("id").value.toString()).updateChildren(postValues)
+                                                .addOnSuccessListener { Log.e("Success","Success") }
+                                            break
+
+                                        }
+                                    } else {
+                                        break
+                                    }
+                                }
+
+                            }
+                            override fun onCancelled(error: DatabaseError) {}
+                        })
+                    }
+                    override fun onCancelled(error: DatabaseError) {}
+                })
+//                CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
             }
         }
     }

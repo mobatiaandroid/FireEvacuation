@@ -118,14 +118,20 @@ class AllStudentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        studentList = PreferenceManager.getStudentList(context!!)
-        val studentAdapter = StudentAdapter(context!!, studentList)
-        recyclerView.hasFixedSize()
-        recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        recyclerView.adapter = studentAdapter
-        Log.e("Student List", studentList.toString())
+        try {
+            val view: View = inflater.inflate(R.layout.fragment_all_students, container, false)
+            recyclerView = view.findViewById(R.id.recyclerView)
+            studentList = PreferenceManager.getStudentList(context!!)
+            val studentAdapter = StudentAdapter(context!!, studentList)
+            recyclerView.hasFixedSize()
+            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView.adapter = studentAdapter
+            return view
+
+        }catch (e:Exception) {
+            Log.e("Error List", e.toString())
+        }
         return view
+
     }
 }

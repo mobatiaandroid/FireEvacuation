@@ -253,5 +253,20 @@ class PreferenceManager {
             studentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
             return studentList
         }
+
+        fun getSubject(context: Context?): String {
+            val staffID: String
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            staffID = sharedPreferences.getString("subject", "").toString()
+            return staffID
+        }
+        fun setSubject(context: Context, subject:String) {
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("subject", subject)
+            editor.apply()
+        }
     }
 }
