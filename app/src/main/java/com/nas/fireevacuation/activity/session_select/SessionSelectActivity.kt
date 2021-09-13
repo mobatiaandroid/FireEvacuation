@@ -119,6 +119,7 @@ class SessionSelectActivity : AppCompatActivity() {
         var closeButton = dialog.findViewById<View>(R.id.close)
         var checkInButton = dialog.findViewById<View>(R.id.checkIn)
         var position = -1
+        var position2 = -1
         dialog.show()
         subjectSelect.setOnClickListener {
             var subjectSelector: Array<String> = subjectArrayList.toTypedArray()
@@ -130,7 +131,7 @@ class SessionSelectActivity : AppCompatActivity() {
             }
             builder.setPositiveButton("OK") { dialog, which ->
                 selectedSubject.text = subjectSelector[checkedItem]
-                position = checkedItem
+                position2 = checkedItem
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
@@ -146,6 +147,7 @@ class SessionSelectActivity : AppCompatActivity() {
             }
             builder.setPositiveButton("OK") { dialog, which ->
                                     selectedSession.text = yearGroupsSelector[checkedItem]
+                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[checkedItem].id)
                                     position = checkedItem
             }
             builder.setNegativeButton("Cancel", null)
@@ -165,6 +167,7 @@ class SessionSelectActivity : AppCompatActivity() {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Subject")
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
+                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[position].id)
                 PreferenceManager.setClassID(context, yearGroupsArrayList[position].id)
                 PreferenceManager.setClassName(context, selectedSession.text.toString())
                 PreferenceManager.setSubject(context, selectedSubject.text.toString())

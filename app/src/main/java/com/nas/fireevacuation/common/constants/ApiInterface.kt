@@ -156,7 +156,7 @@ interface ApiInterface {
 
     /***Update Attendance***/
     @FormUrlEncoded
-    @POST("api/StaffApp/students_V1")
+    @POST("api/StaffApp/mark_attendance")
     fun attendanceUpdate(
         @Field("access_token") accessToken: String,
         @Field("student_id") studentID: String,

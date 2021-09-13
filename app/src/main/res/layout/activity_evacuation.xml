@@ -183,27 +183,27 @@
         app:tabTextColor="@android:color/black">
 
     </com.google.android.material.tabs.TabLayout>
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@id/cardview2"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/guideline1"-->
-<!--        app:layout_constraintStart_toStartOf="@id/guideline2"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tabLayout"/>-->
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#F2F1F1"
         app:layout_constraintBottom_toTopOf="@id/cardview2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintEnd_toEndOf="@id/guideline1"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout"/>
+
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/viewPager"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:background="#F2F1F1"-->
+<!--        app:layout_constraintBottom_toTopOf="@id/cardview2"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/tabLayout">-->
 
 
-    </androidx.viewpager.widget.ViewPager>
+<!--    </androidx.viewpager.widget.ViewPager>-->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview2"
         android:layout_height="80dp"

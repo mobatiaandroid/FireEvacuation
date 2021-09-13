@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -18,8 +19,6 @@ import com.google.firebase.database.ValueEventListener
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
 import com.nas.fireevacuation.activity.evacutation.model.post.Post
-import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
-import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
 
 class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<EvacuationStudentModel>): RecyclerView.Adapter<StudentEvacuationAdapter.MyViewHolder>() {
@@ -66,109 +65,126 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             if (isChecked) {
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
-                studentList[position].found = "1"
-                absentList.remove(studentList[position])
-                presentList.add(studentList[position])
-                PreferenceManager.setNotFoundList(context, absentList)
-                PreferenceManager.setFoundList(context, presentList)
+//                studentList[position].found = "1"
+//                absentList.remove(studentList[position])
+//                presentList.add(studentList[position])
+//                PreferenceManager.setNotFoundList(context, absentList)
+//                PreferenceManager.setFoundList(context, presentList)
+                var child = studentList[holder.adapterPosition]
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                databaseReference.addValueEventListener(object: ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        databaseReference.child("-MjD4ebOEfRmJRFXmZNF").addValueEventListener(object:
-                            ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                for (snapshot in snapshot.children){
-                                    if (snapshot.child("class_id").value  != null) {
-                                        Log.e("List ITem", studentList[holder.adapterPosition].id).toString()
-                                        if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
-                                            val studentItem = Post(
-                                                "1",
-                                                snapshot.child("found").value.toString(),
-                                                snapshot.child("id").value.toString(),
-                                                snapshot.child("photo").value.toString(),
-                                                snapshot.child("present").value.toString(),
-                                                snapshot.child("registration_id").value.toString(),
-                                                snapshot.child("assembly_point").value.toString(),
-                                                snapshot.child("assembly_point_id").value.toString(),
-                                                snapshot.child("class_id").value.toString(),
-                                                snapshot.child("class_name").value.toString(),
-                                                snapshot.child("created_at").value.toString(),
-                                                snapshot.child("section").value.toString(),
-                                                snapshot.child("staff_id").value.toString(),
-                                                snapshot.child("student_name").value.toString(),
-                                                snapshot.child("subject").value.toString(),
-                                                snapshot.child("updated_at").value.toString())
-                                            val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                                            databaseReference.child("-MjD4ebOEfRmJRFXmZNF").child(snapshot.child("id").value.toString()).updateChildren(postValues)
-                                                .addOnSuccessListener { Log.e("Success","Success") }
-                                            break
-
-                                        }
-                                    } else {
-                                        break
-                                    }
-                                }
-
-                            }
-                            override fun onCancelled(error: DatabaseError) {}
-                        })
-                    }
-                    override fun onCancelled(error: DatabaseError) {}
-                })
+                val studentItem = Post(
+                    "1",
+                    child.id,
+                    child.photo,
+                    child.present,
+                    child.registration_id,
+                    child.assembly_point,
+                    child.assembly_point_id,
+                    child.class_id,
+                    child.class_name,
+                    child.created_at,
+                    child.section,
+                    child.staff_id,
+                    child.staff_name,
+                    child.student_name,
+                    child.subject,
+                    child.updated_at
+                )
+                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+                databaseReference.child("-MjTySeMZHiwcRleuOcS").child(child.id).updateChildren(postValues)
+                    .addOnSuccessListener { Log.e("Success","Success")
+                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+//                databaseReference.addValueEventListener(object: ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object:
+//                            ValueEventListener {
+//                            override fun onDataChange(snapshot: DataSnapshot) {
+//                                Log.e("Position", childID)
+//                                if (snapshot.child(childID).exists()){
+//
+//                                }
+//
+//
+//                            }
+//                            override fun onCancelled(error: DatabaseError) {}
+//                        })
+//                    }
+//                    override fun onCancelled(error: DatabaseError) {}
+//                })
 //                CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
 
 //
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
-                studentList[position].found = "1"
-                absentList.add(studentList[position])
-                presentList.remove(studentList[position])
-                PreferenceManager.setNotFoundList(context, absentList)
-                PreferenceManager.setFoundList(context, presentList)
+                var child = studentList[holder.adapterPosition]
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                databaseReference.addValueEventListener(object: ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        databaseReference.child("-MjD4ebOEfRmJRFXmZNF").addValueEventListener(object:
-                            ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                for (snapshot in snapshot.children){
-                                    if (snapshot.child("class_id").value  != null) {
-                                        if ((snapshot.child("id").value)!!.equals(studentList[holder.adapterPosition].id)){
-                                            val studentItem = Post(
-                                                "0",
-                                                snapshot.child("found").value.toString(),
-                                                snapshot.child("id").value.toString(),
-                                                snapshot.child("photo").value.toString(),
-                                                snapshot.child("present").value.toString(),
-                                                snapshot.child("registration_id").value.toString(),
-                                                snapshot.child("assembly_point").value.toString(),
-                                                snapshot.child("assembly_point_id").value.toString(),
-                                                snapshot.child("class_id").value.toString(),
-                                                snapshot.child("class_name").value.toString(),
-                                                snapshot.child("created_at").value.toString(),
-                                                snapshot.child("section").value.toString(),
-                                                snapshot.child("staff_id").value.toString(),
-                                                snapshot.child("student_name").value.toString(),
-                                                snapshot.child("subject").value.toString(),
-                                                snapshot.child("updated_at").value.toString())
-                                            val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                                            databaseReference.child("-MjD4ebOEfRmJRFXmZNF").child(snapshot.child("id").value.toString()).updateChildren(postValues)
-                                                .addOnSuccessListener { Log.e("Success","Success") }
-                                            break
-
-                                        }
-                                    } else {
-                                        break
-                                    }
-                                }
-
-                            }
-                            override fun onCancelled(error: DatabaseError) {}
-                        })
-                    }
-                    override fun onCancelled(error: DatabaseError) {}
-                })
+                val studentItem = Post(
+                    "0",
+                    child.id,
+                    child.photo,
+                    child.present,
+                    child.registration_id,
+                    child.assembly_point,
+                    child.assembly_point_id,
+                    child.class_id,
+                    child.class_name,
+                    child.created_at,
+                    child.section,
+                    child.staff_id,
+                    child.staff_name,
+                    child.student_name,
+                    child.subject,
+                    child.updated_at
+                )
+                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+                databaseReference.child("-MjTySeMZHiwcRleuOcS").child(child.id).updateChildren(postValues)
+                    .addOnSuccessListener { Log.e("Success","Success")
+                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+//                studentList[position].found = "1"
+//                absentList.add(studentList[position])
+//                presentList.remove(studentList[position])
+//                PreferenceManager.setNotFoundList(context, absentList)
+//                PreferenceManager.setFoundList(context, presentList)
+//                var childID = studentList[holder.adapterPosition].id
+//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+//                databaseReference.addValueEventListener(object: ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object:
+//                            ValueEventListener {
+//                            override fun onDataChange(snapshot: DataSnapshot) {
+//                                if (snapshot.child(childID).exists()) {
+//                                    val studentItem = Post(
+//                                        "0",
+//                                        snapshot.child("found").value.toString(),
+//                                        snapshot.child("id").value.toString(),
+//                                        snapshot.child("photo").value.toString(),
+//                                        snapshot.child("present").value.toString(),
+//                                        snapshot.child("registration_id").value.toString(),
+//                                        snapshot.child("assembly_point").value.toString(),
+//                                        snapshot.child("assembly_point_id").value.toString(),
+//                                        snapshot.child("class_id").value.toString(),
+//                                        snapshot.child("class_name").value.toString(),
+//                                        snapshot.child("created_at").value.toString(),
+//                                        snapshot.child("section").value.toString(),
+//                                        snapshot.child("staff_id").value.toString(),
+//                                        snapshot.child("student_name").value.toString(),
+//                                        snapshot.child("subject").value.toString(),
+//                                        snapshot.child("updated_at").value.toString()
+//                                    )
+//                                    val postValues: Map<String, Any> =
+//                                        studentItem.toMap() as Map<String, Any>
+//                                    databaseReference.child("-MjTySeMZHiwcRleuOcS").child(childID)
+//                                        .updateChildren(postValues)
+//                                        .addOnSuccessListener { Log.e("Success", "Success") }
+//                                }
+//
+//                            }
+//                            override fun onCancelled(error: DatabaseError) {}
+//                        })
+//                    }
+//                    override fun onCancelled(error: DatabaseError) {}
+//                })
 //                CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
             }
         }

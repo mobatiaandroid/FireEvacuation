@@ -87,18 +87,20 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                                         if (studentsResponse.message.equals("success")) {
                                             Log.e(
                                                 "Success", studentsResponse.toString())
-                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
-                                                studentList[holder.adapterPosition].present = "1"
-                                                absentList.remove(studentList[holder.adapterPosition])
-                                            }
-                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
-                                                studentList[holder.adapterPosition].present = "1"
-                                                presentList.add(studentList[holder.adapterPosition])
-                                            }
-//                    presentList.add(studentList[position])
-                                            notifyItemChanged(holder.adapterPosition)
-                                            PreferenceManager.setAbsentList(context, absentList)
-                                            PreferenceManager.setPresentList(context, presentList)
+//                                            studentList.removeAt(holder.adapterPosition)
+//                                            notifyItemChanged(holder.adapterPosition)
+//                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
+//                                                studentList[holder.adapterPosition].present = "1"
+//                                                absentList.remove(studentList[holder.adapterPosition])
+//                                            }
+//                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
+//                                                studentList[holder.adapterPosition].present = "1"
+//                                                presentList.add(studentList[holder.adapterPosition])
+//                                            }
+////                    presentList.add(studentList[position])
+//                                            notifyItemChanged(holder.adapterPosition)
+//                                            PreferenceManager.setAbsentList(context, absentList)
+//                                            PreferenceManager.setPresentList(context, presentList)
                                         }
                                     }
                                 }
@@ -121,27 +123,23 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
             } else{
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
-                if (!presentList.isEmpty()) {
 
                         var studentsResponse: StudentAttendanceModel
                         var i = 0
-                        val call: Call<StudentAttendanceModel> =
+                    Log.e("id", studentList[holder.adapterPosition].id)
+
+                    val call: Call<StudentAttendanceModel> =
                             ApiClient.getClient.attendanceUpdate(
                                 PreferenceManager.getAccessToken(context),
-                                studentList[holder.adapterPosition].id.toString(),
+                                studentList[holder.adapterPosition].id,
                                 "0"
                             )
-                    try {
-                        Log.e("Studnet ID", studentList[holder.adapterPosition].id)
-
-                    }catch (e:Exception) {
-                        Log.e("exepr", e.toString())
-                    }
                         call.enqueue(object : Callback<StudentAttendanceModel> {
                             override fun onResponse(
                                 call: Call<StudentAttendanceModel>,
                                 response: Response<StudentAttendanceModel>
                             ) {
+                                Log.e("Change",response.toString())
                                 if (!response.body()!!.equals("")) {
                                     studentsResponse = response.body()!!
                                     Log.e("Response", response.body().toString())
@@ -149,17 +147,18 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                                         if (studentsResponse.message.equals("success")) {
                                             Log.e(
                                                 "Success", studentsResponse.toString())
-
-                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
-                                                studentList[holder.adapterPosition].present = "0"
-                                                absentList.add(studentList[holder.adapterPosition])                    }
-                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
-                                                studentList[holder.adapterPosition].present = "0"
-                                                presentList.remove(studentList[holder.adapterPosition])
-                                            }
-                                            notifyItemChanged(holder.adapterPosition)
-                                            PreferenceManager.setAbsentList(context, absentList)
-                                            PreferenceManager.setPresentList(context, presentList)
+//                                            studentList.removeAt(holder.adapterPosition)
+//                                            notifyItemRemoved(holder.adapterPosition)
+//                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
+//                                                studentList[holder.adapterPosition].present = "0"
+//                                                absentList.add(studentList[holder.adapterPosition])                    }
+//                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
+//                                                studentList[holder.adapterPosition].present = "0"
+//                                                presentList.remove(studentList[holder.adapterPosition])
+//                                            }
+//                                            notifyItemChanged(holder.adapterPosition)
+//                                            PreferenceManager.setAbsentList(context, absentList)
+//                                            PreferenceManager.setPresentList(context, presentList)
                                         }
                                     }
                                 }
@@ -175,7 +174,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                         })
 
 
-                }
+
 
 //                notifyItemChanged(position)
             }

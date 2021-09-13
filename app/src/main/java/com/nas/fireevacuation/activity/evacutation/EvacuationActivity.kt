@@ -40,7 +40,7 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var presentEvac: ArrayList<EvacuationStudentModel>
     lateinit var subject: TextView
 
-    //    lateinit var recyclerView: RecyclerView
+        lateinit var recyclerView: RecyclerView
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -50,8 +50,8 @@ class EvacuationActivity : AppCompatActivity() {
         context = this
         studentList = ArrayList()
         tabLayout = findViewById(R.id.tabLayout)
-        viewPager = findViewById(R.id.viewPager)
-//        recyclerView = findViewById(R.id.recyclerView) as RecyclerView
+//        viewPager = findViewById(R.id.viewPager)
+        recyclerView = findViewById(R.id.recyclerView) as RecyclerView
         progressBarDialog = ProgressBarDialog(context)
         date = findViewById(R.id.date)
         className = findViewById(R.id.className)
@@ -73,19 +73,19 @@ class EvacuationActivity : AppCompatActivity() {
         var student = ""
         firebaseReference = String()
         evacuationCall()
-//        recyclerView.hasFixedSize()
-//        recyclerView.setLayoutManager(
-//            LinearLayoutManager(
-//                this,
-//                LinearLayoutManager.VERTICAL,
-//                false
-//            )
-//
-//        )
+        recyclerView.hasFixedSize()
+        recyclerView.setLayoutManager(
+            LinearLayoutManager(
+                this,
+                LinearLayoutManager.VERTICAL,
+                false
+            )
+
+        )
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
         databaseReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                databaseReference.child("-MitAE4FIWdT-QDtpOje").addValueEventListener(object: ValueEventListener{
+                databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
                             var studentItem: EvacuationStudentModel = EvacuationStudentModel(
@@ -114,6 +114,15 @@ class EvacuationActivity : AppCompatActivity() {
                                 studentItem.photo = snapshot.child("photo").value.toString()
                                 studentItem.found = snapshot.child("found").value.toString()
                                 studentItem.class_id = snapshot.child("class_id").value.toString()
+                                studentItem.assembly_point = snapshot.child("assembly_point").value.toString()
+                                studentItem.assembly_point_id = snapshot.child("assembly_point_id").value.toString()
+                                studentItem.created_at = snapshot.child("created_at").value.toString()
+                                studentItem.present = snapshot.child("present").value.toString()
+                                studentItem.registration_id = snapshot.child("registration_id").value.toString()
+                                studentItem.staff_id = snapshot.child("staff_id").value.toString()
+                                studentItem.staff_name = snapshot.child("staff_name").value.toString()
+                                studentItem.section = snapshot.child("section").value.toString()
+                                studentItem.updated_at = snapshot.child("updated_at").value.toString()
                                 Log.e("Students added", studentItem.toString())
                                 if (!studentList.contains(studentItem)) {
                                     studentList.add(studentItem)
@@ -121,24 +130,24 @@ class EvacuationActivity : AppCompatActivity() {
                             }
                         }
                         Log.e("Students1",studentList.toString())
-//                        val adapter = StudentEvacuationAdapter(context, studentList)
-//                        recyclerView.adapter = adapter
-                        var i = 0
-                        while (i<studentList.size){
-                            if (studentList[i].found.equals("0")) {
-                                if (!absentEvac.contains(studentList[i])) {
-                                    absentEvac.add(studentList[i])
-                                }
-                            } else {
-                                if (!presentEvac.contains(studentList[i])) {
-                                    presentEvac.add(studentList[i])
-                                }
-                            }
-                            i++
-                        }
-                        PreferenceManager.setEvacStudentList(context,studentList)
-                        PreferenceManager.setNotFoundList(context,absentEvac)
-                        PreferenceManager.setFoundList(context,presentEvac)
+                        val adapter = StudentEvacuationAdapter(context, studentList)
+                        recyclerView.adapter = adapter
+//                        var i = 0
+//                        while (i<studentList.size){
+//                            if (studentList[i].found.equals("0")) {
+//                                if (!absentEvac.contains(studentList[i])) {
+//                                    absentEvac.add(studentList[i])
+//                                }
+//                            } else {
+//                                if (!presentEvac.contains(studentList[i])) {
+//                                    presentEvac.add(studentList[i])
+//                                }
+//                            }
+//                            i++
+//                        }
+//                        PreferenceManager.setEvacStudentList(context,studentList)
+//                        PreferenceManager.setNotFoundList(context,absentEvac)
+//                        PreferenceManager.setFoundList(context,presentEvac)
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })
@@ -147,13 +156,13 @@ class EvacuationActivity : AppCompatActivity() {
         })
 
 
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPagerAdapter.add(AllEvacuationFragment(), "ALL")
-        viewPagerAdapter.add(FoundEvacuationFragment(), "FOUND")
-        viewPagerAdapter.add(NotFoundEvacuationFragment(), "NOT FOUND")
-        viewPager!!.adapter = viewPagerAdapter
-        tabLayout!!.setupWithViewPager(viewPager)
-        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
+//        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+//        viewPagerAdapter.add(AllEvacuationFragment(), "ALL")
+//        viewPagerAdapter.add(FoundEvacuationFragment(), "FOUND")
+//        viewPagerAdapter.add(NotFoundEvacuationFragment(), "NOT FOUND")
+//        viewPager!!.adapter = viewPagerAdapter
+//        tabLayout!!.setupWithViewPager(viewPager)
+//        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
     }
 
     private fun evacuationCall() {
