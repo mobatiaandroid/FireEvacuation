@@ -20,7 +20,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
+class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, var flag: String): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
     var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
     var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -87,8 +87,11 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                                         if (studentsResponse.message.equals("success")) {
                                             Log.e(
                                                 "Success", studentsResponse.toString())
-//                                            studentList.removeAt(holder.adapterPosition)
-//                                            notifyItemChanged(holder.adapterPosition)
+                                            if (flag.equals("Present")) {
+                                                studentList.removeAt(holder.adapterPosition)
+                                                notifyItemChanged(holder.adapterPosition)
+                                            }
+
 //                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
 //                                                studentList[holder.adapterPosition].present = "1"
 //                                                absentList.remove(studentList[holder.adapterPosition])
@@ -147,6 +150,10 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>): R
                                         if (studentsResponse.message.equals("success")) {
                                             Log.e(
                                                 "Success", studentsResponse.toString())
+                                            if (flag.equals("Present")) {
+                                                studentList.removeAt(holder.adapterPosition)
+                                                notifyItemChanged(holder.adapterPosition)
+                                            }
 //                                            studentList.removeAt(holder.adapterPosition)
 //                                            notifyItemRemoved(holder.adapterPosition)
 //                                            if (!absentList.contains(studentList[holder.adapterPosition])) {

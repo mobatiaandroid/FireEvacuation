@@ -28,7 +28,9 @@
         </activity>
         <activity
             android:name=".activity.gallery.GalleryActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".activity.my_profile.MyProfileActivity"
             android:exported="true"

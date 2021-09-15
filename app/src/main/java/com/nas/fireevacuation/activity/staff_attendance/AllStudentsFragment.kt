@@ -153,7 +153,7 @@ class AllStudentsFragment : Fragment() {
                                 studentsArrayList.add(studentsResponse.data.lists[i])
                                 i++
                             }
-                            val studentAdapter = StudentAdapter(context!!, studentsArrayList)
+                            val studentAdapter = StudentAdapter(context!!, studentsArrayList,"ALL")
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                             recyclerView.adapter = studentAdapter

@@ -26,6 +26,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class EvacuationActivity : AppCompatActivity() {
@@ -55,12 +57,14 @@ class EvacuationActivity : AppCompatActivity() {
         progressBarDialog = ProgressBarDialog(context)
         date = findViewById(R.id.date)
         className = findViewById(R.id.className)
+        subject = findViewById(R.id.subject)
         absentEvac = ArrayList()
         presentEvac = ArrayList()
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formatted = current.format(formatter)
         date.text = formatted
+        subject.text = PreferenceManager.getSubject(context)
         className.text = PreferenceManager.getClassName(context)
         firebaseID = String()
         var assemblyPointID = ""
@@ -85,8 +89,9 @@ class EvacuationActivity : AppCompatActivity() {
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
         databaseReference.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object: ValueEventListener{
+                databaseReference.child(firebaseReference).addValueEventListener(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
+                        Log.e("dataref",databaseReference.child(firebaseReference).toString())
                         for (snapshot in snapshot.children){
                             var studentItem: EvacuationStudentModel = EvacuationStudentModel(
                                 "",
@@ -130,6 +135,25 @@ class EvacuationActivity : AppCompatActivity() {
                             }
                         }
                         Log.e("Students1",studentList.toString())
+                        var swapped: Boolean = true
+                        var i = 0
+                        studentList.sortBy {
+                            it.student_name
+                        }
+//                        while (swapped) {
+//                            swapped = false
+//                            for ( i in studentList.indices){
+//
+//                                var temp: EvacuationStudentModel
+//                                if (studentList[i].student_name > studentList[i+1].student_name){
+//                                    temp = studentList[i]
+//                                    studentList[i] = studentList[i+1]
+//                                    studentList[i+1] = temp
+//                                    swapped = true
+//                                }
+//                            }
+//                        }
+//                        Log.e("Sorted",studentList.toString())
                         val adapter = StudentEvacuationAdapter(context, studentList)
                         recyclerView.adapter = adapter
 //                        var i = 0
@@ -183,6 +207,7 @@ class EvacuationActivity : AppCompatActivity() {
                     evacuationResponse = response.body()!!
                     if (evacuationResponse.responsecode.equals("100")) {
                         firebaseReference = evacuationResponse.data.firebase_referance
+                        PreferenceManager.setFireRef(context,firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
                         Log.e("fireref",firebaseReference.toString())
 

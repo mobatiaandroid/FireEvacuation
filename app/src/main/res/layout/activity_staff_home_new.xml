@@ -498,14 +498,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView14"
+                app:layout_constraintEnd_toStartOf="@+id/gallery"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/imageView12"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/attendence_icon" />
 
             <ImageView
-                android:id="@+id/imageView14"
+                android:id="@+id/gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -522,7 +522,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
+                app:layout_constraintStart_toEndOf="@+id/gallery"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/profile_icon" />
         </androidx.constraintlayout.widget.ConstraintLayout>

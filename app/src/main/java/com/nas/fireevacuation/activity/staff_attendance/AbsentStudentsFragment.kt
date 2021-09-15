@@ -160,7 +160,7 @@ class AbsentStudentsFragment : Fragment() {
                                 }
                                 i++
                             }
-                            val studentAdapter = StudentAdapter(context!!, absentStudentList)
+                            val studentAdapter = StudentAdapter(context!!, absentStudentList,"Present")
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                             recyclerView.adapter = studentAdapter

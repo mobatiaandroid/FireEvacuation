@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.EvacuationActivity
+import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
@@ -37,6 +38,7 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var attendenceButton: ImageView
     lateinit var myProfile: ImageView
+    lateinit var gallery: ImageView
 //    lateinit var backButton: ImageView
     lateinit var  extras: Bundle
     lateinit var classID: String
@@ -67,6 +69,7 @@ class StaffHomeActivity : AppCompatActivity() {
         context = this
         progressBarDialog = ProgressBarDialog(context)
         attendenceButton = findViewById(R.id.attendence)
+        gallery = findViewById(R.id.gallery)
         myProfile = findViewById(R.id.myProfile)
 //        backButton = findViewById(R.id.back_button)
         staffName = findViewById(R.id.staffName)
@@ -89,7 +92,12 @@ class StaffHomeActivity : AppCompatActivity() {
         presentStudentList = ArrayList()
         absentStudentList = ArrayList()
 
-
+        gallery.setOnClickListener {
+            val intent = Intent(context, GalleryActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
+        }
         myProfile.setOnClickListener {
             val intent = Intent(context, MyProfileActivity::class.java)
             startActivity(intent)

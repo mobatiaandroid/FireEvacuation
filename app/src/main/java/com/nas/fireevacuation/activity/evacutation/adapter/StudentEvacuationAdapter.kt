@@ -91,7 +91,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                     child.updated_at
                 )
                 val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child("-MjTySeMZHiwcRleuOcS").child(child.id).updateChildren(postValues)
+                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
                     .addOnSuccessListener { Log.e("Success","Success")
                         Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
 //                databaseReference.addValueEventListener(object: ValueEventListener {
@@ -138,7 +138,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                     child.updated_at
                 )
                 val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child("-MjTySeMZHiwcRleuOcS").child(child.id).updateChildren(postValues)
+                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
                     .addOnSuccessListener { Log.e("Success","Success")
                         Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
 //                studentList[position].found = "1"

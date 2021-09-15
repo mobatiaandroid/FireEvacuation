@@ -159,7 +159,7 @@ lateinit var recyclerView: RecyclerView
                                 }
                                 i++
                             }
-                            val studentAdapter = StudentAdapter(context!!, presentStudentList)
+                            val studentAdapter = StudentAdapter(context!!, presentStudentList,"Present")
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                             recyclerView.adapter = studentAdapter

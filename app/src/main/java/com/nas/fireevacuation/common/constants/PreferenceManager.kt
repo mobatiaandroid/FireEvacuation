@@ -268,5 +268,20 @@ class PreferenceManager {
             editor.putString("subject", subject)
             editor.apply()
         }
+
+        fun setFireRef(context: Context, firebaseReference: String) {
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("firebaseReference", firebaseReference)
+            editor.apply()
+        }
+        fun getFireRef(context: Context?): String {
+            val firebaseReference: String
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            firebaseReference = sharedPreferences.getString("firebaseReference", "").toString()
+            return firebaseReference
+        }
     }
 }
