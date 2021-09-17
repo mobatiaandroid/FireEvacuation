@@ -2,6 +2,7 @@ package com.nas.fireevacuation.activity.staff_attendance
 
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +11,13 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
@@ -29,6 +32,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var homeButton: ImageView
     lateinit var backButton: ImageView
     lateinit var myProfile: ImageView
+    lateinit var gallery: ImageView
     lateinit var search: ImageView
     lateinit var className: TextView
     lateinit var date: TextView
@@ -41,6 +45,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
         context = this
         homeButton = findViewById(R.id.homeButton)
         backButton = findViewById(R.id.back_button)
+        gallery = findViewById(R.id.gallery)
         search = findViewById(R.id.search)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
@@ -67,6 +72,12 @@ class StaffAttendanceActivity : AppCompatActivity() {
             tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
             homeButton.setOnClickListener {
                 val intent = Intent(context, StaffHomeActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0,0)
+                finish()
+            }
+            gallery.setOnClickListener {
+                val intent = Intent(context, GalleryActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(0,0)
                 finish()

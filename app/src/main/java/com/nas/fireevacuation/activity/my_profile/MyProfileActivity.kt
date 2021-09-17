@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.SignInActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
@@ -33,6 +34,7 @@ class MyProfileActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var homeButton: ImageView
     lateinit var attendanceButton: ImageView
+    lateinit var gallery: ImageView
     lateinit var notifications: TextView
     lateinit var checkout: TextView
     lateinit var settings: TextView
@@ -47,6 +49,7 @@ class MyProfileActivity : AppCompatActivity() {
         context = this
         homeButton = findViewById(R.id.home)
         attendanceButton = findViewById(R.id.attendence)
+        gallery = findViewById(R.id.gallery)
         notifications = findViewById(R.id.notifications)
         settings = findViewById(R.id.settings)
         checkout = findViewById(R.id.checkout)
@@ -74,6 +77,12 @@ class MyProfileActivity : AppCompatActivity() {
                 click = 1
             }
 
+        }
+        gallery.setOnClickListener {
+            val intent = Intent(context, GalleryActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
         }
         changePassword.setOnClickListener {
             val dialog = Dialog(context)
