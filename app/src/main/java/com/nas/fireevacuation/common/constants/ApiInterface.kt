@@ -3,6 +3,8 @@ package com.nas.fireevacuation.common.constants
 
 import com.nas.fireevacuation.activity.create_account.model.CreateAccountModel
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
+import com.nas.fireevacuation.activity.gallery.model.photos_model.PhotosModel
+import com.nas.fireevacuation.activity.gallery.model.videos_model.VideosModel
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.model.signin_model.SignInModel
 import com.nas.fireevacuation.activity.sign_in.model.subjects_model.SubjectsModel
@@ -144,15 +146,15 @@ interface ApiInterface {
         @Field("access_token") accessToken: String,
         @Field("album_id") albumID: String,
         @Field("page_number") pageNumber: String
-    ): Call<ResponseBody>
+    ): Call<PhotosModel>
 
-    /***Photos***/
+    /***Videos***/
     @FormUrlEncoded
     @POST("api/StaffApp/videos")
     fun videosAPICall(
         @Field("access_token") accessToken: String,
         @Field("page_number") pageNumber: String
-    ): Call<ResponseBody>
+    ): Call<VideosModel>
 
     /***Update Attendance***/
     @FormUrlEncoded

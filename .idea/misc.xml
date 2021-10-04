@@ -7,7 +7,9 @@
         <entry key="app/src/main/res/drawable-mdpi/curved_rectangle_white_bottom.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/circle_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/create_account_disabled.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/curved_grey_rectangle.xml" value="0.18518518518518517" />
         <entry key="app/src/main/res/drawable/curved_rectangle_green.xml" value="0.36875" />
+        <entry key="app/src/main/res/drawable/curved_white_rectangle.xml" value="0.18518518518518517" />
         <entry key="app/src/main/res/drawable/custom_switch.xml" value="0.17962962962962964" />
         <entry key="app/src/main/res/drawable/dialog_bottom_curve_white.xml" value="0.36875" />
         <entry key="app/src/main/res/drawable/dialog_top_curve_white.xml" value="0.36875" />
@@ -25,12 +27,12 @@
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.3428442028985507" />
         <entry key="app/src/main/res/layout/activity_evacuation.xml" value="0.35260416666666666" />
         <entry key="app/src/main/res/layout/activity_gallery.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_my_profile.xml" value="0.2814814814814815" />
         <entry key="app/src/main/res/layout/activity_recover_account.xml" value="0.3115942028985507" />
         <entry key="app/src/main/res/layout/activity_session_select.xml" value="0.3115942028985507" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.35260416666666666" />
-        <entry key="app/src/main/res/layout/activity_staff_attendence.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_staff_attendence.xml" value="0.2814814814814815" />
         <entry key="app/src/main/res/layout/activity_staff_home.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_staff_home_new.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.3428442028985507" />
@@ -45,8 +47,10 @@
         <entry key="app/src/main/res/layout/fragment_not_found_evacuation.xml" value="0.35208333333333336" />
         <entry key="app/src/main/res/layout/fragment_present_students.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/parent_recycler_items.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/photo_adapter.xml" value="0.18432971014492755" />
         <entry key="app/src/main/res/layout/progress_bar_dialog.xml" value="0.31476449275362317" />
         <entry key="app/src/main/res/layout/recover_account_popup.xml" value="0.35260416666666666" />
+        <entry key="app/src/main/res/layout/search_adapter.xml" value="0.31275720164609055" />
         <entry key="app/src/main/res/layout/session_select_popup.xml" value="0.5" />
         <entry key="app/src/main/res/layout/student_adapter.xml" value="0.44" />
         <entry key="app/src/main/res/layout/student_evacuation_adapter.xml" value="0.33" />

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -21,7 +20,6 @@ import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
-import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
@@ -32,6 +30,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class StaffHomeActivity : AppCompatActivity() {
@@ -47,6 +47,7 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var imageB: ImageView
     lateinit var imageC: ImageView
     lateinit var count: TextView
+    lateinit var greeting: TextView
     lateinit var totalStudents: TextView
     lateinit var presentStudents: TextView
     lateinit var absentStudents: TextView
@@ -83,6 +84,7 @@ class StaffHomeActivity : AppCompatActivity() {
         progressBarPresent = findViewById(R.id.progressBarPresent)
         progressBarAbsent = findViewById(R.id.progressBarAbsent)
         className = findViewById(R.id.className)
+        greeting = findViewById(R.id.greeting)
         date = findViewById(R.id.date)
         assemblyAreaSelector = findViewById(R.id.assemblyAreaSelector)
         area = findViewById(R.id.area)
@@ -197,13 +199,32 @@ class StaffHomeActivity : AppCompatActivity() {
 
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formatted = current.format(formatter)
-        date.text = formatted
+        val currentDate = current.format(formatter)
+        greetingSetter()
+        date.text = currentDate
         classID = PreferenceManager.getClassID(context)
         className.text = PreferenceManager.getClassName(context)
         staffName.text = PreferenceManager.getStaffName(context)
         Log.e("Class ID:",classID)
         studentListCall(classID)
+    }
+
+    private fun greetingSetter() {
+        val date = Date()
+        val cal: Calendar = Calendar.getInstance()
+        cal.time = date
+        val hour: Int = cal.get(Calendar.HOUR_OF_DAY)
+        if (hour in 6..12) {
+            greeting.text = "Good Morning"
+        } else if (hour == 12) {
+            greeting.text = "Noon"
+        } else if (hour in 13..17) {
+            greeting.text = "Good Afternoon"
+        } else if (hour in 17..22) {
+            greeting.text = "Good Evening"
+        } else {
+            greeting.text = "Good Night"
+        }
     }
 
     private fun showSelector(assemblyPointsList: ArrayList<Lists>) {
