@@ -78,6 +78,12 @@ class MyProfileActivity : AppCompatActivity() {
             }
 
         }
+        gallery.setOnClickListener {
+            val intent = Intent(context, GalleryActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0,0)
+            finish()
+        }
         changePassword.setOnClickListener {
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

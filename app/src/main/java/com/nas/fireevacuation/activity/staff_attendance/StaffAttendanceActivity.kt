@@ -2,6 +2,7 @@ package com.nas.fireevacuation.activity.staff_attendance
 
 import android.content.Context
 import android.content.Intent
+import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.viewpager.widget.ViewPager
@@ -30,6 +32,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var homeButton: ImageView
     lateinit var backButton: ImageView
     lateinit var myProfile: ImageView
+    lateinit var gallery: ImageView
     lateinit var search: ImageView
     lateinit var className: TextView
     lateinit var date: TextView

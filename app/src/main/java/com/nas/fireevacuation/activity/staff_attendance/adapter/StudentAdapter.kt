@@ -1,11 +1,13 @@
 package com.nas.fireevacuation.activity.staff_attendance.adapter
 
 import android.content.Context
+import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Switch
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -29,6 +31,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
         var studentID: TextView? = null
         var absentOrPresent: TextView? = null
         var switch: Switch? = null
+        var loader: ProgressBar? = null
 
         init {
             studentImage = itemView.findViewById<View>(R.id.studentImage) as ImageView?
@@ -36,6 +39,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
             studentID = itemView.findViewById<View>(R.id.studentID) as TextView?
             absentOrPresent = itemView.findViewById<View>(R.id.presentOrAbsent) as TextView?
             switch = itemView.findViewById<View>(R.id.switch1) as Switch
+            loader = itemView.findViewById<View>(R.id.loader) as ProgressBar
         }
     }
 
@@ -75,11 +79,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                 PreferenceManager.getAccessToken(context),
                                 studentList[holder.adapterPosition].id.toString(),"1"
                             )
+                    holder.loader!!.visibility = View.VISIBLE
                         call.enqueue(object : Callback<StudentAttendanceModel> {
                             override fun onResponse(
                                 call: Call<StudentAttendanceModel>,
                                 response: Response<StudentAttendanceModel>
                             ) {
+                                holder.loader!!.visibility = View.GONE
+
                                 if (!response.body()!!.equals("")) {
                                     studentsResponse = response.body()!!
                                     Log.e("Response", response.body().toString())
@@ -113,7 +120,8 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                 call: Call<StudentAttendanceModel>,
                                 t: Throwable
                             ) {
-                                TODO("Not yet implemented")
+                                holder.loader!!.visibility = View.GONE
+
                             }
 
                         })
@@ -137,11 +145,15 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                 studentList[holder.adapterPosition].id,
                                 "0"
                             )
-                        call.enqueue(object : Callback<StudentAttendanceModel> {
+                holder.loader!!.visibility = View.VISIBLE
+
+                call.enqueue(object : Callback<StudentAttendanceModel> {
                             override fun onResponse(
                                 call: Call<StudentAttendanceModel>,
                                 response: Response<StudentAttendanceModel>
                             ) {
+                                holder.loader!!.visibility = View.GONE
+
                                 Log.e("Change",response.toString())
                                 if (!response.body()!!.equals("")) {
                                     studentsResponse = response.body()!!
@@ -163,7 +175,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                 call: Call<StudentAttendanceModel>,
                                 t: Throwable
                             ) {
-                                TODO("Not yet implemented")
+                                holder.loader!!.visibility = View.GONE
                             }
 
                         })

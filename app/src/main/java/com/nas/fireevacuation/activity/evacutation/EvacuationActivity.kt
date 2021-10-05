@@ -170,7 +170,7 @@ class EvacuationActivity : AppCompatActivity() {
                                 "",
                                 "",
                             )
-                            Log.e("ClassIDValue errorcheck",snapshot.child("present").toString())
+                            Log.e("ClassIDValue errorcheck",snapshot.child("4073").child("present").value.toString())
                             Log.e("ClassIDValue errorcheck1",snapshot.toString())
                             if ((snapshot.child("class_id").value)!!.equals(PreferenceManager.getClassID(context))){
                                 studentItem.id = snapshot.child("id").value.toString()
@@ -187,6 +187,8 @@ class EvacuationActivity : AppCompatActivity() {
                                 studentItem.staff_name = snapshot.child("staff_name").value.toString()
                                 studentItem.section = snapshot.child("section").value.toString()
                                 studentItem.updated_at = snapshot.child("updated_at").value.toString()
+                                studentItem.created_at = snapshot.child("created_at").value.toString()
+                                studentItem.class_name = snapshot.child("class_name").value.toString()
                                 Log.e("Students added", studentItem.toString())
                                 if (!studentList.contains(studentItem)) {
                                     studentList.add(studentItem)

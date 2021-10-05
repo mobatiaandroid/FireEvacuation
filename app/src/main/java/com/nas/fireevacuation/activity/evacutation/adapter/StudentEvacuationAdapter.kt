@@ -84,7 +84,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                     child.updated_at
                 )
                 val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
+                databaseReference.child(PreferenceManager.getFireRef(context)).child("students").child(child.id).updateChildren(postValues)
                     .addOnSuccessListener { Log.e("Success","Success")
                         Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
             } else {
