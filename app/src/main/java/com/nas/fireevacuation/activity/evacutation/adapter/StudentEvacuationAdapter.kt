@@ -62,11 +62,6 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             if (isChecked) {
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
-//                studentList[position].found = "1"
-//                absentList.remove(studentList[position])
-//                presentList.add(studentList[position])
-//                PreferenceManager.setNotFoundList(context, absentList)
-//                PreferenceManager.setFoundList(context, presentList)
                 var child = studentList[holder.adapterPosition]
                 studentList[holder.adapterPosition].found = "1"
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
@@ -92,26 +87,6 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
                     .addOnSuccessListener { Log.e("Success","Success")
                         Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
-//                databaseReference.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object:
-//                            ValueEventListener {
-//                            override fun onDataChange(snapshot: DataSnapshot) {
-//                                Log.e("Position", childID)
-//                                if (snapshot.child(childID).exists()){
-//
-//                                }
-//
-//
-//                            }
-//                            override fun onCancelled(error: DatabaseError) {}
-//                        })
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {}
-//                })
-//                CommonMethods.markAttendanceFound(studentList[holder.adapterPosition].id)
-
-//
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
@@ -140,51 +115,6 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
                     .addOnSuccessListener { Log.e("Success","Success")
                         Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
-//                studentList[position].found = "1"
-//                absentList.add(studentList[position])
-//                presentList.remove(studentList[position])
-//                PreferenceManager.setNotFoundList(context, absentList)
-//                PreferenceManager.setFoundList(context, presentList)
-//                var childID = studentList[holder.adapterPosition].id
-//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-//                databaseReference.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        databaseReference.child("-MjTySeMZHiwcRleuOcS").addValueEventListener(object:
-//                            ValueEventListener {
-//                            override fun onDataChange(snapshot: DataSnapshot) {
-//                                if (snapshot.child(childID).exists()) {
-//                                    val studentItem = Post(
-//                                        "0",
-//                                        snapshot.child("found").value.toString(),
-//                                        snapshot.child("id").value.toString(),
-//                                        snapshot.child("photo").value.toString(),
-//                                        snapshot.child("present").value.toString(),
-//                                        snapshot.child("registration_id").value.toString(),
-//                                        snapshot.child("assembly_point").value.toString(),
-//                                        snapshot.child("assembly_point_id").value.toString(),
-//                                        snapshot.child("class_id").value.toString(),
-//                                        snapshot.child("class_name").value.toString(),
-//                                        snapshot.child("created_at").value.toString(),
-//                                        snapshot.child("section").value.toString(),
-//                                        snapshot.child("staff_id").value.toString(),
-//                                        snapshot.child("student_name").value.toString(),
-//                                        snapshot.child("subject").value.toString(),
-//                                        snapshot.child("updated_at").value.toString()
-//                                    )
-//                                    val postValues: Map<String, Any> =
-//                                        studentItem.toMap() as Map<String, Any>
-//                                    databaseReference.child("-MjTySeMZHiwcRleuOcS").child(childID)
-//                                        .updateChildren(postValues)
-//                                        .addOnSuccessListener { Log.e("Success", "Success") }
-//                                }
-//
-//                            }
-//                            override fun onCancelled(error: DatabaseError) {}
-//                        })
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {}
-//                })
-//                CommonMethods.markAttendanceNotFound(studentList[holder.adapterPosition].id)
             }
         }
     }

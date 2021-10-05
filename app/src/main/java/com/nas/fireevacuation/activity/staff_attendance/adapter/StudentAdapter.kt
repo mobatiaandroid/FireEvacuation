@@ -154,18 +154,6 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                                 studentList.removeAt(holder.adapterPosition)
                                                 notifyItemChanged(holder.adapterPosition)
                                             }
-//                                            studentList.removeAt(holder.adapterPosition)
-//                                            notifyItemRemoved(holder.adapterPosition)
-//                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
-//                                                studentList[holder.adapterPosition].present = "0"
-//                                                absentList.add(studentList[holder.adapterPosition])                    }
-//                                            if (!presentList.contains(studentList[holder.adapterPosition])) {
-//                                                studentList[holder.adapterPosition].present = "0"
-//                                                presentList.remove(studentList[holder.adapterPosition])
-//                                            }
-//                                            notifyItemChanged(holder.adapterPosition)
-//                                            PreferenceManager.setAbsentList(context, absentList)
-//                                            PreferenceManager.setPresentList(context, presentList)
                                         }
                                     }
                                 }
@@ -183,63 +171,8 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 
 
 
-//                notifyItemChanged(position)
             }
-//            try {
-//                if (isChecked) {
-//                    Log.e("Absent1",absentList.toString())
-//                    Log.e("Present1",presentList.toString())
-//                var i = 0
-//                    holder.absentOrPresent!!.text = "P"
-//                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
-//                while (i< studentList.size) {
-//                    if (absentList.isEmpty()){
-//                        absentList = ArrayList()
-//                    }
-//                    if (presentList.isEmpty()){
-//                        presentList = ArrayList()
-//                    }
-//                    if (studentList[position].id.equals(presentList[i].id)) {
-//                        presentList.add(studentList[position])
-//                        studentList[position].present = "1"
-//                    }
-//                    if (studentList[position].id.equals(absentList[i])) {
-//                        absentList.remove(absentList[i])
-//                    }
-//                    PreferenceManager.setPresentList(context,presentList)
-//                    PreferenceManager.setAbsentList(context,absentList)
-//                    notifyDataSetChanged()
-//                    i++
-//                }
-//            } else {
-//                Log.e("Abesnt2",absentList.toString())
-//                Log.e("Present2",presentList.toString())
-//                var i = 0
-//                    holder.absentOrPresent!!.text = "A"
-//                    holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
-//                while (i< studentList.size) {
-//                    if (absentList.isEmpty()){
-//                        absentList = ArrayList()
-//                    }
-//                    if (presentList.isEmpty()){
-//                        presentList = ArrayList()
-//                    }
-//                    if (studentList[position].id.equals(absentList[i].id)) {
-//                        absentList.add(studentList[position])
-//                    }
-//                    if (studentList[position].id.equals(presentList[i].id)) {
-//                        presentList.remove(presentList[i])
-//                        Log.e("Present is removed",presentList[i].toString())
-//                    }
-//                    PreferenceManager.setPresentList(context,presentList)
-//                    PreferenceManager.setAbsentList(context,absentList)
-//                    notifyDataSetChanged()
-//                    i++
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                Log.e("Error", e.toString())
-//            }
+
         }
     }
 
@@ -247,14 +180,5 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
         Log.e("List Size",studentList.size.toString())
         return studentList!!.size
     }
-//    private fun filter(text: String) {
-//        val filteredList: java.util.ArrayList<ResponseArray> = java.util.ArrayList<ResponseArray>()
-//        for (item in Response) {
-//            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
-//                filteredList.add(item)
-//            }
-//        }
-//        adapter = ProductAdapter(filteredList, this@MainActivity)
-//        recyclerView.setAdapter(adapter)
-//    }
+
 }

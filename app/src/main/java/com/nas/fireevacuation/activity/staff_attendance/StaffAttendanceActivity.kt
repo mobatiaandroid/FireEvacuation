@@ -58,9 +58,6 @@ class StaffAttendanceActivity : AppCompatActivity() {
             date.text = formatted
             className.text = PreferenceManager.getClassName(context)
             subject.text = PreferenceManager.getSubject(context)
-//        tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
-//        tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"))
-//        tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"))
             val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
             viewPagerAdapter.add(AllStudentsFragment(), "ALL")
             viewPagerAdapter.add(PresentStudentsFragment(), "PRESENT")
@@ -81,28 +78,7 @@ class StaffAttendanceActivity : AppCompatActivity() {
                 finish()
             }
             search.setOnClickListener {
-//                searchBar.addTextChangedListener(object : TextWatcher {
-//                    override fun beforeTextChanged(
-//                        string: CharSequence,
-//                        start: Int,
-//                        count: Int,
-//                        after: Int
-//                    ) {
-//                    }
-//
-//                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-//
-//                    }
-//
-//                    @RequiresApi(api = Build.VERSION_CODES.M)
-//                    override fun afterTextChanged(s: Editable) {
-//                        f = 1
-//                        if (string.length == 3) {
-//                            closeKeyboard()
-//                        }
-//                        filter(string.toString())
-//                    }
-//                })
+
             }
             myProfile.setOnClickListener {
                 val intent = Intent(context, MyProfileActivity::class.java)

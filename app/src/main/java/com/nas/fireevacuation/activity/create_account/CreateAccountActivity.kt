@@ -27,11 +27,7 @@ class CreateAccountActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var name: EditText
     lateinit var emailID: EditText
-//    lateinit var password: EditText
-//    lateinit var confirmPassword: EditText
     lateinit var mobileNo: EditText
-//    lateinit var showHide1: TextView
-//    lateinit var showHide2: TextView
     lateinit var createAccount: Button
     lateinit var backButton: ImageView
     var passwordShowHide1:Boolean=false
@@ -43,34 +39,10 @@ class CreateAccountActivity : AppCompatActivity() {
         context = this
         name = findViewById(R.id.name)
         emailID = findViewById(R.id.emailID)
-//        password = findViewById(R.id.password)
-//        confirmPassword = findViewById(R.id.confrimPassword)
         mobileNo = findViewById(R.id.mobileNo)
-//        showHide1 = findViewById(R.id.showHide1)
-//        showHide2 = findViewById(R.id.showHide2)
         createAccount = findViewById(R.id.createAccount)
         backButton = findViewById(R.id.back_button)
         progressBarDialog = ProgressBarDialog(context)
-//        showHide1.setOnClickListener(View.OnClickListener {
-//            if (passwordShowHide1) {
-//                passwordShowHide1 = false
-//                password.transformationMethod = PasswordTransformationMethod.getInstance()
-//            } else {
-//                passwordShowHide1 = true
-//                password.transformationMethod = HideReturnsTransformationMethod.getInstance();
-//            }
-//
-//        })
-//        showHide2.setOnClickListener(View.OnClickListener {
-//            if (passwordShowHide2) {
-//                passwordShowHide2 = false
-//                confirmPassword.transformationMethod = PasswordTransformationMethod.getInstance()
-//            } else {
-//                passwordShowHide2 = true
-//                confirmPassword.transformationMethod = HideReturnsTransformationMethod.getInstance();
-//            }
-//
-//        })
         createAccount.setBackgroundResource(R.drawable.create_account_disabled)
         createAccount.isEnabled = false
         val editTexts = listOf(name, emailID, mobileNo)

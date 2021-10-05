@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:layout_width="100dp"
+<androidx.cardview.widget.CardView android:layout_width="100dp"
     android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
+    android:padding="5dp"
+    app:cardCornerRadius="16dp"
+    android:background="@color/white"
     android:layout_margin="5dp"
     android:elevation="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
+        app:shapeAppearanceOverlay="@style/roundedImageView"
         android:id="@+id/roundedImageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/background_logo"
         android:background="@color/white"
         android:scaleType="centerCrop"

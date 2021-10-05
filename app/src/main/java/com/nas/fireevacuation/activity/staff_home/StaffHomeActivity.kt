@@ -72,7 +72,6 @@ class StaffHomeActivity : AppCompatActivity() {
         attendenceButton = findViewById(R.id.attendence)
         gallery = findViewById(R.id.gallery)
         myProfile = findViewById(R.id.myProfile)
-//        backButton = findViewById(R.id.back_button)
         staffName = findViewById(R.id.staffName)
         imageA = findViewById(R.id.imageA)
         imageB = findViewById(R.id.imageB)
@@ -188,12 +187,7 @@ class StaffHomeActivity : AppCompatActivity() {
             startActivity(intent)
             overridePendingTransition(0,0)
         }
-//        backButton.setOnClickListener{
-//            val intent = Intent(context, WelcomeActivity::class.java)
-//            startActivity(intent)
-//            overridePendingTransition(0,0)
-//            finish()
-//        }
+
 
 
 
@@ -332,9 +326,7 @@ class StaffHomeActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        /*val intent = Intent(context, WelcomeActivity::class.java)
-        startActivity(intent)
-        overridePendingTransition(0,0)*/
+
     }
 }
 interface OnSlideCompleteListener {

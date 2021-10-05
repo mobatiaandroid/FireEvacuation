@@ -64,7 +64,6 @@ class EvacuationActivity : AppCompatActivity() {
         context = this
         studentList = ArrayList()
         tabLayout = findViewById(R.id.tabLayout)
-//        viewPager = findViewById(R.id.viewPager)
         searchIcon = findViewById(R.id.searchIcon)
         searchView = findViewById(R.id.searchView)
         searchText = findViewById(R.id.searchText)
@@ -114,8 +113,13 @@ class EvacuationActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 if (s!!.length > 2){
                     searchFilter(s.toString())
+                    val searchAdapter = SearchAdapter(context, ArrayList())
+                    searchRecyclerView.adapter = searchAdapter
+
                 }
                 if (s.isEmpty()){
+                    val searchAdapter = SearchAdapter(context, ArrayList())
+                    searchRecyclerView.adapter = searchAdapter
                     searchRecyclerView.visibility = View.GONE
                 }
             }
@@ -195,53 +199,14 @@ class EvacuationActivity : AppCompatActivity() {
                         studentList.sortBy {
                             it.student_name
                         }
-//                        while (swapped) {
-//                            swapped = false
-//                            for ( i in studentList.indices){
-//
-//                                var temp: EvacuationStudentModel
-//                                if (studentList[i].student_name > studentList[i+1].student_name){
-//                                    temp = studentList[i]
-//                                    studentList[i] = studentList[i+1]
-//                                    studentList[i+1] = temp
-//                                    swapped = true
-//                                }
-//                            }
-//                        }
-//                        Log.e("Sorted",studentList.toString())
                         val adapter = StudentEvacuationAdapter(context, studentList)
                         recyclerView.adapter = adapter
-//                        var i = 0
-//                        while (i<studentList.size){
-//                            if (studentList[i].found.equals("0")) {
-//                                if (!absentEvac.contains(studentList[i])) {
-//                                    absentEvac.add(studentList[i])
-//                                }
-//                            } else {
-//                                if (!presentEvac.contains(studentList[i])) {
-//                                    presentEvac.add(studentList[i])
-//                                }
-//                            }
-//                            i++
-//                        }
-//                        PreferenceManager.setEvacStudentList(context,studentList)
-//                        PreferenceManager.setNotFoundList(context,absentEvac)
-//                        PreferenceManager.setFoundList(context,presentEvac)
                     }
                     override fun onCancelled(error: DatabaseError) {}
                 })
             }
             override fun onCancelled(error: DatabaseError) {}
         })
-
-
-//        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-//        viewPagerAdapter.add(AllEvacuationFragment(), "ALL")
-//        viewPagerAdapter.add(FoundEvacuationFragment(), "FOUND")
-//        viewPagerAdapter.add(NotFoundEvacuationFragment(), "NOT FOUND")
-//        viewPager!!.adapter = viewPagerAdapter
-//        tabLayout!!.setupWithViewPager(viewPager)
-//        tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
     }
 
     private fun closeKeyboard() {

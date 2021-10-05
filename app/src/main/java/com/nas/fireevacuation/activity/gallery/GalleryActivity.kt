@@ -52,7 +52,6 @@ class GalleryActivity : AppCompatActivity() {
         videosText = findViewById(R.id.videosText)
         progressBarDialog = ProgressBarDialog(context)
         recyclerView = findViewById(R.id.recyclerView)
-
         showPhotos()
         photos.setOnClickListener {
             showPhotos()
