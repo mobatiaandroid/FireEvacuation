@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,6 +24,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
         var registrationID: TextView? = null
         var absentOrPresent: TextView? = null
         var switch: Switch? = null
+        var loader: ProgressBar? = null
 
         init {
             studentImage = itemView.findViewById<View>(R.id.studentImage) as ImageView?
@@ -34,6 +32,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             registrationID = itemView.findViewById<View>(R.id.studentID) as TextView?
             absentOrPresent = itemView.findViewById<View>(R.id.presentOrAbsent) as TextView?
             switch = itemView.findViewById<View>(R.id.switch1) as Switch
+            loader = itemView.findViewById<View>(R.id.loader) as ProgressBar
         }
     }
 
@@ -64,58 +63,83 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
                 var child = studentList[holder.adapterPosition]
                 studentList[holder.adapterPosition].found = "1"
-                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                val studentItem = Post(
-                    "1",
-                    child.id,
-                    child.photo,
-                    child.present,
-                    child.registration_id,
-                    child.assembly_point,
-                    child.assembly_point_id,
-                    child.class_id,
-                    child.class_name,
-                    child.created_at,
-                    child.section,
-                    child.staff_id,
-                    child.staff_name,
-                    child.student_name,
-                    child.subject,
-                    child.updated_at
-                )
-                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child(PreferenceManager.getFireRef(context)).child("students").child(child.id).updateChildren(postValues)
-                    .addOnSuccessListener { Log.e("Success","Success")
-                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+                holder.loader!!.visibility = View.VISIBLE
+//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+//                val studentItem = Post(
+//                    "1",
+//                    child.id,
+//                    child.photo,
+//                    child.present,
+//                    child.registration_id,
+//                    child.assembly_point,
+//                    child.assembly_point_id,
+//                    child.class_id,
+//                    child.class_name,
+//                    child.created_at,
+//                    child.section,
+//                    child.staff_id,
+//                    child.staff_name,
+//                    child.student_name,
+//                    child.subject,
+//                    child.updated_at
+//                )
+//                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+//                databaseReference.child(PreferenceManager.getFireRef(context)).child("students").child(child.id).updateChildren(postValues)
+//                    .addOnSuccessListener { Log.e("Success","Success")
+//                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+                val databaseReference = FirebaseDatabase.getInstance().reference
+                    .child("evacuations")
+                    .child(PreferenceManager.getFireRef(context))
+//                Log.e("checkin for found",databaseReference.child("students")
+//                    .child(child.id).child("found").key.toString())
+                databaseReference.child("students")
+                    .child(child.id).child("found")
+                    .setValue("1").addOnSuccessListener {
+                        holder.loader!!.visibility = View.GONE
+
+                    }
+
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
                 var child = studentList[holder.adapterPosition]
                 studentList[holder.adapterPosition].found = "0"
-                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                val studentItem = Post(
-                    "0",
-                    child.id,
-                    child.photo,
-                    child.present,
-                    child.registration_id,
-                    child.assembly_point,
-                    child.assembly_point_id,
-                    child.class_id,
-                    child.class_name,
-                    child.created_at,
-                    child.section,
-                    child.staff_id,
-                    child.staff_name,
-                    child.student_name,
-                    child.subject,
-                    child.updated_at
-                )
-                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
-                    .addOnSuccessListener { Log.e("Success","Success")
-                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+                holder.loader!!.visibility = View.VISIBLE
+//                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+//                val studentItem = Post(
+//                    "0",
+//                    child.id,
+//                    child.photo,
+//                    child.present,
+//                    child.registration_id,
+//                    child.assembly_point,
+//                    child.assembly_point_id,
+//                    child.class_id,
+//                    child.class_name,
+//                    child.created_at,
+//                    child.section,
+//                    child.staff_id,
+//                    child.staff_name,
+//                    child.student_name,
+//                    child.subject,
+//                    child.updated_at
+//                )
+//                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+//                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
+//                    .addOnSuccessListener { Log.e("Success","Success")
+//                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+                val databaseReference = FirebaseDatabase.getInstance().reference
+                    .child("evacuations")
+                    .child(PreferenceManager.getFireRef(context))
+//                Log.e("checkin for found",databaseReference.child("students")
+//                    .child(child.id).child("found").key.toString())
+                databaseReference.child("students")
+                    .child(child.id).child("found")
+                    .setValue("0").addOnSuccessListener {
+                        holder.loader!!.visibility = View.GONE
+                    }
             }
+
         }
     }
 

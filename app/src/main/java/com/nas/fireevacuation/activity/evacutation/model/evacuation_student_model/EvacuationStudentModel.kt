@@ -16,6 +16,16 @@ data class EvacuationStudentModel(
     var staff_name: String,
     var student_name: String,
     var subject: String,
-    var updated_at: String
-)
+    var updated_at: String,
+    var created_by: String,
+    var updated_by: String
+    )
+
+
+
+
+
+
+
+
 

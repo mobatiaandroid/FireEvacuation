@@ -2,18 +2,12 @@ package com.nas.fireevacuation.activity.staff_attendance
 
 import android.content.Context
 import android.content.Intent
-import android.media.Image
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.nas.fireevacuation.R
@@ -21,11 +15,9 @@ import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
-import com.nas.fireevacuation.activity.welcome.WelcomeActivity
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.security.auth.Subject
 
 class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var context: Context
@@ -37,7 +29,6 @@ class StaffAttendanceActivity : AppCompatActivity() {
     lateinit var className: TextView
     lateinit var date: TextView
     lateinit var subject: TextView
-    lateinit var gallery: ImageView
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,8 +89,6 @@ class StaffAttendanceActivity : AppCompatActivity() {
         }catch (e:Exception) {
             Log.e("Error",e.toString())
         }
-
-
     }
 
     private fun closeKeyboard() {

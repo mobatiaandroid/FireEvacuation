@@ -51,56 +51,65 @@ class SearchAdapter(var context: Context, var studentList: ArrayList<EvacuationS
             if (isChecked) {
                 var child = studentList[holder.adapterPosition]
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                val studentItem = Post(
-                    "1",
-                    child.id,
-                    child.photo,
-                    child.present,
-                    child.registration_id,
-                    child.assembly_point,
-                    child.assembly_point_id,
-                    child.class_id,
-                    child.class_name,
-                    child.created_at,
-                    child.section,
-                    child.staff_id,
-                    child.staff_name,
-                    child.student_name,
-                    child.subject,
-                    child.updated_at
-                )
-                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
-                    .addOnSuccessListener { Log.e("Success","Success")
-                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+//                val studentItem = Post(
+//                    "1",
+//                    child.id,
+//                    child.photo,
+//                    child.present,
+//                    child.registration_id,
+//                    child.assembly_point,
+//                    child.assembly_point_id,
+//                    child.class_id,
+//                    child.class_name,
+//                    child.created_at,
+//                    child.section,
+//                    child.staff_id,
+//                    child.staff_name,
+//                    child.student_name,
+//                    child.subject,
+//                    child.updated_at
+//                )
+//                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+//                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
+//                    .addOnSuccessListener { Log.e("Success","Success")
+//                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+                databaseReference.child(PreferenceManager.getFireRef(context))
+                    .child("students")
+                    .child(child.id).child("found")
+                    .setValue("1")
 
             } else {
                 var child = studentList[holder.adapterPosition]
                 val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-                val studentItem = Post(
-                    "0",
-                    child.id,
-                    child.photo,
-                    child.present,
-                    child.registration_id,
-                    child.assembly_point,
-                    child.assembly_point_id,
-                    child.class_id,
-                    child.class_name,
-                    child.created_at,
-                    child.section,
-                    child.staff_id,
-                    child.staff_name,
-                    child.student_name,
-                    child.subject,
-                    child.updated_at
-                )
-                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
-                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
-                    .addOnSuccessListener { Log.e("Success","Success")
-                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
-
+//                val studentItem = Post(
+//                    "0",
+//                    child.id,
+//                    child.photo,
+//                    child.present,
+//                    child.registration_id,
+//                    child.assembly_point,
+//                    child.assembly_point_id,
+//                    child.class_id,
+//                    child.class_name,
+//                    child.created_at,
+//                    child.section,
+//                    child.staff_id,
+//                    child.staff_name,
+//                    child.student_name,
+//                    child.subject,
+//                    child.updated_at
+//                )
+//                val postValues: Map<String, Any> = studentItem.toMap() as Map<String, Any>
+//                databaseReference.child(PreferenceManager.getFireRef(context)).child(child.id).updateChildren(postValues)
+//                    .addOnSuccessListener { Log.e("Success","Success")
+//                        Toast.makeText(context, "Changed", Toast.LENGTH_SHORT).show()}
+//
+                databaseReference.child(PreferenceManager.getFireRef(context))
+                    .child("students")
+                    .child(child.id).child("found")
+                    .setValue("0")
             }
+
         }
     }
 

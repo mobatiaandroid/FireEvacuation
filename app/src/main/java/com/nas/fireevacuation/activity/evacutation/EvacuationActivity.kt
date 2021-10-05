@@ -2,7 +2,6 @@ package com.nas.fireevacuation.activity.evacutation
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -22,19 +22,15 @@ import com.nas.fireevacuation.activity.evacutation.adapter.SearchAdapter
 import com.nas.fireevacuation.activity.evacutation.adapter.StudentEvacuationAdapter
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
-import com.nas.fireevacuation.activity.staff_attendance.adapter.ViewPagerAdapter
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class EvacuationActivity : AppCompatActivity() {
@@ -137,13 +133,10 @@ class EvacuationActivity : AppCompatActivity() {
         firebaseReference = String()
         evacuationCall()
         recyclerView.hasFixedSize()
-        recyclerView.setLayoutManager(
-            LinearLayoutManager(
-                this,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-
+        recyclerView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
         )
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
         databaseReference.addValueEventListener(object: ValueEventListener{
@@ -169,6 +162,8 @@ class EvacuationActivity : AppCompatActivity() {
                                 "",
                                 "",
                                 "",
+                                "",
+                                ""
                             )
                             Log.e("ClassIDValue errorcheck",snapshot.child("4073").child("present").value.toString())
                             Log.e("ClassIDValue errorcheck1",snapshot.toString())
@@ -189,6 +184,8 @@ class EvacuationActivity : AppCompatActivity() {
                                 studentItem.updated_at = snapshot.child("updated_at").value.toString()
                                 studentItem.created_at = snapshot.child("created_at").value.toString()
                                 studentItem.class_name = snapshot.child("class_name").value.toString()
+                                studentItem.created_by = snapshot.child("created_by").value.toString()
+                                studentItem.updated_by = snapshot.child("updated_by").value.toString()
                                 Log.e("Students added", studentItem.toString())
                                 if (!studentList.contains(studentItem)) {
                                     studentList.add(studentItem)
@@ -244,6 +241,8 @@ class EvacuationActivity : AppCompatActivity() {
                                 "",
                                 "",
                                 "",
+                                "",
+                                ""
                             )
                             studentItem.id = snapshot.child("id").value.toString()
                             studentItem.student_name = snapshot.child("student_name").value.toString()
@@ -259,6 +258,8 @@ class EvacuationActivity : AppCompatActivity() {
                             studentItem.staff_name = snapshot.child("staff_name").value.toString()
                             studentItem.section = snapshot.child("section").value.toString()
                             studentItem.updated_at = snapshot.child("updated_at").value.toString()
+                            studentItem.created_by = snapshot.child("created_by").value.toString()
+                            studentItem.updated_by = snapshot.child("updated_by").value.toString()
                             Log.e("Students added", studentItem.toString())
                             if (!studentSearchList.contains(studentItem)) {
                                 studentSearchList.add(studentItem)
@@ -328,7 +329,7 @@ class EvacuationActivity : AppCompatActivity() {
                         firebaseReference = evacuationResponse.data.firebase_referance
                         PreferenceManager.setFireRef(context,firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
-                        Log.e("fireref",firebaseReference.toString())
+                        Log.e("fireref", firebaseReference)
 
                     }
                 }

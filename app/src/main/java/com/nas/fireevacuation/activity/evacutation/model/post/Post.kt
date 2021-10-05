@@ -20,7 +20,9 @@ data class Post(
     var staff_name: String = "",
     var student_name: String = "",
     var subject: String= "",
-    var updated_at: String = ""
+    var updated_at: String = "",
+    var created_by: String = "",
+    var updated_by: String = ""
 ) {
 
     @Exclude
@@ -40,7 +42,9 @@ data class Post(
             "staff_id" to staff_id,
             "student_name" to student_name,
             "subject" to subject,
-            "updated_at" to updated_at
+            "updated_at" to updated_at,
+            "created_by" to created_by,
+            "updated_by" to updated_by
 
         )
     }
