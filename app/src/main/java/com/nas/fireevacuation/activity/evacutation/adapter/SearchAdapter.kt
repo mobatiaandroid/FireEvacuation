@@ -57,7 +57,12 @@ class SearchAdapter(var context: Context, var studentList: ArrayList<EvacuationS
                     .setValue("1")
 
             } else {
-
+                var child = studentList[holder.adapterPosition]
+                val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+                databaseReference.child(PreferenceManager.getFireRef(context))
+                    .child("students")
+                    .child(child.id).child("found")
+                    .setValue("0")
             }
 
         }
