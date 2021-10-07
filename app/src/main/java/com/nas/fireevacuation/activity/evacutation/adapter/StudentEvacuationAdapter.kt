@@ -58,7 +58,37 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context, R.color.pink))
         }
         holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                holder.absentOrPresent!!.text = "P"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
+                var child = studentList[holder.adapterPosition]
+                studentList[holder.adapterPosition].found = "1"
+                holder.loader!!.visibility = View.VISIBLE
+                val databaseReference = FirebaseDatabase.getInstance().reference
+                    .child("evacuations")
+                    .child(PreferenceManager.getFireRef(context))
+                databaseReference.child("students")
+                    .child(child.id).child("found")
+                    .setValue("1").addOnSuccessListener {
+                        holder.loader!!.visibility = View.GONE
 
+                    }
+
+            } else {
+                holder.absentOrPresent!!.text = "A"
+                holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
+                var child = studentList[holder.adapterPosition]
+                studentList[holder.adapterPosition].found = "0"
+                holder.loader!!.visibility = View.VISIBLE
+                val databaseReference = FirebaseDatabase.getInstance().reference
+                    .child("evacuations")
+                    .child(PreferenceManager.getFireRef(context))
+                databaseReference.child("students")
+                    .child(child.id).child("found")
+                    .setValue("0").addOnSuccessListener {
+                        holder.loader!!.visibility = View.GONE
+                    }
+            }
 
         }
     }
