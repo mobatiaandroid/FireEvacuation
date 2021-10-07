@@ -55,7 +55,7 @@ class SessionSelectActivity : AppCompatActivity() {
                     subjectResponse = response.body()!!
                     if (subjectResponse.responsecode.equals("100")) {
                         subjectArrayList = subjectResponse.data.lists as ArrayList<String>
-                        Log.e("subjects", subjectArrayList.toString())
+//                        Log.e("subjects", subjectArrayList.toString())
                     } else if (subjectResponse.responsecode.equals("402")){
                         CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid Access Token")
                         CommonMethods.getAccessTokenAPICall(context)
@@ -147,7 +147,7 @@ class SessionSelectActivity : AppCompatActivity() {
             }
             builder.setPositiveButton("OK") { dialog, which ->
                                     selectedSession.text = yearGroupsSelector[checkedItem]
-                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[checkedItem].id)
+//                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[checkedItem].id)
                                     position = checkedItem
             }
             builder.setNegativeButton("Cancel", null)
@@ -167,7 +167,7 @@ class SessionSelectActivity : AppCompatActivity() {
                 CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Subject")
             } else {
                 val intent = Intent(context, StaffHomeActivity::class.java)
-                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[position].id)
+//                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[position].id)
                 PreferenceManager.setClassID(context, yearGroupsArrayList[position].id)
                 PreferenceManager.setClassName(context, selectedSession.text.toString())
                 PreferenceManager.setSubject(context, selectedSubject.text.toString())

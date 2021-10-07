@@ -189,7 +189,7 @@ class SignInActivity : AppCompatActivity() {
                 progressBarDialog!!.hide()
                 if(!response.body()!!.equals("")) {
                     signInResponse = response.body()!!
-                    Log.e("Sign In Response", response.body().toString())
+//                    Log.e("Sign In Response", response.body().toString())
                     if (signInResponse.responsecode.equals("100")) {
                         if (signInResponse.message.equals("success")) {
                             CommonMethods.showLoginErrorPopUp(context, "Alert", "Login Successful")

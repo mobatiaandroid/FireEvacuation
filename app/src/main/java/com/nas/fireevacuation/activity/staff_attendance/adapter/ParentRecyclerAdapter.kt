@@ -24,8 +24,8 @@ class ParentRecyclerAdapter(var context: Context, var studentList: ArrayList<Lis
         var alphabet: TextView
         var childRecyclerView: RecyclerView
         init {
-            alphabet = (itemView.findViewById<View>(com.nas.fireevacuation.R.id.alphabet) as TextView?)!!
-            childRecyclerView = (itemView.findViewById<View>(com.nas.fireevacuation.R.id.childRecyclerView) as RecyclerView?)!!
+            alphabet = (itemView.findViewById<View>(R.id.alphabet) as TextView?)!!
+            childRecyclerView = (itemView.findViewById<View>(R.id.childRecyclerView) as RecyclerView?)!!
         }
     }
 

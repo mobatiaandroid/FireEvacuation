@@ -136,7 +136,7 @@ class StaffHomeActivity : AppCompatActivity() {
                     call: Call<AssemblyPointsModel>,
                     response: Response<AssemblyPointsModel>
                 ) {
-                    Log.e("Assembly Response",response.body().toString())
+//                    Log.e("Assembly Response",response.body().toString())
                     if (!response.body()!!.equals("")) {
                         assemblyPointsResponse = response.body()!!
                         if (assemblyPointsResponse.responsecode.equals("100")) {
@@ -145,14 +145,14 @@ class StaffHomeActivity : AppCompatActivity() {
                                     assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
                                     i++
                                 }
-                                Log.e("Assembly Points2", assemblyPointsList.toString())
+//                                Log.e("Assembly Points2", assemblyPointsList.toString())
                                 var i = 0
                                 var assemblyPointsStringList: ArrayList<String> = ArrayList()
                                 while (i<assemblyPointsList.size){
                                     assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
                                     i++
                                 }
-                                Log.e("Assembly Points3", assemblyPointsStringList.toString())
+//                                Log.e("Assembly Points3", assemblyPointsStringList.toString())
                                 val builder = AlertDialog.Builder(context)
                                 builder.setTitle("Select Session")
                                 var checkedItem = -1

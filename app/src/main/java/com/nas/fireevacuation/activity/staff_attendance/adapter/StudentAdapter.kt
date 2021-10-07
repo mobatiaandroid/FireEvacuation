@@ -89,11 +89,11 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 
                                 if (!response.body()!!.equals("")) {
                                     studentsResponse = response.body()!!
-                                    Log.e("Response", response.body().toString())
+//                                    Log.e("Response", response.body().toString())
                                     if (studentsResponse.responsecode.equals("100")) {
                                         if (studentsResponse.message.equals("success")) {
-                                            Log.e(
-                                                "Success", studentsResponse.toString())
+//                                            Log.e(
+//                                                "Success", studentsResponse.toString())
                                             if (flag.equals("Present")) {
                                                 studentList.removeAt(holder.adapterPosition)
                                                 notifyItemChanged(holder.adapterPosition)
@@ -137,7 +137,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 
                         var studentsResponse: StudentAttendanceModel
                         var i = 0
-                    Log.e("id", studentList[holder.adapterPosition].id)
+//                    Log.e("id", studentList[holder.adapterPosition].id)
 
                     val call: Call<StudentAttendanceModel> =
                             ApiClient.getClient.attendanceUpdate(
@@ -154,14 +154,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                             ) {
                                 holder.loader!!.visibility = View.GONE
 
-                                Log.e("Change",response.toString())
+//                                Log.e("Change",response.toString())
                                 if (!response.body()!!.equals("")) {
                                     studentsResponse = response.body()!!
-                                    Log.e("Response", response.body().toString())
+//                                    Log.e("Response", response.body().toString())
                                     if (studentsResponse.responsecode.equals("100")) {
                                         if (studentsResponse.message.equals("success")) {
-                                            Log.e(
-                                                "Success", studentsResponse.toString())
+//                                            Log.e(
+//                                                "Success", studentsResponse.toString())
                                             if (flag.equals("Present")) {
                                                 studentList.removeAt(holder.adapterPosition)
                                                 notifyItemChanged(holder.adapterPosition)

@@ -54,10 +54,10 @@ class AbsentStudentsFragment : Fragment() {
                 progressBarDialog!!.hide()
                 if (!response.body()!!.equals("")) {
                     studentsResponse = response.body()!!
-                    Log.e("Response",response.body().toString())
+//                    Log.e("Response",response.body().toString())
                     if (studentsResponse.responsecode.equals("100")) {
                         if (studentsResponse.message.equals("success")) {
-                            Log.e("Response",studentsResponse.data.toString())
+//                            Log.e("Response",studentsResponse.data.toString())
                             while (i<studentsResponse.data.lists.size) {
                                 studentsArrayList.add(studentsResponse.data.lists[i])
                                 i++

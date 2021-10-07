@@ -146,7 +146,7 @@ class EvacuationActivity : AppCompatActivity() {
                 databaseReference.child(firebaseReference).child("students")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            Log.e("dataref", databaseReference.child(firebaseReference).toString())
+//                            Log.e("dataref", databaseReference.child(firebaseReference).toString())
                             for (snapshot in snapshot.children) {
                                 var studentItem: EvacuationStudentModel = EvacuationStudentModel(
                                     "",
@@ -168,11 +168,11 @@ class EvacuationActivity : AppCompatActivity() {
                                     "",
                                     ""
                                 )
-                                Log.e(
-                                    "ClassIDValue errorcheck",
-                                    snapshot.child("4073").child("present").value.toString()
-                                )
-                                Log.e("ClassIDValue errorcheck1", snapshot.toString())
+//                                Log.e(
+//                                    "ClassIDValue errorcheck",
+//                                    snapshot.child("4073").child("present").value.toString()
+//                                )
+//                                Log.e("ClassIDValue errorcheck1", snapshot.toString())
                                 if ((snapshot.child("class_id").value)!!.equals(
                                         PreferenceManager.getClassID(
                                             context
@@ -210,13 +210,13 @@ class EvacuationActivity : AppCompatActivity() {
                                         snapshot.child("created_by").value.toString()
                                     studentItem.updated_by =
                                         snapshot.child("updated_by").value.toString()
-                                    Log.e("Students added", studentItem.toString())
+//                                    Log.e("Students added", studentItem.toString())
                                     if (!studentList.contains(studentItem)) {
                                         studentList.add(studentItem)
                                     }
                                 }
                             }
-                            Log.e("Students1", studentList.toString())
+//                            Log.e("Students1", studentList.toString())
                             var swapped: Boolean = true
                             var i = 0
                             studentList.sortBy {
@@ -288,7 +288,7 @@ class EvacuationActivity : AppCompatActivity() {
                             studentItem.updated_at = snapshot.child("updated_at").value.toString()
                             studentItem.created_by = snapshot.child("created_by").value.toString()
                             studentItem.updated_by = snapshot.child("updated_by").value.toString()
-                            Log.e("Students added", studentItem.toString())
+//                            Log.e("Students added", studentItem.toString())
                             if (!studentSearchList.contains(studentItem)) {
                                 studentSearchList.add(studentItem)
                             }
@@ -304,15 +304,13 @@ class EvacuationActivity : AppCompatActivity() {
                                 it.student_name
                             }
                         }
-                        if (!filteredList.isEmpty()){
+                        if (filteredList.isNotEmpty()){
                             searchRecyclerView.visibility = View.VISIBLE
                             searchRecyclerView.hasFixedSize()
-                            searchRecyclerView.setLayoutManager(
-                                LinearLayoutManager(
-                                    context,
-                                    LinearLayoutManager.VERTICAL,
-                                    false
-                                )
+                            searchRecyclerView.layoutManager = LinearLayoutManager(
+                                context,
+                                LinearLayoutManager.VERTICAL,
+                                false
                             )
 
                         }
@@ -357,7 +355,7 @@ class EvacuationActivity : AppCompatActivity() {
                         firebaseReference = evacuationResponse.data.firebase_referance
                         PreferenceManager.setFireRef(context,firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
-                        Log.e("fireref", firebaseReference)
+//                        Log.e("fireref", firebaseReference)
 
                     }
                 }

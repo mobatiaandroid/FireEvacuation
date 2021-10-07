@@ -107,14 +107,14 @@ class GalleryActivity : AppCompatActivity() {
                     if (videoResponse.responsecode.toString().equals("100")) {
                         if (videoResponse.message.equals("success")) {
 
-                            Log.e("Response", videoResponse.toString())
+//                            Log.e("Response", videoResponse.toString())
 
 
                             while (i<videoResponse.data.lists.size) {
                                 videosList.add(videoResponse.data.lists[i])
                                 i++
                             }
-                            Log.e("Response", videosList.toString())
+//                            Log.e("Response", videosList.toString())
                             val photosAdapter = VideoAdapter(context, videosList)
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = GridLayoutManager(context, 3)
@@ -150,18 +150,18 @@ class GalleryActivity : AppCompatActivity() {
                 progressBarDialog!!.hide()
                 if (!response.body()!!.equals("")) {
                     photosResponse = response.body()!!
-                    Log.e("Photos1",photosResponse.toString())
-                    Log.e("Response",photosResponse.responsecode.toString())
-                    Log.e("Response",photosResponse.message.toString())
+//                    Log.e("Photos1",photosResponse.toString())
+//                    Log.e("Response",photosResponse.responsecode.toString())
+//                    Log.e("Response",photosResponse.message.toString())
                     if (photosResponse.responsecode.toString().equals("100")) {
-                        Log.e("Photo2s",photosResponse.toString())
+//                        Log.e("Photo2s",photosResponse.toString())
                         if (photosResponse.message.equals("success")) {
-                            Log.e("Photos3",photosResponse.toString())
+//                            Log.e("Photos3",photosResponse.toString())
                             while (i<photosResponse.data.lists.size) {
                                 photosList.add(photosResponse.data.lists[i])
                                 i++
                             }
-                            Log.e("Photos5",photosList.toString())
+//                            Log.e("Photos5",photosList.toString())
                             val photosAdapter = PhotoAdapter(context, photosList)
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = GridLayoutManager(context, 3)

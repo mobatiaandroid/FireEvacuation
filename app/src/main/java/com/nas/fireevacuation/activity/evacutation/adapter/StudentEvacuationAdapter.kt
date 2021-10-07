@@ -144,7 +144,7 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
     }
 
     override fun getItemCount(): Int {
-        Log.e("List Size",studentList.size.toString())
+//        Log.e("List Size",studentList.size.toString())
         return studentList.size
     }
 }
