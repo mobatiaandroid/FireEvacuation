@@ -214,6 +214,19 @@ class EvacuationActivity : AppCompatActivity() {
                                     if (!studentList.contains(studentItem)) {
                                         studentList.add(studentItem)
                                     }
+//                                    var i = 0
+//                                    var found = 0
+//                                    while (i<studentList.size){
+//                                        if (studentList[i].id.equals(studentItem.id)){
+//                                            found = 1
+//                                        } else{
+//                                            found = 0
+//                                        }
+//                                        i++
+//                                    }
+//                                    if (found == 0){
+//                                        studentList.add(studentItem)
+//                                    }
                                 }
                             }
 //                            Log.e("Students1", studentList.toString())
@@ -223,6 +236,7 @@ class EvacuationActivity : AppCompatActivity() {
                                 it.student_name
                             }
                             val adapter = StudentEvacuationAdapter(context, studentList)
+                            Log.e("Student List", studentList.toString())
                             recyclerView.adapter = adapter
                         }
 
@@ -252,7 +266,7 @@ class EvacuationActivity : AppCompatActivity() {
                 databaseReference.child(firebaseReference).child("students").addValueEventListener(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
-                            var studentItem: EvacuationStudentModel = EvacuationStudentModel(
+                            var studentItem = EvacuationStudentModel(
                                 "",
                                 "",
                                 "",

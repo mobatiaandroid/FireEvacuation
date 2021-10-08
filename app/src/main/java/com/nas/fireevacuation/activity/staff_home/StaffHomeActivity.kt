@@ -277,18 +277,18 @@ class StaffHomeActivity : AppCompatActivity() {
                                 }
                                 i++
                             }
-                            if (presentStudentList.size > 0){
-                                PreferenceManager.setPresentList(context,presentStudentList)
-                            } else {
-                                presentStudentList = ArrayList()
-                                PreferenceManager.setPresentList(context,presentStudentList)
-                            }
-                            if (absentStudentList.size > 0){
-                                PreferenceManager.setAbsentList(context, absentStudentList)
-                            } else {
-                                absentStudentList = ArrayList()
-                                PreferenceManager.setAbsentList(context,absentStudentList)
-                            }
+//                            if (presentStudentList.size > 0){
+//                                PreferenceManager.setPresentList(context,presentStudentList)
+//                            } else {
+//                                presentStudentList = ArrayList()
+//                                PreferenceManager.setPresentList(context,presentStudentList)
+//                            }
+//                            if (absentStudentList.size > 0){
+//                                PreferenceManager.setAbsentList(context, absentStudentList)
+//                            } else {
+//                                absentStudentList = ArrayList()
+//                                PreferenceManager.setAbsentList(context,absentStudentList)
+//                            }
                             progressBarPresent.progressDrawable.setColorFilter(
                                 context.resources.getColor(R.color.green), android.graphics.PorterDuff.Mode.SRC_IN)
                             progressBarAbsent.progressDrawable.setColorFilter(

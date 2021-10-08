@@ -130,8 +130,14 @@ class SessionSelectActivity : AppCompatActivity() {
                 checkedItem = which
             }
             builder.setPositiveButton("OK") { dialog, which ->
-                selectedSubject.text = subjectSelector[checkedItem]
-                position2 = checkedItem
+                if (checkedItem == -1){
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select")
+                }
+                else{
+                    selectedSubject.text = subjectSelector[checkedItem]
+                    position2 = checkedItem
+                }
+
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()
@@ -146,9 +152,15 @@ class SessionSelectActivity : AppCompatActivity() {
                 checkedItem = which
             }
             builder.setPositiveButton("OK") { dialog, which ->
-                                    selectedSession.text = yearGroupsSelector[checkedItem]
+                if (checkedItem == -1){
+                    CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select")
+                }
+                else{
+                    selectedSession.text = yearGroupsSelector[checkedItem]
+                    position = checkedItem
+
+                }
 //                Log.e("ClassIDSEssionSelecet", yearGroupsArrayList[checkedItem].id)
-                                    position = checkedItem
             }
             builder.setNegativeButton("Cancel", null)
             val dialog = builder.create()

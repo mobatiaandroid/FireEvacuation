@@ -23,8 +23,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, var flag: String): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
-    var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
-    var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
+//    var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
+//    var presentList: ArrayList<Lists> = PreferenceManager.getPresentList(context)
+
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var studentImage: ImageView? = null
         var studentName: TextView? = null
@@ -32,6 +33,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
         var absentOrPresent: TextView? = null
         var switch: Switch? = null
         var loader: ProgressBar? = null
+
 
         init {
             studentImage = itemView.findViewById<View>(R.id.studentImage) as ImageView?
@@ -64,20 +66,17 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
             holder.switch!!.isChecked = false
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
         }
-        holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+        holder.switch!!.setOnCheckedChangeListener { _, isChecked ->
 
             if (isChecked){
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.green))
-                if (!absentList.isEmpty()) {
-
                         var studentsResponse: StudentAttendanceModel
-
                         var i = 0
                         val call: Call<StudentAttendanceModel> =
                             ApiClient.getClient.attendanceUpdate(
                                 PreferenceManager.getAccessToken(context),
-                                studentList[holder.adapterPosition].id.toString(),"1"
+                                studentList[holder.adapterPosition].id,"1"
                             )
                     holder.loader!!.visibility = View.VISIBLE
                         call.enqueue(object : Callback<StudentAttendanceModel> {
@@ -94,10 +93,23 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                         if (studentsResponse.message.equals("success")) {
 //                                            Log.e(
 //                                                "Success", studentsResponse.toString())
-                                            if (flag.equals("Present")) {
-                                                studentList.removeAt(holder.adapterPosition)
-                                                notifyItemChanged(holder.adapterPosition)
+                                            try {
+                                                if (flag.equals("Present")) {
+                                                    studentList.removeAt(holder.adapterPosition)
+                                                    notifyItemChanged(holder.adapterPosition)
+                                                }
+                                            }catch (e: Exception){
+                                                Log.e("Error",e.toString())
                                             }
+                                            try {
+                                                if (flag.equals("Absent")) {
+                                                    studentList.removeAt(holder.adapterPosition)
+                                                    notifyItemChanged(holder.adapterPosition)
+                                                }
+                                            }catch (e: Exception){
+                                                Log.e("Error2",e.toString())
+                                            }
+
 
 //                                            if (!absentList.contains(studentList[holder.adapterPosition])) {
 //                                                studentList[holder.adapterPosition].present = "1"
@@ -129,7 +141,7 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 
 
 
-                    }
+
 
             } else{
                 holder.absentOrPresent!!.text = "A"
