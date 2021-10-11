@@ -91,13 +91,13 @@ class StaffAttendanceActivity : AppCompatActivity() {
         }
     }
 
-    private fun closeKeyboard() {
-        val view = this.currentFocus
-        if (view != null) {
-            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            manager.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-    }
+//    private fun closeKeyboard() {
+//        val view = this.currentFocus
+//        if (view != null) {
+//            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+//            manager.hideSoftInputFromWindow(view.windowToken, 0)
+//        }
+//    }
 
     override fun onBackPressed() {
         super.onBackPressed()

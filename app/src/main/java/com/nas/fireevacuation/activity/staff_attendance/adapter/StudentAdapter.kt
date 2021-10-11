@@ -99,12 +99,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                                     notifyItemChanged(holder.adapterPosition)
                                                 }
                                             }catch (e: Exception){
-                                                Log.e("Error",e.toString())
+                                                Log.e("checkingforerror",e.toString())
                                             }
                                             try {
                                                 if (flag.equals("Absent")) {
-                                                    studentList.removeAt(holder.adapterPosition)
-                                                    notifyItemChanged(holder.adapterPosition)
+//                                                    studentList.removeAt(holder.adapterPosition)
+//                                                    notifyItemChanged(holder.adapterPosition)
+//                                                    notifyDataSetChanged()
+
                                                 }
                                             }catch (e: Exception){
                                                 Log.e("Error2",e.toString())
@@ -175,8 +177,16 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 //                                            Log.e(
 //                                                "Success", studentsResponse.toString())
                                             if (flag.equals("Present")) {
+                                                Log.e("Error","Error?")
                                                 studentList.removeAt(holder.adapterPosition)
                                                 notifyItemChanged(holder.adapterPosition)
+                                                notifyDataSetChanged()
+                                            }
+                                            if (flag.equals("Absent")) {
+//                                                    studentList.removeAt(holder.adapterPosition)
+//                                                    notifyItemChanged(holder.adapterPosition)
+                                                notifyDataSetChanged()
+
                                             }
                                         }
                                     }

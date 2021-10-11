@@ -210,23 +210,27 @@ class EvacuationActivity : AppCompatActivity() {
                                         snapshot.child("created_by").value.toString()
                                     studentItem.updated_by =
                                         snapshot.child("updated_by").value.toString()
-//                                    Log.e("Students added", studentItem.toString())
-                                    if (!studentList.contains(studentItem)) {
-                                        studentList.add(studentItem)
-                                    }
-//                                    var i = 0
-//                                    var found = 0
-//                                    while (i<studentList.size){
-//                                        if (studentList[i].id.equals(studentItem.id)){
-//                                            found = 1
-//                                        } else{
-//                                            found = 0
+//                                    if (!studentList.contains(studentItem)) {
+//                                        if (studentItem.present.equals("1")){
+//                                            studentList.add(studentItem)
 //                                        }
-//                                        i++
 //                                    }
-//                                    if (found == 0){
-//                                        studentList.add(studentItem)
-//                                    }
+                                    var i = 0
+                                    var found = 0
+                                    while (i<studentList.size){
+                                        if (studentList[i].id.equals(studentItem.id)){
+                                            found = 1
+                                        } else{
+                                            found = 0
+                                        }
+                                        i++
+                                    }
+                                    if (found == 0){
+                                        if (!studentList.contains(studentItem)) {
+                                            if (studentItem.present.equals("1")){
+                                                studentList.add(studentItem)
+                                            }
+                                        }                                    }
                                 }
                             }
 //                            Log.e("Students1", studentList.toString())
@@ -304,7 +308,9 @@ class EvacuationActivity : AppCompatActivity() {
                             studentItem.updated_by = snapshot.child("updated_by").value.toString()
 //                            Log.e("Students added", studentItem.toString())
                             if (!studentSearchList.contains(studentItem)) {
-                                studentSearchList.add(studentItem)
+                                if (studentItem.present.equals("1")){
+                                    studentSearchList.add(studentItem)
+                                }
                             }
                         }
                         for (item in studentSearchList) {
