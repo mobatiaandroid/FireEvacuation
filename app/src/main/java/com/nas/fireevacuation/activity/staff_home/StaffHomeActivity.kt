@@ -160,8 +160,15 @@ class StaffHomeActivity : AppCompatActivity() {
                                     checkedItem = which
                                 }
                                 builder.setPositiveButton("OK") { dialog, which ->
-                                    area.text = assemblyPointsStringList[checkedItem]
-                                    PreferenceManager.setAssemblyPoint(context, assemblyPointsList[checkedItem].id)
+                                    if (checkedItem == -1){
+                                        CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select")
+                                    }
+                                    else{
+                                        area.text = assemblyPointsStringList[checkedItem]
+                                        PreferenceManager.setAssemblyPoint(context, assemblyPointsList[checkedItem].id)
+
+                                    }
+
                                 }
                                 builder.setNegativeButton("Cancel", null)
                                 val dialog = builder.create()

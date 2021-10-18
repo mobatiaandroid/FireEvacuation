@@ -200,20 +200,20 @@ class PreferenceManager {
             editor.putString("absent_list", json)
             editor.apply()
         }
-        fun getNotFoundList(context: Context): ArrayList<EvacuationStudentModel> {
-            var absentList: ArrayList<EvacuationStudentModel> = ArrayList()
-            val sharedPreferences: SharedPreferences =
-                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            val gson = Gson()
-            val json = sharedPreferences.getString("absent_list", null)
-            Log.e("Absent",json.toString())
-            val type: Type = object : TypeToken<ArrayList<EvacuationStudentModel?>?>() {}.type
-            absentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
-            if (absentList == null) {
-                absentList = ArrayList()
-            }
-            return absentList
-        }
+//        fun getNotFoundList(context: Context): ArrayList<EvacuationStudentModel> {
+//            var absentList: ArrayList<EvacuationStudentModel> = ArrayList()
+//            val sharedPreferences: SharedPreferences =
+//                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+//            val gson = Gson()
+//            val json = sharedPreferences.getString("absent_list", null)
+//            Log.e("Absent",json.toString())
+//            val type: Type = object : TypeToken<ArrayList<EvacuationStudentModel?>?>() {}.type
+//            absentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
+//            if (absentList == null) {
+//                absentList = ArrayList()
+//            }
+//            return absentList
+//        }
         fun setFoundList(context: Context, presentList:ArrayList<EvacuationStudentModel>) {
             val sharedPreferences: SharedPreferences =
                 context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
@@ -223,16 +223,16 @@ class PreferenceManager {
             editor.putString("present_list", json)
             editor.apply()
         }
-        fun getFoundList(context: Context): ArrayList<EvacuationStudentModel> {
-            val presentList: ArrayList<EvacuationStudentModel>
-            val sharedPreferences: SharedPreferences =
-                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
-            val gson = Gson()
-            val json = sharedPreferences.getString("present_list", null)
-            val type: Type = object : TypeToken<ArrayList<EvacuationStudentModel?>?>() {}.type
-            presentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
-            return presentList
-        }
+//        fun getFoundList(context: Context): ArrayList<EvacuationStudentModel> {
+//            val presentList: ArrayList<EvacuationStudentModel>
+//            val sharedPreferences: SharedPreferences =
+//                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+//            val gson = Gson()
+//            val json = sharedPreferences.getString("present_list", null)
+//            val type: Type = object : TypeToken<ArrayList<EvacuationStudentModel?>?>() {}.type
+//            presentList = gson.fromJson<Any>(json, type) as ArrayList<EvacuationStudentModel>
+//            return presentList
+//        }
         fun setEvacStudentList(context: Context, studentlist:ArrayList<EvacuationStudentModel>) {
             val sharedPreferences: SharedPreferences =
                 context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)

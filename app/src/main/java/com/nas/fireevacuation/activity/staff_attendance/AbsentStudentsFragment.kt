@@ -68,11 +68,10 @@ class AbsentStudentsFragment : Fragment() {
                                     presentStudentList.add(studentsArrayList[i])
                                 } else {
                                     absentStudentList.add(studentsArrayList[i])
-
                                 }
                                 i++
                             }
-                            val studentAdapter = StudentAdapter(context!!, absentStudentList,"Present")
+                            val studentAdapter = StudentAdapter(context!!, absentStudentList,"ABSENT")
                             recyclerView.hasFixedSize()
                             recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                             recyclerView.adapter = studentAdapter

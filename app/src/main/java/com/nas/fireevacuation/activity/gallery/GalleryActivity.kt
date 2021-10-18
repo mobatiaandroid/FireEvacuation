@@ -139,7 +139,7 @@ class GalleryActivity : AppCompatActivity() {
         val call: Call<PhotosModel> = ApiClient.getClient.photosAPICall(
             PreferenceManager.getAccessToken(context),
             "77",
-            "3"
+            "1"
         )
         var photosResponse: PhotosModel
         var photosList: ArrayList<Lists> = ArrayList()

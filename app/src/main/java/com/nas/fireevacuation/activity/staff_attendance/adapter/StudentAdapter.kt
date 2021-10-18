@@ -93,19 +93,20 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
                                         if (studentsResponse.message.equals("success")) {
 //                                            Log.e(
 //                                                "Success", studentsResponse.toString())
-                                            try {
-                                                if (flag.equals("Present")) {
-                                                    studentList.removeAt(holder.adapterPosition)
-                                                    notifyItemChanged(holder.adapterPosition)
-                                                }
-                                            }catch (e: Exception){
-                                                Log.e("checkingforerror",e.toString())
-                                            }
-                                            try {
-                                                if (flag.equals("Absent")) {
+//                                            try {
+//                                                if (flag.equals("Present")) {
 //                                                    studentList.removeAt(holder.adapterPosition)
 //                                                    notifyItemChanged(holder.adapterPosition)
-//                                                    notifyDataSetChanged()
+//                                                }
+//                                            }catch (e: Exception){
+//                                                Log.e("checkingforerror",e.toString())
+//                                            }
+                                            try {
+                                                if (flag == "ABSENT") {
+                                                    studentList.removeAt(holder.adapterPosition)
+                                                    notifyItemChanged(holder.adapterPosition)
+                                                    notifyDataSetChanged()
+                                                    Log.e("Error Check", "Item deleted")
 
                                                 }
                                             }catch (e: Exception){
@@ -174,19 +175,14 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
 //                                    Log.e("Response", response.body().toString())
                                     if (studentsResponse.responsecode.equals("100")) {
                                         if (studentsResponse.message.equals("success")) {
-//                                            Log.e(
-//                                                "Success", studentsResponse.toString())
-                                            if (flag.equals("Present")) {
+                                            Log.e(
+                                                "Success", studentsResponse.toString())
+                                            Log.e("Flag", flag)
+                                            if (flag  == "PRESENT") {
                                                 Log.e("Error","Error?")
                                                 studentList.removeAt(holder.adapterPosition)
                                                 notifyItemChanged(holder.adapterPosition)
                                                 notifyDataSetChanged()
-                                            }
-                                            if (flag.equals("Absent")) {
-//                                                    studentList.removeAt(holder.adapterPosition)
-//                                                    notifyItemChanged(holder.adapterPosition)
-                                                notifyDataSetChanged()
-
                                             }
                                         }
                                     }

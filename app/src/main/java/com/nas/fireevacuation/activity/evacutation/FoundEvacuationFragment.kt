@@ -86,7 +86,7 @@ class FoundEvacuationFragment : Fragment() {
 //            }
 //            override fun onCancelled(error: DatabaseError) {}
 //        })
-        studentList = PreferenceManager.getFoundList(context!!)
+        studentList = ArrayList()
         val studentAdapter = StudentEvacuationAdapter(context!!, studentList)
         recyclerView.hasFixedSize()
         recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

@@ -16,8 +16,8 @@ import com.nas.fireevacuation.activity.evacutation.model.post.Post
 import com.nas.fireevacuation.common.constants.PreferenceManager
 
 class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<EvacuationStudentModel>): RecyclerView.Adapter<StudentEvacuationAdapter.MyViewHolder>() {
-    var absentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getNotFoundList(context)
-    var presentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getFoundList(context)
+//    var absentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getNotFoundList(context)
+//    var presentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getFoundList(context)
     class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         var studentImage: ImageView? = null
         var studentName: TextView? = null

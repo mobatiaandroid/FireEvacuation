@@ -58,6 +58,18 @@ class StaffAttendanceActivity : AppCompatActivity() {
             viewPagerAdapter.add(AbsentStudentsFragment(), "ABSENT")
             viewPager!!.adapter = viewPagerAdapter
             tabLayout!!.setupWithViewPager(viewPager)
+            tabLayout!!.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    viewPager!!.currentItem = tab!!.position;
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab?) {
+                }
+
+            })
             tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
             homeButton.setOnClickListener {
                 val intent = Intent(context, StaffHomeActivity::class.java)

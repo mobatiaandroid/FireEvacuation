@@ -138,8 +138,111 @@ class EvacuationActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
-        if (f == 1) {
-
+//        val databaseReference = FirebaseDatabase.getInstance().reference
+//            .child("evacuations")
+//            .child(firebaseReference)
+//            .child("students")
+//        databaseReference.addValueEventListener(
+//            object : ValueEventListener {
+//                        override fun onDataChange(snapshot: DataSnapshot) {
+//                            Log.e("dataref", databaseReference.child(firebaseReference).toString())
+//                            for (snapshot in snapshot.children) {
+//                                var studentItem: EvacuationStudentModel = EvacuationStudentModel(
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    "",
+//                                    ""
+//                                )
+////                                Log.e(
+////                                    "ClassIDValue errorcheck",
+////                                    snapshot.child("4073").child("present").value.toString()
+////                                )
+//                                Log.e("ClassIDValue errorcheck1", snapshot.toString())
+//                                if ((snapshot.child("class_id").value)!!.equals(
+//                                        PreferenceManager.getClassID(
+//                                            context
+//                                        )
+//                                    )
+//                                ) {
+//                                    studentItem.id = snapshot.child("id").value.toString()
+//                                    studentItem.student_name =
+//                                        snapshot.child("student_name").value.toString()
+//                                    studentItem.photo = snapshot.child("photo").value.toString()
+//                                    studentItem.found = snapshot.child("found").value.toString()
+//                                    studentItem.class_id =
+//                                        snapshot.child("class_id").value.toString()
+//                                    studentItem.assembly_point =
+//                                        snapshot.child("assembly_point").value.toString()
+//                                    studentItem.assembly_point_id =
+//                                        snapshot.child("assembly_point_id").value.toString()
+//                                    studentItem.created_at =
+//                                        snapshot.child("created_at").value.toString()
+//                                    studentItem.present = snapshot.child("present").value.toString()
+//                                    studentItem.registration_id =
+//                                        snapshot.child("registration_id").value.toString()
+//                                    studentItem.staff_id =
+//                                        snapshot.child("staff_id").value.toString()
+//                                    studentItem.staff_name =
+//                                        snapshot.child("staff_name").value.toString()
+//                                    studentItem.section = snapshot.child("section").value.toString()
+//                                    studentItem.updated_at =
+//                                        snapshot.child("updated_at").value.toString()
+//                                    studentItem.created_at =
+//                                        snapshot.child("created_at").value.toString()
+//                                    studentItem.class_name =
+//                                        snapshot.child("class_name").value.toString()
+//                                    studentItem.created_by =
+//                                        snapshot.child("created_by").value.toString()
+//                                    studentItem.updated_by =
+//                                        snapshot.child("updated_by").value.toString()
+//
+//                                    var i = 0
+//                                    var found = 0
+//                                    while (i<studentList.size){
+//                                        if (studentList[i].id.equals(studentItem.id)){
+//                                            found = 1
+//                                            break
+//                                        } else{
+//                                            found = 0
+//                                        }
+//                                        i++
+//                                    }
+//                                    if (found == 0){
+////                                        if (!studentList.contains(studentItem)) {
+//                                            if (studentItem.present.equals("1")){
+//                                                studentList.add(studentItem)
+//                                            }
+////                                        }
+//                                    }
+//                                }
+//                            }
+//                            Log.e("Students1", studentList.toString())
+//                            var swapped: Boolean = true
+//                            var i = 0
+//                            studentList.sortBy {
+//                                it.student_name
+//                            }
+//                            val adapter = StudentEvacuationAdapter(context, studentList)
+//                            Log.e("Student 1 2 3List", studentList.toString())
+//                            recyclerView.adapter = adapter
+//                        }
+//                        override fun onCancelled(error: DatabaseError) {}
+//                    }
+//        )
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
         databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -210,37 +313,35 @@ class EvacuationActivity : AppCompatActivity() {
                                         snapshot.child("created_by").value.toString()
                                     studentItem.updated_by =
                                         snapshot.child("updated_by").value.toString()
-//                                    if (!studentList.contains(studentItem)) {
-//                                        if (studentItem.present.equals("1")){
-//                                            studentList.add(studentItem)
-//                                        }
-//                                    }
+
                                     var i = 0
                                     var found = 0
                                     while (i<studentList.size){
                                         if (studentList[i].id.equals(studentItem.id)){
                                             found = 1
+                                            break
                                         } else{
                                             found = 0
                                         }
                                         i++
                                     }
                                     if (found == 0){
-                                        if (!studentList.contains(studentItem)) {
+//                                        if (!studentList.contains(studentItem)) {
                                             if (studentItem.present.equals("1")){
                                                 studentList.add(studentItem)
                                             }
-                                        }                                    }
+//                                        }
+                                    }
                                 }
                             }
-//                            Log.e("Students1", studentList.toString())
+                            Log.e("Students1", studentList.toString())
                             var swapped: Boolean = true
                             var i = 0
                             studentList.sortBy {
                                 it.student_name
                             }
                             val adapter = StudentEvacuationAdapter(context, studentList)
-                            Log.e("Student List", studentList.toString())
+                            Log.e("Student 1 2 3List", studentList.toString())
                             recyclerView.adapter = adapter
                         }
 
@@ -250,8 +351,7 @@ class EvacuationActivity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {}
         })
-            f=0
-    }
+
     }
 
     private fun closeKeyboard() {
