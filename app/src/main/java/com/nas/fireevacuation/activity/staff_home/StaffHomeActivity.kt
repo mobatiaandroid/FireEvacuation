@@ -16,6 +16,7 @@ import com.nas.fireevacuation.activity.evacutation.EvacuationActivity
 import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
+import com.nas.fireevacuation.activity.staff_attendance.AllStudentsActivity
 import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
@@ -190,7 +191,7 @@ class StaffHomeActivity : AppCompatActivity() {
 
         }
         attendenceButton.setOnClickListener{
-            val intent = Intent(context, StaffAttendanceActivity::class.java)
+            val intent = Intent(context, AllStudentsActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
         }

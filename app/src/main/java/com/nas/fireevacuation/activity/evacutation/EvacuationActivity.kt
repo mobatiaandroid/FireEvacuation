@@ -434,10 +434,12 @@ class EvacuationActivity : AppCompatActivity() {
                             )
 
                         }
-
                         val adapter = SearchAdapter(context, filteredList)
                         searchRecyclerView.adapter = adapter
                         filteredList = ArrayList()
+                        if (filteredList.isEmpty()){
+                            searchRecyclerView.visibility = View.GONE
+                        }
 
                     }
 
