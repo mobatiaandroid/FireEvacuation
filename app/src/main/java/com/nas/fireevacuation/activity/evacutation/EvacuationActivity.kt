@@ -31,9 +31,34 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import android.widget.Toast
+
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 
-class EvacuationActivity : AppCompatActivity() {
+import android.view.LayoutInflater
+
+import android.view.ViewGroup
+
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+
+import com.google.firebase.database.DataSnapshot
+
+import com.firebase.ui.database.SnapshotParser
+
+import com.firebase.ui.database.FirebaseRecyclerOptions
+
+import com.google.firebase.database.FirebaseDatabase
+
+
+
+
+
+
+
+
+
+open class EvacuationActivity() : AppCompatActivity() {
     lateinit var context: Context
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
@@ -51,6 +76,9 @@ class EvacuationActivity : AppCompatActivity() {
     lateinit var presentEvac: ArrayList<EvacuationStudentModel>
     lateinit var subject: TextView
     lateinit var recyclerView: RecyclerView
+    lateinit var mDatabaseReference: DatabaseReference
+
+    private var adapter: FirebaseRecyclerAdapter<*, *>? = null
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -138,6 +166,7 @@ class EvacuationActivity : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
+//        loadRecyclerView()
 //        val databaseReference = FirebaseDatabase.getInstance().reference
 //            .child("evacuations")
 //            .child(firebaseReference)
@@ -353,6 +382,87 @@ class EvacuationActivity : AppCompatActivity() {
         })
 
     }
+
+//    private fun loadRecyclerView() {
+//        val options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
+//            .setQuery(query, EvacuationStudentModel::class.java)
+//            .build()
+//        val adapter: FirebaseRecyclerAdapter<*, *> =
+//            object : FirebaseRecyclerAdapter<EvacuationStudentModel, StudentViewHolder>(options) {
+//                override fun onCreateViewHolder(
+//                    parent: ViewGroup,
+//                    viewType: Int
+//                ): StudentViewHolder {
+//                    val itemView: View = LayoutInflater.from(parent.context)
+//                        .inflate(R.layout.student_evacuation_adapter, parent, false)
+//                    return StudentViewHolder(itemView)
+//                }
+//
+//                override fun onBindViewHolder(
+//                    holder: StudentViewHolder,
+//                    position: Int,
+//                    model: EvacuationStudentModel
+//                ) {
+//                }
+//
+//
+//            }
+//    }
+
+//    class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+//    private fun Load() {
+//        val query: Query = FirebaseDatabase.getInstance().reference.child("posts")
+//        val options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
+//            .setQuery(query, SnapshotParser<Any?> { snapshot ->
+//                EvacuationStudentModel(
+//                    snapshot.child("found").value.toString(),
+//                    snapshot.child("id").value.toString(),
+//                    snapshot.child("photo").value.toString(),
+//                    snapshot.child("present").value.toString(),
+//                    snapshot.child("registration_id").value.toString(),
+//                    snapshot.child("assembly_point").value.toString(),
+//                    snapshot.child("assembly_point_id").value.toString(),
+//                    snapshot.child("class_id").value.toString(),
+//                    snapshot.child("class_name").value.toString(),
+//                    snapshot.child("created_at").value.toString(),
+//                    snapshot.child("section").value.toString(),
+//                    snapshot.child("staff_id").value.toString(),
+//                    snapshot.child("staff_name").value.toString(),
+//                    snapshot.child("student_name").value.toString(),
+//                    snapshot.child("subject").value.toString(),
+//                    snapshot.child("updated_at").value.toString(),
+//                    snapshot.child("created_by").value.toString(),
+//                    snapshot.child("photo").value.toString()
+//                    )
+//            })
+//            .build()
+//        adapter = object : FirebaseRecyclerAdapter<EvacuationStudentModel, ViewHolder>(options) {
+//            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+//                val view: View = LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.student_evacuation_adapter, parent, false)
+//                return ViewHolder(view)
+//            }
+//
+//            protected override fun onBindViewHolder(
+//                holder: ViewHolder,
+//                position: Int,
+//                model: EvacuationStudentModel
+//            ) {
+//                holder.
+//                holder.setTxtTitle(model.getmTitle())
+//                holder.setTxtDesc(model.getmDescription())
+//                holder.root.setOnClickListener(View.OnClickListener {
+//                    Toast.makeText(
+//                        this@MainActivity,
+//                        position.toString(),
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                })
+//            }
+//        }
+//        recyclerView.adapter = adapter
+//        adapter.startListening()
+//    }
 
     private fun closeKeyboard() {
         val view = this.currentFocus
