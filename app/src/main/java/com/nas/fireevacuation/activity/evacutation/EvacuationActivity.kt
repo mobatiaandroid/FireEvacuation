@@ -1,5 +1,6 @@
 package com.nas.fireevacuation.activity.evacutation
 
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +19,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.*
 import com.nas.fireevacuation.R
+import com.nas.fireevacuation.activity.evacutation.adapter.FirebaseAdapter
 import com.nas.fireevacuation.activity.evacutation.adapter.SearchAdapter
 import com.nas.fireevacuation.activity.evacutation.adapter.StudentEvacuationAdapter
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
@@ -31,24 +33,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DatabaseError
+
 import android.widget.Toast
-
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-
-
-import android.view.LayoutInflater
-
-import android.view.ViewGroup
-
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 
 import com.google.firebase.database.DataSnapshot
 
-import com.firebase.ui.database.SnapshotParser
-
-import com.firebase.ui.database.FirebaseRecyclerOptions
-
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 
 
@@ -77,8 +69,8 @@ open class EvacuationActivity() : AppCompatActivity() {
     lateinit var subject: TextView
     lateinit var recyclerView: RecyclerView
     lateinit var mDatabaseReference: DatabaseReference
+    lateinit var firebaseAdapter: FirebaseAdapter
 
-    private var adapter: FirebaseRecyclerAdapter<*, *>? = null
     var tabLayout: TabLayout? = null
     var viewPager: ViewPager? = null
 
@@ -166,15 +158,39 @@ open class EvacuationActivity() : AppCompatActivity() {
             LinearLayoutManager.VERTICAL,
             false
         )
-//        loadRecyclerView()
-//        val databaseReference = FirebaseDatabase.getInstance().reference
-//            .child("evacuations")
-//            .child(firebaseReference)
-//            .child("students")
-//        databaseReference.addValueEventListener(
-//            object : ValueEventListener {
+        mDatabaseReference = FirebaseDatabase.getInstance().reference
+            .child("evacuations")
+
+        val queries: Query = mDatabaseReference.child(PreferenceManager.getFireRef(context))
+            .child("students").orderByChild("class_id").equalTo(PreferenceManager.getClassID(context))
+
+        Log.e("Query", queries.toString())
+//        queries.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    Log.e("Snapshot",dataSnapshot.toString())
+//                    Toast.makeText(context, "data exists", Toast.LENGTH_SHORT).show()
+//                } else {
+//                    Log.e("Snapshot",dataSnapshot.toString())
+//                    Toast.makeText(context, "No data exists", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {}
+//        })
+        var options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
+            .setQuery(queries, EvacuationStudentModel::class.java)
+            .build()
+        Log.e("Options",options.toString())
+        Log.e("Query", options.toString())
+        firebaseAdapter = FirebaseAdapter(options)
+        recyclerView.adapter = firebaseAdapter
+//        val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
+//        databaseReference.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                databaseReference.child(firebaseReference).child("students")
+//                    .addValueEventListener(object : ValueEventListener {
 //                        override fun onDataChange(snapshot: DataSnapshot) {
-//                            Log.e("dataref", databaseReference.child(firebaseReference).toString())
 //                            for (snapshot in snapshot.children) {
 //                                var studentItem: EvacuationStudentModel = EvacuationStudentModel(
 //                                    "",
@@ -196,11 +212,7 @@ open class EvacuationActivity() : AppCompatActivity() {
 //                                    "",
 //                                    ""
 //                                )
-////                                Log.e(
-////                                    "ClassIDValue errorcheck",
-////                                    snapshot.child("4073").child("present").value.toString()
-////                                )
-//                                Log.e("ClassIDValue errorcheck1", snapshot.toString())
+//
 //                                if ((snapshot.child("class_id").value)!!.equals(
 //                                        PreferenceManager.getClassID(
 //                                            context
@@ -269,200 +281,16 @@ open class EvacuationActivity() : AppCompatActivity() {
 //                            Log.e("Student 1 2 3List", studentList.toString())
 //                            recyclerView.adapter = adapter
 //                        }
+//
 //                        override fun onCancelled(error: DatabaseError) {}
-//                    }
-//        )
-        val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-        databaseReference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                databaseReference.child(firebaseReference).child("students")
-                    .addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-//                            Log.e("dataref", databaseReference.child(firebaseReference).toString())
-                            for (snapshot in snapshot.children) {
-                                var studentItem: EvacuationStudentModel = EvacuationStudentModel(
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""
-                                )
-//                                Log.e(
-//                                    "ClassIDValue errorcheck",
-//                                    snapshot.child("4073").child("present").value.toString()
-//                                )
-//                                Log.e("ClassIDValue errorcheck1", snapshot.toString())
-                                if ((snapshot.child("class_id").value)!!.equals(
-                                        PreferenceManager.getClassID(
-                                            context
-                                        )
-                                    )
-                                ) {
-                                    studentItem.id = snapshot.child("id").value.toString()
-                                    studentItem.student_name =
-                                        snapshot.child("student_name").value.toString()
-                                    studentItem.photo = snapshot.child("photo").value.toString()
-                                    studentItem.found = snapshot.child("found").value.toString()
-                                    studentItem.class_id =
-                                        snapshot.child("class_id").value.toString()
-                                    studentItem.assembly_point =
-                                        snapshot.child("assembly_point").value.toString()
-                                    studentItem.assembly_point_id =
-                                        snapshot.child("assembly_point_id").value.toString()
-                                    studentItem.created_at =
-                                        snapshot.child("created_at").value.toString()
-                                    studentItem.present = snapshot.child("present").value.toString()
-                                    studentItem.registration_id =
-                                        snapshot.child("registration_id").value.toString()
-                                    studentItem.staff_id =
-                                        snapshot.child("staff_id").value.toString()
-                                    studentItem.staff_name =
-                                        snapshot.child("staff_name").value.toString()
-                                    studentItem.section = snapshot.child("section").value.toString()
-                                    studentItem.updated_at =
-                                        snapshot.child("updated_at").value.toString()
-                                    studentItem.created_at =
-                                        snapshot.child("created_at").value.toString()
-                                    studentItem.class_name =
-                                        snapshot.child("class_name").value.toString()
-                                    studentItem.created_by =
-                                        snapshot.child("created_by").value.toString()
-                                    studentItem.updated_by =
-                                        snapshot.child("updated_by").value.toString()
-
-                                    var i = 0
-                                    var found = 0
-                                    while (i<studentList.size){
-                                        if (studentList[i].id.equals(studentItem.id)){
-                                            found = 1
-                                            break
-                                        } else{
-                                            found = 0
-                                        }
-                                        i++
-                                    }
-                                    if (found == 0){
-//                                        if (!studentList.contains(studentItem)) {
-                                            if (studentItem.present.equals("1")){
-                                                studentList.add(studentItem)
-                                            }
-//                                        }
-                                    }
-                                }
-                            }
-                            Log.e("Students1", studentList.toString())
-                            var swapped: Boolean = true
-                            var i = 0
-                            studentList.sortBy {
-                                it.student_name
-                            }
-                            val adapter = StudentEvacuationAdapter(context, studentList)
-                            Log.e("Student 1 2 3List", studentList.toString())
-                            recyclerView.adapter = adapter
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {}
-                    })
-            }
-
-            override fun onCancelled(error: DatabaseError) {}
-        })
+//                    })
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {}
+//        })
 
     }
 
-//    private fun loadRecyclerView() {
-//        val options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
-//            .setQuery(query, EvacuationStudentModel::class.java)
-//            .build()
-//        val adapter: FirebaseRecyclerAdapter<*, *> =
-//            object : FirebaseRecyclerAdapter<EvacuationStudentModel, StudentViewHolder>(options) {
-//                override fun onCreateViewHolder(
-//                    parent: ViewGroup,
-//                    viewType: Int
-//                ): StudentViewHolder {
-//                    val itemView: View = LayoutInflater.from(parent.context)
-//                        .inflate(R.layout.student_evacuation_adapter, parent, false)
-//                    return StudentViewHolder(itemView)
-//                }
-//
-//                override fun onBindViewHolder(
-//                    holder: StudentViewHolder,
-//                    position: Int,
-//                    model: EvacuationStudentModel
-//                ) {
-//                }
-//
-//
-//            }
-//    }
-
-//    class StudentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-//    private fun Load() {
-//        val query: Query = FirebaseDatabase.getInstance().reference.child("posts")
-//        val options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
-//            .setQuery(query, SnapshotParser<Any?> { snapshot ->
-//                EvacuationStudentModel(
-//                    snapshot.child("found").value.toString(),
-//                    snapshot.child("id").value.toString(),
-//                    snapshot.child("photo").value.toString(),
-//                    snapshot.child("present").value.toString(),
-//                    snapshot.child("registration_id").value.toString(),
-//                    snapshot.child("assembly_point").value.toString(),
-//                    snapshot.child("assembly_point_id").value.toString(),
-//                    snapshot.child("class_id").value.toString(),
-//                    snapshot.child("class_name").value.toString(),
-//                    snapshot.child("created_at").value.toString(),
-//                    snapshot.child("section").value.toString(),
-//                    snapshot.child("staff_id").value.toString(),
-//                    snapshot.child("staff_name").value.toString(),
-//                    snapshot.child("student_name").value.toString(),
-//                    snapshot.child("subject").value.toString(),
-//                    snapshot.child("updated_at").value.toString(),
-//                    snapshot.child("created_by").value.toString(),
-//                    snapshot.child("photo").value.toString()
-//                    )
-//            })
-//            .build()
-//        adapter = object : FirebaseRecyclerAdapter<EvacuationStudentModel, ViewHolder>(options) {
-//            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//                val view: View = LayoutInflater.from(parent.context)
-//                    .inflate(R.layout.student_evacuation_adapter, parent, false)
-//                return ViewHolder(view)
-//            }
-//
-//            protected override fun onBindViewHolder(
-//                holder: ViewHolder,
-//                position: Int,
-//                model: EvacuationStudentModel
-//            ) {
-//                holder.
-//                holder.setTxtTitle(model.getmTitle())
-//                holder.setTxtDesc(model.getmDescription())
-//                holder.root.setOnClickListener(View.OnClickListener {
-//                    Toast.makeText(
-//                        this@MainActivity,
-//                        position.toString(),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                })
-//            }
-//        }
-//        recyclerView.adapter = adapter
-//        adapter.startListening()
-//    }
 
     private fun closeKeyboard() {
         val view = this.currentFocus
@@ -587,7 +415,7 @@ open class EvacuationActivity() : AppCompatActivity() {
                         firebaseReference = evacuationResponse.data.firebase_referance
                         PreferenceManager.setFireRef(context,firebaseReference)
                         firebaseID = evacuationResponse.data.id.toString()
-//                        Log.e("fireref", firebaseReference)
+                        Log.e("fireref", firebaseReference)
 
                     }
                 }
@@ -605,4 +433,16 @@ open class EvacuationActivity() : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
+    override fun onStart() {
+        super.onStart()
+        firebaseAdapter.startListening();
+    }
+
+    override fun onStop() {
+        super.onStop()
+        firebaseAdapter.stopListening();
+    }
+
 }
+
