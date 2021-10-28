@@ -161,23 +161,13 @@ open class EvacuationActivity() : AppCompatActivity() {
         mDatabaseReference = FirebaseDatabase.getInstance().reference
             .child("evacuations")
 
+//        val queries: Query = mDatabaseReference.child(PreferenceManager.getFireRef(context))
+//            .child("students").orderByChild("class_id").equalTo(PreferenceManager.getClassID(context))
+        Log.e("ClassID", PreferenceManager.getClassID(context).toString())
         val queries: Query = mDatabaseReference.child(PreferenceManager.getFireRef(context))
-            .child("students").orderByChild("class_id").equalTo(PreferenceManager.getClassID(context))
+            .child("students").orderByChild("class_id").startAt(PreferenceManager.getClassID(context).toString())
 
         Log.e("Query", queries.toString())
-//        queries.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    Log.e("Snapshot",dataSnapshot.toString())
-//                    Toast.makeText(context, "data exists", Toast.LENGTH_SHORT).show()
-//                } else {
-//                    Log.e("Snapshot",dataSnapshot.toString())
-//                    Toast.makeText(context, "No data exists", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {}
-//        })
         var options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
             .setQuery(queries, EvacuationStudentModel::class.java)
             .build()
@@ -284,10 +274,12 @@ open class EvacuationActivity() : AppCompatActivity() {
 //
 //                        override fun onCancelled(error: DatabaseError) {}
 //                    })
+//                databaseReference.child(firebaseReference).child("students").removeEventListener(this)
 //            }
 //
 //            override fun onCancelled(error: DatabaseError) {}
 //        })
+
 
     }
 
@@ -303,9 +295,9 @@ open class EvacuationActivity() : AppCompatActivity() {
         var studentSearchList: ArrayList<EvacuationStudentModel> = ArrayList()
         var filteredList: ArrayList<EvacuationStudentModel> = ArrayList()
         val databaseReference = FirebaseDatabase.getInstance().reference.child("evacuations")
-        databaseReference.addValueEventListener(object: ValueEventListener{
+        databaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                databaseReference.child(firebaseReference).child("students").addValueEventListener(object: ValueEventListener{
+                databaseReference.child(firebaseReference).child("students").addListenerForSingleValueEvent(object: ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (snapshot in snapshot.children){
                             var studentItem = EvacuationStudentModel(
@@ -393,6 +385,7 @@ open class EvacuationActivity() : AppCompatActivity() {
             }
 
         })
+
     }
 
     private fun evacuationCall() {

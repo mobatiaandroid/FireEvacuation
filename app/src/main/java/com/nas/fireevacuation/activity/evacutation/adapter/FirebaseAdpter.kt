@@ -1,5 +1,6 @@
 package com.nas.fireevacuation.activity.evacutation.adapter
 
+import android.util.Log
 import com.nas.fireevacuation.R
 
 import android.widget.TextView
@@ -33,6 +34,7 @@ class FirebaseAdapter(
         @NonNull holder: ViewHolder,
         position: Int, @NonNull model: EvacuationStudentModel
     ) {
+        Log.e("Model", model.class_id)
         Glide.with(holder.studentImage!!.context).load(model.photo).into(holder.studentImage!!)
         holder.studentName!!.text = model.student_name
         holder.registrationID!!.text = model.registration_id
