@@ -26,6 +26,7 @@ import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.activity.staff_home.model.students_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
 import com.nas.fireevacuation.common.constants.ApiClient
+import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
 import com.nas.fireevacuation.common.constants.ProgressBarDialog
 import retrofit2.Call
@@ -52,6 +53,7 @@ class AllStudentsActivity : AppCompatActivity() {
     lateinit var header: TextView
     var progressBarDialog: ProgressBarDialog? = null
     var tabLayout: TabLayout? = null
+    var studentsArrayList: ArrayList<Lists> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_students)
@@ -76,15 +78,22 @@ class AllStudentsActivity : AppCompatActivity() {
             searchView.visibility = View.VISIBLE
             header.visibility = View.GONE
             searchIcon.visibility = View.GONE
+            backButton.visibility = View.GONE
         }
         searchClose.setOnClickListener {
             closeKeyboard()
-            searchView.visibility = View.GONE
-            header.visibility = View.VISIBLE
-            searchIcon.visibility = View.VISIBLE
-            val adapter = StudentAdapter(context, studentList,"ALL")
-            recyclerView.adapter = adapter
-            searchText.text.clear()
+            try {
+                searchView.visibility = View.GONE
+                header.visibility = View.VISIBLE
+                searchIcon.visibility = View.VISIBLE
+                backButton.visibility = View.VISIBLE
+                val adapter = StudentAdapter(context, studentsArrayList,"ALL")
+                recyclerView.adapter = adapter
+                searchText.text.clear()
+            }catch (e:Exception){
+                Log.e("Error",e.toString())
+            }
+
         }
         searchText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -94,7 +103,7 @@ class AllStudentsActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s!!.length > 2) {
+                if (s!!.length > 1) {
                     searchFilter(s.toString())
                 }
             }
@@ -166,39 +175,52 @@ class AllStudentsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         progressBarDialog = ProgressBarDialog(context!!)
         var studentsResponse: StudentModel
-        var studentsArrayList: ArrayList<Lists> = ArrayList()
+
         var i: Int = 0
-        val call: Call<StudentModel> = ApiClient.getClient.studentsAPICall(
-            PreferenceManager.getAccessToken(context),
-            PreferenceManager.getClassID(context)
-        )
-        progressBarDialog!!.show()
-        call.enqueue(object : Callback<StudentModel> {
-            override fun onResponse(call: Call<StudentModel>, response: Response<StudentModel>) {
-                progressBarDialog!!.hide()
-                if (!response.body()!!.equals("")) {
-                    studentsResponse = response.body()!!
-                    if (studentsResponse.responsecode.equals("100")) {
-                        if (studentsResponse.message.equals("success")) {
-                            while (i<studentsResponse.data.lists.size) {
-                                studentsArrayList.add(studentsResponse.data.lists[i])
-                                i++
+        if (CommonMethods.isInternetAvailable(context)) {
+            val call: Call<StudentModel> = ApiClient.getClient.studentsAPICall(
+                PreferenceManager.getAccessToken(context),
+                PreferenceManager.getClassID(context)
+            )
+            progressBarDialog!!.show()
+            call.enqueue(object : Callback<StudentModel> {
+                override fun onResponse(
+                    call: Call<StudentModel>,
+                    response: Response<StudentModel>
+                ) {
+                    progressBarDialog!!.hide()
+                    if (!response.body()!!.equals("")) {
+                        studentsResponse = response.body()!!
+                        if (studentsResponse.responsecode.equals("100")) {
+                            if (studentsResponse.message.equals("success")) {
+                                while (i < studentsResponse.data.lists.size) {
+                                    studentsArrayList.add(studentsResponse.data.lists[i])
+                                    i++
+                                }
+                                Log.e("Studentin All", studentsArrayList.toString())
+                                val studentAdapter =
+                                    StudentAdapter(context, studentsArrayList, "ALL")
+                                recyclerView.hasFixedSize()
+                                recyclerView.layoutManager = LinearLayoutManager(
+                                    context,
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                                recyclerView.adapter = studentAdapter
                             }
-                            Log.e("Studentin All",studentsArrayList.toString())
-                            val studentAdapter = StudentAdapter(context, studentsArrayList,"ALL")
-                            recyclerView.hasFixedSize()
-                            recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                            recyclerView.adapter = studentAdapter
                         }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<StudentModel>, t: Throwable) {
-                progressBarDialog!!.hide()
-            }
+                override fun onFailure(call: Call<StudentModel>, t: Throwable) {
+                    progressBarDialog!!.hide()
+                }
 
-        })
+            })
+        } else{
+            CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+
+        }
     }
 
     private fun closeKeyboard() {

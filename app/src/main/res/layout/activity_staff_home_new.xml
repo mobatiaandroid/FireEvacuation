@@ -128,7 +128,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardview"
                 android:layout_width="0dp"
-                android:layout_height="280dp"
+                android:layout_height="240dp"
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline6"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -163,13 +163,14 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
                         android:id="@+id/textView14"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="TOTAL \nSTUDENTS"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -178,7 +179,7 @@
                         android:id="@+id/totalStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="38"
+                        android:text="0"
                         android:textSize="40dp"
                         app:layout_constraintStart_toStartOf="@+id/textView14"
                         app:layout_constraintTop_toBottomOf="@+id/textView14" />
@@ -187,9 +188,9 @@
                         android:id="@+id/textView16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="TOTAL \nABSENT"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline9"
                         app:layout_constraintTop_toTopOf="@+id/guideline10" />
@@ -198,7 +199,7 @@
                         android:id="@+id/absentStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="02"
+                        android:text="0"
                         android:textSize="40dp"
                         app:layout_constraintStart_toStartOf="@+id/textView16"
                         app:layout_constraintTop_toBottomOf="@+id/textView16" />
@@ -207,9 +208,9 @@
                         android:id="@+id/textView18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="16dp"
                         android:text="TOTAL \nPRESENT"
-                        android:textSize="15dp"
+                        android:textSize="14dp"
                         app:layout_constraintEnd_toStartOf="@+id/guideline9"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/guideline10" />
@@ -218,7 +219,7 @@
                         android:id="@+id/presentStudents"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="36"
+                        android:text="0"
                         android:textSize="40dp"
                         app:layout_constraintStart_toStartOf="@+id/textView18"
                         app:layout_constraintTop_toBottomOf="@+id/textView18" />
@@ -227,28 +228,28 @@
                         android:id="@+id/className"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginTop="16dp"
                         android:text="Class Name"
-                        android:textSize="15dp"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/subjectName"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="1dp"
                         android:text="12/03/2003"
                         android:textColor="#b2b2b2"
-                        app:layout_constraintStart_toStartOf="@+id/className"
-                        app:layout_constraintTop_toBottomOf="@+id/className" />
+                        app:layout_constraintStart_toStartOf="@+id/subjectName"
+                        app:layout_constraintTop_toBottomOf="@+id/subjectName" />
 
                     <ProgressBar
                         android:id="@+id/progressBarPresent"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:progressTint="#4ECB71"
+                        android:progressTint="#2D4550"
                         app:layout_constraintEnd_toStartOf="@+id/guideline9"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/presentStudents" />
@@ -298,12 +299,22 @@
                         android:layout_marginStart="4dp"
                         app:layout_constraintStart_toEndOf="@+id/imageC"
                         app:layout_constraintTop_toBottomOf="@+id/date" />
+
+                    <com.nas.fireevacuation.common.custom_views.textview.CustomFontTextViewSemiBoldBlack
+                        android:id="@+id/subjectName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Subject"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/assemblyAreaSelector"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/rounded_bg"
                 app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -316,8 +327,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="24dp"
                     android:gravity="center_vertical"
-                    android:text="Assembly Area"
-                    android:textColor="@color/black"
+                    android:text="Select Assembly Point"
+                    android:textColor="@color/off_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -344,23 +355,22 @@
 
                 <View
                     android:id="@+id/view"
-                    android:layout_width="1dp"
+                    android:layout_width="2dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/imageView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/view"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/evacuation_icon" />
@@ -369,7 +379,7 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="24dp"
                     android:text="EVACUATE NOW"
                     android:textSize="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -380,7 +390,7 @@
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Assemble at area of \nrefuge"
+                    android:text="Assemble at area of refuge"
                     android:textSize="14dp"
                     app:layout_constraintStart_toStartOf="@+id/textView9"
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />

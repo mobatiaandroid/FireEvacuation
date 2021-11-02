@@ -75,19 +75,22 @@ class CreateAccountActivity : AppCompatActivity() {
         }
         createAccount.setOnClickListener {
             if (name.text.toString().equals("") || emailID.text.toString().equals("") || mobileNo.text.toString().equals("")){
-                CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be left Empty")
+                CommonMethods.showLoginErrorPopUp(context, "Field cannot be left Empty")
                 createAccount.setBackgroundResource(R.drawable.create_account_disabled)
             } else {
                 createAccount.setBackgroundResource(R.drawable.rounded_sign_in)
                 var emailPattern = CommonMethods.isEmailValid(emailID.text.toString())
                 if (!emailPattern) {
-                    CommonMethods.showLoginErrorPopUp(context,"Alert","Enter a Valid Email.")
+                    CommonMethods.showLoginErrorPopUp(context, "Enter a Valid Email.")
                     createAccount.setBackgroundResource(R.drawable.create_account_disabled)
                 } else {
                         if (CommonMethods.isInternetAvailable(context)) {
                             callCreateAccountApi()
                         } else {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Network error occurred. Please check your internet connection and try again later.")
+                            CommonMethods.showLoginErrorPopUp(
+                                context,
+                                "Network error occurred. Please check your internet connection and try again later."
+                            )
                             createAccount.setBackgroundResource(R.drawable.create_account_disabled)
                         }
 
@@ -124,35 +127,39 @@ class CreateAccountActivity : AppCompatActivity() {
             "1"
         )
         progressBarDialog!!.show()
-        call.enqueue(object : Callback<CreateAccountModel> {
-            override fun onResponse(
-                call: Call<CreateAccountModel>,
-                response: Response<CreateAccountModel>
-            ) {
-                progressBarDialog!!.hide()
-                if(!response.body()!!.equals("")) {
-                    createAccountResponse = response.body()!!
-                    if (createAccountResponse.responsecode == "121") {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Already Registered")
+        if (CommonMethods.isInternetAvailable(context)) {
+            call.enqueue(object : Callback<CreateAccountModel> {
+                override fun onResponse(
+                    call: Call<CreateAccountModel>,
+                    response: Response<CreateAccountModel>
+                ) {
+                    progressBarDialog!!.hide()
+                    if (!response.body()!!.equals("")) {
+                        createAccountResponse = response.body()!!
+                        if (createAccountResponse.responsecode == "121") {
+                            CommonMethods.showLoginErrorPopUp(context, "Already Registered")
                             val intent = Intent(context, SignInActivity::class.java)
                             startActivity(intent)
-                            overridePendingTransition(0,0)
+                            overridePendingTransition(0, 0)
                             finish()
-                    } else if (createAccountResponse.responsecode == "114") {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Invalid User")
-                    }else if (createAccountResponse.responsecode == "402") {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
-                        CommonMethods.getAccessTokenAPICall(context)
+                        } else if (createAccountResponse.responsecode == "114") {
+                            CommonMethods.showLoginErrorPopUp(context, "Invalid User")
+                        } else if (createAccountResponse.responsecode == "402") {
+                            CommonMethods.showLoginErrorPopUp(context, "Some Error Occurred")
+                            CommonMethods.getAccessTokenAPICall(context)
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<CreateAccountModel>, t: Throwable) {
-                progressBarDialog!!.hide()
-                CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occurred")
-                CommonMethods.getAccessTokenAPICall(context)
-            }
+                override fun onFailure(call: Call<CreateAccountModel>, t: Throwable) {
+                    progressBarDialog!!.hide()
+                    CommonMethods.showLoginErrorPopUp(context, "Some Error Occurred")
+                    CommonMethods.getAccessTokenAPICall(context)
+                }
 
-        })
+            })
+        } else{
+            CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+        }
     }
 }

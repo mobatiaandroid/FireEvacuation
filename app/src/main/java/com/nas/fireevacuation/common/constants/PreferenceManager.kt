@@ -283,5 +283,19 @@ class PreferenceManager {
             firebaseReference = sharedPreferences.getString("firebaseReference", "").toString()
             return firebaseReference
         }
+        fun setScrollPos(context: Context, pos: String) {
+            val sharedPreferences: SharedPreferences =
+                context.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+            editor.putString("pos", pos)
+            editor.apply()
+        }
+        fun getScrollPos(context: Context?): String {
+            val pos: String
+            val sharedPreferences: SharedPreferences =
+                context!!.getSharedPreferences(sharedPrefNas, Context.MODE_PRIVATE)
+            pos = sharedPreferences.getString("pos", "").toString()
+            return pos
+        }
     }
 }

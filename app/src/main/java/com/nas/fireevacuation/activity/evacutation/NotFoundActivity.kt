@@ -39,14 +39,13 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-//lateinit var studentList: ArrayList<EvacuationStudentModel>
-open class EvacuationActivity() : AppCompatActivity() {
+open class NotFoundActivity() : AppCompatActivity() {
     lateinit var context: Context
     lateinit var progressBarDialog: ProgressBarDialog
     lateinit var firebaseID: String
     lateinit var firebaseReference: String
     lateinit var closeButton: ImageView
-    lateinit var studentList: ArrayList<EvacuationStudentModel>
+        lateinit var studentList: ArrayList<EvacuationStudentModel>
     lateinit var className: TextView
     lateinit var date: TextView
     lateinit var searchIcon: ImageView
@@ -93,6 +92,8 @@ open class EvacuationActivity() : AppCompatActivity() {
         className.text = PreferenceManager.getClassName(context)
         tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"))
         tabLayout!!.addTab(tabLayout!!.newTab().setText("NOT FOUND"))
+        val tab = tabLayout!!.getTabAt(1)
+        tab!!.select()
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 try {
@@ -125,6 +126,7 @@ open class EvacuationActivity() : AppCompatActivity() {
             searchView.visibility = View.VISIBLE
             header.visibility = View.GONE
             searchIcon.visibility = View.GONE
+            closeButton.visibility = View.GONE
         }
         searchClose.setOnClickListener {
             closeKeyboard()
@@ -132,6 +134,7 @@ open class EvacuationActivity() : AppCompatActivity() {
             searchRecyclerView.visibility = View.GONE
             header.visibility = View.VISIBLE
             searchIcon.visibility = View.VISIBLE
+            closeButton.visibility = View.VISIBLE
             val searchAdapter = SearchAdapter(context, ArrayList())
             searchRecyclerView.adapter = searchAdapter
             val adapter = StudentEvacuationAdapter(context, studentList)
@@ -208,24 +211,11 @@ open class EvacuationActivity() : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (snapshot in snapshot.children) {
                                 var studentItem: EvacuationStudentModel = EvacuationStudentModel(
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    "",
-                                    ""
+                                    "", "", "", "",
+                                    "", "", "", "",
+                                    "", "", "", "",
+                                    "", "", "", "",
+                                    "", ""
                                 )
 
                                 if ((snapshot.child("class_id").value)!!.equals(
@@ -296,7 +286,7 @@ open class EvacuationActivity() : AppCompatActivity() {
                             val adapter = StudentEvacuationAdapter(context, studentList)
                             Log.e("Student 1 2 3List", studentList.toString())
                             recyclerView.adapter = adapter
-                            recyclerView.scrollToPosition(CommonMethods.getPos())
+                            recyclerView.scrollToPosition(CommonMethods.getPos() - 2)
                             recyclerView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
 
 
@@ -314,12 +304,7 @@ open class EvacuationActivity() : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {}
         })
-//        studentList = PreferenceManager.getEvacStudentList(context)
-//        val adapter = StudentEvacuationAdapter(context, studentList)
-//        Log.e("Student 1 2 3List", studentList.toString())
-//        recyclerView.adapter = adapter
 
-//        databaseReference.keepSynced(true)
     }
 
 

@@ -13,7 +13,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.model.evacuation_student_model.EvacuationStudentModel
 import com.nas.fireevacuation.activity.evacutation.model.post.Post
+import com.nas.fireevacuation.common.constants.CommonMethods
 import com.nas.fireevacuation.common.constants.PreferenceManager
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<EvacuationStudentModel>): RecyclerView.Adapter<StudentEvacuationAdapter.MyViewHolder>() {
 //    var absentList: ArrayList<EvacuationStudentModel> = PreferenceManager.getNotFoundList(context)
@@ -46,7 +51,14 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         Glide.with(context).load(studentList[position].photo).into(holder.studentImage!!)
-        holder.studentName!!.text = studentList[position].student_name
+
+        val studentName: String
+        if (studentList[holder.adapterPosition].student_name.length >= 16) {
+            studentName = studentList[holder.adapterPosition].student_name.substring(0, 16) + "..."
+        } else {
+            studentName = studentList[holder.adapterPosition].student_name
+        }
+        holder.studentName!!.text = studentName
         holder.registrationID!!.text = studentList[position].registration_id
         if (studentList[position].found == "1") {
             holder.absentOrPresent!!.text = "P"
@@ -71,9 +83,18 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                     .child(child.id).child("found")
                     .setValue("1").addOnSuccessListener {
                         holder.loader!!.visibility = View.GONE
-
                     }
-
+                databaseReference.child("students")
+                    .child(child.id)
+                    .child("updated_by")
+                    .setValue(PreferenceManager.getStaffID(context))
+                val dateFormat = SimpleDateFormat("yyy-MM-dd HH:mm:ss")
+                val currentDateTime = dateFormat.format(Date())
+                databaseReference.child("students")
+                    .child(child.id)
+                    .child("updated_at")
+                    .setValue(currentDateTime)
+                CommonMethods.setPos(position)
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(context,R.color.pink))
@@ -88,6 +109,18 @@ class StudentEvacuationAdapter(var context: Context, var studentList: ArrayList<
                     .setValue("0").addOnSuccessListener {
                         holder.loader!!.visibility = View.GONE
                     }
+                databaseReference.child("students")
+                    .child(child.id)
+                    .child("updated_by")
+                    .setValue(PreferenceManager.getStaffID(context))
+                val dateFormat = SimpleDateFormat("yyy-MM-dd HH:mm:ss")
+                val currentDateTime = dateFormat.format(Date())
+                databaseReference.child("students")
+                    .child(child.id)
+                    .child("updated_at")
+                    .setValue(currentDateTime)
+//
+                CommonMethods.setPos(position)
             }
 
         }

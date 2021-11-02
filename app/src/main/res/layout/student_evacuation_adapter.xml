@@ -103,7 +103,8 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:textSize="14sp"
-                android:maxLength="18"
+                android:maxLines="1"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toTopOf="@+id/studentID"
                 app:layout_constraintStart_toEndOf="@+id/shape_layout"
                 app:layout_constraintTop_toTopOf="parent" />

@@ -1,5 +1,6 @@
 package com.nas.fireevacuation.activity.my_profile
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.Window
 import android.widget.EditText
@@ -18,7 +20,7 @@ import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.model.LogoutModel
 import com.nas.fireevacuation.activity.sign_in.SignInActivity
-import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
+import com.nas.fireevacuation.activity.staff_attendance.AllStudentsActivity
 import com.nas.fireevacuation.activity.staff_home.StaffHomeActivity
 import com.nas.fireevacuation.common.constants.ApiClient
 import com.nas.fireevacuation.common.constants.CommonMethods
@@ -29,6 +31,12 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.widget.Toast
+
+import android.content.DialogInterface
+
+
+
 
 class MyProfileActivity : AppCompatActivity() {
     lateinit var context: Context
@@ -90,15 +98,45 @@ class MyProfileActivity : AppCompatActivity() {
             dialog.setCancelable(true)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.setContentView(R.layout.change_password_popup)
+
             val currentPassword = dialog.findViewById<View>(R.id.currentPassword) as EditText
             val newPassword = dialog.findViewById<View>(R.id.newPassword) as EditText
             val confirmPassword = dialog.findViewById<View>(R.id.confirmPassword) as EditText
             val submit = dialog.findViewById<View>(R.id.submit)
+            submit.isEnabled = false
+            val editTexts = listOf(currentPassword, newPassword, confirmPassword)
+            for (editText in editTexts) {
+                editText.addTextChangedListener(object : TextWatcher {
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                        var et1 = currentPassword.text.toString().trim()
+                        var et2 = newPassword.text.toString().trim()
+                        var et3 = confirmPassword.text.toString().trim()
+
+                        submit.isEnabled = et1.isNotEmpty()
+                                && et2.isNotEmpty()
+                                && et3.isNotEmpty()
+                        if (submit.isEnabled) {
+                            submit.setBackgroundResource(R.drawable.rounded_sign_in)
+                        } else {
+                            submit.setBackgroundResource(R.drawable.create_account_disabled)
+                        }
+                    }
+
+                    override fun beforeTextChanged(
+                        s: CharSequence, start: Int, count: Int, after: Int) {
+                    }
+
+                    override fun afterTextChanged(
+                        s: Editable
+                    ) {
+                    }
+                })
+            }
             submit.setOnClickListener {
                 if (currentPassword.text.toString().equals("") || newPassword.text.toString().equals("") || confirmPassword.text.toString().equals("")) {
-                    CommonMethods.showLoginErrorPopUp(context,"Alert","Field cannot be empty.")
+                    CommonMethods.showLoginErrorPopUp(context, "Field cannot be empty.")
                 } else if (!newPassword.text.toString().equals(confirmPassword.text.toString())){
-                    CommonMethods.showLoginErrorPopUp(context,"Alert","Passwords do not match")
+                    CommonMethods.showLoginErrorPopUp(context, "Passwords do not match")
                 } else {
                     changePasswordAPICall(currentPassword.text.toString(),newPassword.text.toString())
                 }
@@ -114,7 +152,7 @@ class MyProfileActivity : AppCompatActivity() {
             finish()
         }
         attendanceButton.setOnClickListener {
-            val intent = Intent(context, StaffAttendanceActivity::class.java)
+            val intent = Intent(context, AllStudentsActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0,0)
             finish()
@@ -126,36 +164,57 @@ class MyProfileActivity : AppCompatActivity() {
             finish()
         }
         checkout.setOnClickListener {
-            signOutCall()
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setMessage("Are you sure you want to logout?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog, id ->
+                    signOutCall()
+                }
+                .setNegativeButton(
+                    "No"
+                ) { dialog, id -> //  Action for 'NO' Button
+                    dialog.cancel()
+                }
+            val alert: AlertDialog = builder.create()
+            alert.show();
 
         }
     }
 
     private fun changePasswordAPICall(current: String, new: String) {
-        val call: Call<ResponseBody> = ApiClient.getClient.changePassword(
-            PreferenceManager.getAccessToken(context),PreferenceManager.getStaffID(context),
-            current,new
-        )
-        progressBarDialog!!.show()
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                progressBarDialog!!.hide()
-                val responseData = response.body()
-                if (responseData != null) {
-                    val jsonObject = JSONObject(responseData.string())
-                    val responseCode: String = jsonObject.optString("responsecode")
-                    if (responseCode.equals("100")) {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Success")
-                    } else {
-                        CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
+        if (CommonMethods.isInternetAvailable(context)) {
+            val call: Call<ResponseBody> = ApiClient.getClient.changePassword(
+                PreferenceManager.getAccessToken(context), PreferenceManager.getStaffID(context),
+                current, new
+            )
+            progressBarDialog!!.show()
+            call.enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    progressBarDialog!!.hide()
+                    val responseData = response.body()
+                    if (responseData != null) {
+                        val jsonObject = JSONObject(responseData.string())
+                        val responseCode: String = jsonObject.optString("responsecode")
+                        if (responseCode.equals("100")) if (responseCode.equals("100")) {
+                            CommonMethods.showLoginErrorPopUp(context, "Success")
+                        }else if (responseCode.equals("130")) {
+                            CommonMethods.showLoginErrorPopUp(context, "Incorrect Password")
+                        } else {
+                            CommonMethods.showLoginErrorPopUp(context, "Some Error Occurred")
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                progressBarDialog!!.hide()
-            }
-        })
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    progressBarDialog!!.hide()
+                }
+            })
+        } else {
+            CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+        }
     }
 
     private fun signOutCall() {
@@ -164,45 +223,50 @@ class MyProfileActivity : AppCompatActivity() {
             Settings.Secure.ANDROID_ID
         )
         var logoutResponse: LogoutModel
-        val call: Call<LogoutModel> = ApiClient.getClient.logOut(
-            PreferenceManager.getAccessToken(context),
-            PreferenceManager.getStaffID(context),
-            androidID,
-            "1"
-        )
-        call.enqueue(object : Callback<LogoutModel> {
-            override fun onResponse(
-                call: Call<LogoutModel>,
-                response: Response<LogoutModel>
-            ) {
-                if(!response.body()!!.equals("")) {
-                    logoutResponse = response.body()!!
-                    if (logoutResponse.responsecode.equals("100")) {
-                        PreferenceManager.setStaffID(context,"")
-                        val intent = Intent(context, SignInActivity::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(0,0)
-                        finish()
-                    } else if (logoutResponse.responsecode.equals("103")) {
-                        CommonMethods.showLoginErrorPopUp(context, "Alert", "Invalid Request")
-                    } else if (logoutResponse.responsecode.equals("400")) {
-                        CommonMethods.showLoginErrorPopUp(context, "Alert", "Access Token Missing")
-                    } else if (logoutResponse.responsecode.equals("402")) {
-                        CommonMethods.showLoginErrorPopUp(context, "Alert", "Invalid Access Token")
-                    } else {
-                        CommonMethods.showLoginErrorPopUp(context, "Alert", "Some Error occured")
+        if (CommonMethods.isInternetAvailable(context)) {
+            val call: Call<LogoutModel> = ApiClient.getClient.logOut(
+                PreferenceManager.getAccessToken(context),
+                PreferenceManager.getStaffID(context),
+                androidID,
+                "1"
+            )
+            call.enqueue(object : Callback<LogoutModel> {
+                override fun onResponse(
+                    call: Call<LogoutModel>,
+                    response: Response<LogoutModel>
+                ) {
+                    if (!response.body()!!.equals("")) {
+                        logoutResponse = response.body()!!
+                        if (logoutResponse.responsecode.equals("100")) {
+                            PreferenceManager.setStaffID(context, "")
+                            val intent = Intent(context, SignInActivity::class.java)
+                            startActivity(intent)
+                            overridePendingTransition(0, 0)
+                            finish()
+                        } else if (logoutResponse.responsecode.equals("103")) {
+                            CommonMethods.showLoginErrorPopUp(context, "Invalid Request")
+                        } else if (logoutResponse.responsecode.equals("400")) {
+                            CommonMethods.showLoginErrorPopUp(context, "Access Token Missing")
+                        } else if (logoutResponse.responsecode.equals("402")) {
+                            CommonMethods.showLoginErrorPopUp(context, "Invalid Access Token")
+                        } else {
+                            CommonMethods.showLoginErrorPopUp(context, "Some Error occured")
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<LogoutModel>, t: Throwable) {
-                CommonMethods.showLoginErrorPopUp(context, "Alert", "Some Error occured")            }
+                override fun onFailure(call: Call<LogoutModel>, t: Throwable) {
+                    CommonMethods.showLoginErrorPopUp(context, "Some Error occured")
+                }
 
-        })
+            })
+        } else{
+            CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+        }
     }
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(context, StaffAttendanceActivity::class.java)
+        val intent = Intent(context, AllStudentsActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0,0)
         finish()

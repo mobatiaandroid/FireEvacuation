@@ -169,7 +169,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="24dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/curved_rectangle_green"
+            android:background="@drawable/rounded_green_rectangle_disabled"
             android:gravity="center"
             android:text="CHECK IN"
             android:textColor="@color/white"

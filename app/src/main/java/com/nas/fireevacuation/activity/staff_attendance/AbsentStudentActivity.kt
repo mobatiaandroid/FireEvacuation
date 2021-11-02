@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.ImageView
 import android.widget.TableLayout
@@ -27,6 +29,9 @@ import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import com.nas.fireevacuation.common.constants.CommonMethods
 
 
 class AbsentStudentActivity : AppCompatActivity() {
@@ -41,8 +46,15 @@ class AbsentStudentActivity : AppCompatActivity() {
     lateinit var subject: TextView
     lateinit var recyclerView: RecyclerView
     lateinit var studentList: ArrayList<Lists>
+    lateinit var searchIcon: ImageView
+    lateinit var searchView: View
+    lateinit var searchText: EditText
+    lateinit var searchClose: ImageView
+    lateinit var header: TextView
     var progressBarDialog: ProgressBarDialog? = null
     var tabLayout: TabLayout? = null
+    var studentsArrayList: ArrayList<Lists> = ArrayList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_absent_student)
@@ -56,11 +68,50 @@ class AbsentStudentActivity : AppCompatActivity() {
         date = findViewById(R.id.date)
         subject = findViewById(R.id.subject)
         className = findViewById(R.id.className)
+        searchIcon = findViewById(R.id.searchIcon)
+        searchView = findViewById(R.id.searchView)
+        searchText = findViewById(R.id.searchText)
+        searchClose = findViewById(R.id.searchClose)
+        header = findViewById(R.id.header)
         tabLayout!!.addTab(tabLayout!!.newTab().setText("ALL"));
         tabLayout!!.addTab(tabLayout!!.newTab().setText("PRESENT"));
         tabLayout!!.addTab(tabLayout!!.newTab().setText("ABSENT"));
         val tab = tabLayout!!.getTabAt(2)
         tab!!.select()
+        searchIcon.setOnClickListener {
+            searchView.visibility = View.VISIBLE
+            header.visibility = View.GONE
+            searchIcon.visibility = View.GONE
+            backButton.visibility = View.GONE
+        }
+        searchClose.setOnClickListener {
+            closeKeyboard()
+            try {
+                searchView.visibility = View.GONE
+                header.visibility = View.VISIBLE
+                searchIcon.visibility = View.VISIBLE
+                val adapter = StudentAdapter(context, studentsArrayList,"ABSENT")
+                recyclerView.adapter = adapter
+                searchText.text.clear()
+            }catch (e:Exception){
+                Log.e("Error",e.toString())
+            }
+
+        }
+        searchText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s!!.length > 2) {
+                    searchFilter(s.toString())
+                }
+            }
+
+        })
         tabLayout!!.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when(tab!!.position){
@@ -175,6 +226,72 @@ class AbsentStudentActivity : AppCompatActivity() {
             }
 
         })
+    }
+    private fun closeKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.hideSoftInputFromWindow(view.windowToken, 0)
+        }    }
+    private fun searchFilter(searchString: String) {
+        var studentsResponse: StudentModel
+        var studentsArrayList: ArrayList<Lists> = ArrayList()
+        var filteredList: ArrayList<Lists> = ArrayList()
+        var i: Int = 0
+        if (CommonMethods.isInternetAvailable(context)) {
+            val call: Call<StudentModel> = ApiClient.getClient.studentsAPICall(
+                PreferenceManager.getAccessToken(context),
+                PreferenceManager.getClassID(context)
+            )
+            progressBarDialog!!.show()
+            call.enqueue(object : Callback<StudentModel> {
+                override fun onResponse(
+                    call: Call<StudentModel>,
+                    response: Response<StudentModel>
+                ) {
+                    progressBarDialog!!.hide()
+                    if (!response.body()!!.equals("")) {
+                        studentsResponse = response.body()!!
+                        if (studentsResponse.responsecode.equals("100")) {
+                            if (studentsResponse.message.equals("success")) {
+                                while (i < studentsResponse.data.lists.size) {
+                                    studentsArrayList.add(studentsResponse.data.lists[i])
+                                    i++
+                                }
+                                for (item in studentsArrayList) {
+                                    if (item.name.toLowerCase()
+                                            .contains(searchString.toLowerCase()) || item.registration_id.contains(
+                                            searchString
+                                        )
+                                    ) {
+                                        if (!filteredList.contains(item)) {
+                                            filteredList.add(item)
+
+                                        }
+                                    }
+                                    filteredList.sortBy {
+                                        it.name
+                                    }
+
+
+                                }
+
+                                val adapter = StudentAdapter(context, filteredList, "ALL")
+                                recyclerView.adapter = adapter
+                                filteredList = ArrayList()
+                            }
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<StudentModel>, t: Throwable) {
+                    progressBarDialog!!.hide()
+                }
+
+            })
+        } else{
+            CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+        }
     }
     override fun onBackPressed() {
         super.onBackPressed()

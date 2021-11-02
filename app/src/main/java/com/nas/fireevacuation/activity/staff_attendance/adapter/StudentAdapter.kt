@@ -1,7 +1,6 @@
 package com.nas.fireevacuation.activity.staff_attendance.adapter
 
 import android.content.Context
-import android.opengl.Visibility
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +20,7 @@ import com.nas.fireevacuation.common.constants.PreferenceManager
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
 
 class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, var flag: String): RecyclerView.Adapter<StudentAdapter.MyViewHolder>() {
 //    var absentList: ArrayList<Lists> = PreferenceManager.getAbsentList(context)
@@ -55,7 +55,13 @@ class StudentAdapter(var context: Context, var studentList: ArrayList<Lists>, va
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         Glide.with(context).load(studentList[holder.adapterPosition].photo).into(holder.studentImage!!)
-        holder.studentName!!.text = studentList[holder.adapterPosition].name
+        val studentName: String
+        if (studentList[holder.adapterPosition].name.length >= 16) {
+            studentName = studentList[holder.adapterPosition].name.substring(0, 16) + "..."
+        } else {
+            studentName = studentList[holder.adapterPosition].name
+        }
+        holder.studentName!!.text = studentName
         holder.studentID!!.text = studentList[holder.adapterPosition].id
         if (studentList[holder.adapterPosition].present == "1") {
             holder.absentOrPresent!!.text = "P"

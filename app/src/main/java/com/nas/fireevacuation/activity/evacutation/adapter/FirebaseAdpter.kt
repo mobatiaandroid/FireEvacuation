@@ -37,6 +37,13 @@ class FirebaseAdapter(
         Log.e("Model", model.class_id)
         Glide.with(holder.studentImage!!.context).load(model.photo).into(holder.studentImage!!)
         holder.studentName!!.text = model.student_name
+        val studentName: String
+        if (model.student_name.length >= 16) {
+            studentName = model.student_name.substring(0, 16) + "..."
+        } else {
+            studentName = model.student_name
+        }
+        holder.studentName!!.text = studentName
         holder.registrationID!!.text = model.registration_id
         if (model.found == "1") {
             holder.absentOrPresent!!.text = "P"
@@ -48,11 +55,13 @@ class FirebaseAdapter(
             holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(holder.absentOrPresent!!.context, R.color.pink))
         }
         holder.switch!!.setOnCheckedChangeListener { buttonView, isChecked ->
+//          Log.e("Error Check","CHecking")
             if (isChecked) {
                 holder.absentOrPresent!!.text = "P"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(holder.absentOrPresent!!.context,R.color.green))
                 var child = model
                 model.found = "1"
+                Log.e("Errorchck","Checked")
                 holder.loader!!.visibility = View.VISIBLE
                 val databaseReference = FirebaseDatabase.getInstance().reference
                     .child("evacuations")
@@ -63,12 +72,14 @@ class FirebaseAdapter(
                         holder.loader!!.visibility = View.GONE
 
                     }
+                holder.switch!!.isChecked = true
 
             } else {
                 holder.absentOrPresent!!.text = "A"
                 holder.absentOrPresent!!.setBackgroundColor(ContextCompat.getColor(holder.absentOrPresent!!.context,R.color.pink))
                 var child = model
                 model.found = "0"
+                Log.e("Errorchck","Unchecked")
                 holder.loader!!.visibility = View.VISIBLE
                 val databaseReference = FirebaseDatabase.getInstance().reference
                     .child("evacuations")
@@ -78,6 +89,7 @@ class FirebaseAdapter(
                     .setValue("0").addOnSuccessListener {
                         holder.loader!!.visibility = View.GONE
                     }
+                holder.switch!!.isChecked = false
             }
 
         }

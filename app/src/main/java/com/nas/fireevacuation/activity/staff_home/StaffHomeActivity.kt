@@ -13,11 +13,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.EvacuationActivity
+import com.nas.fireevacuation.activity.evacutation.StudentEvacuationActivity
 import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
 import com.nas.fireevacuation.activity.staff_attendance.AllStudentsActivity
-import com.nas.fireevacuation.activity.staff_attendance.StaffAttendanceActivity
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.AssemblyPointsModel
 import com.nas.fireevacuation.activity.staff_home.model.assembly_points_model.Lists
 import com.nas.fireevacuation.activity.staff_home.model.students_model.StudentModel
@@ -52,6 +52,7 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var totalStudents: TextView
     lateinit var presentStudents: TextView
     lateinit var absentStudents: TextView
+    lateinit var subject: TextView
     lateinit var progressBarPresent: ProgressBar
     lateinit var progressBarAbsent: ProgressBar
     lateinit var className: TextView
@@ -84,6 +85,7 @@ class StaffHomeActivity : AppCompatActivity() {
         progressBarPresent = findViewById(R.id.progressBarPresent)
         progressBarAbsent = findViewById(R.id.progressBarAbsent)
         className = findViewById(R.id.className)
+        subject = findViewById(R.id.subjectName)
         greeting = findViewById(R.id.greeting)
         date = findViewById(R.id.date)
         assemblyAreaSelector = findViewById(R.id.assemblyAreaSelector)
@@ -116,8 +118,8 @@ class StaffHomeActivity : AppCompatActivity() {
             }
         }
         evacuateButton.setOnClickListener {
-            if (area.text.equals("Assembly Area")) {
-                CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select Assembly Point")
+            if (area.text.equals("Select Assembly Point")) {
+                CommonMethods.showLoginErrorPopUp(context, "Please Select Assembly Point")
             } else {
                 val intent = Intent(context, EvacuationActivity::class.java)
                 startActivity(intent)
@@ -129,65 +131,77 @@ class StaffHomeActivity : AppCompatActivity() {
             var assemblyPointsResponse: AssemblyPointsModel
             var assemblyPointsList: ArrayList<Lists> = ArrayList()
             var i: Int = 0
-            val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
-                PreferenceManager.getAccessToken(context)
-            )
-            call.enqueue(object : Callback<AssemblyPointsModel> {
-                override fun onResponse(
-                    call: Call<AssemblyPointsModel>,
-                    response: Response<AssemblyPointsModel>
-                ) {
+            if (CommonMethods.isInternetAvailable(context)) {
+                val call: Call<AssemblyPointsModel> = ApiClient.getClient.assemblyPoints(
+                    PreferenceManager.getAccessToken(context)
+                )
+                call.enqueue(object : Callback<AssemblyPointsModel> {
+                    override fun onResponse(
+                        call: Call<AssemblyPointsModel>,
+                        response: Response<AssemblyPointsModel>
+                    ) {
 //                    Log.e("Assembly Response",response.body().toString())
-                    if (!response.body()!!.equals("")) {
-                        assemblyPointsResponse = response.body()!!
-                        if (assemblyPointsResponse.responsecode.equals("100")) {
-                            if (assemblyPointsResponse.message.equals("success")) {
-                                while (i < assemblyPointsResponse.data.lists.size) {
-                                    assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
-                                    i++
-                                }
+                        if (!response.body()!!.equals("")) {
+                            assemblyPointsResponse = response.body()!!
+                            if (assemblyPointsResponse.responsecode.equals("100")) {
+                                if (assemblyPointsResponse.message.equals("success")) {
+                                    while (i < assemblyPointsResponse.data.lists.size) {
+                                        assemblyPointsList.add(assemblyPointsResponse.data.lists[i])
+                                        i++
+                                    }
 //                                Log.e("Assembly Points2", assemblyPointsList.toString())
-                                var i = 0
-                                var assemblyPointsStringList: ArrayList<String> = ArrayList()
-                                while (i<assemblyPointsList.size){
-                                    assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
-                                    i++
-                                }
+                                    var i = 0
+                                    var assemblyPointsStringList: ArrayList<String> = ArrayList()
+                                    while (i < assemblyPointsList.size) {
+                                        assemblyPointsStringList.add(assemblyPointsList[i].assembly_point)
+                                        i++
+                                    }
 //                                Log.e("Assembly Points3", assemblyPointsStringList.toString())
-                                val builder = AlertDialog.Builder(context)
-                                builder.setTitle("Select Session")
-                                var checkedItem = -1
-                                builder.setSingleChoiceItems(assemblyPointsStringList.toTypedArray(), checkedItem) { dialog, which ->
-                                    checkedItem = which
-                                }
-                                builder.setPositiveButton("OK") { dialog, which ->
-                                    if (checkedItem == -1){
-                                        CommonMethods.showLoginErrorPopUp(context,"Alert","Please Select")
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle("Select Session")
+                                    var checkedItem = -1
+                                    builder.setSingleChoiceItems(
+                                        assemblyPointsStringList.toTypedArray(),
+                                        checkedItem
+                                    ) { dialog, which ->
+                                        checkedItem = which
                                     }
-                                    else{
-                                        area.text = assemblyPointsStringList[checkedItem]
-                                        PreferenceManager.setAssemblyPoint(context, assemblyPointsList[checkedItem].id)
+                                    builder.setPositiveButton("OK") { dialog, which ->
+                                        if (checkedItem == -1) {
+                                            CommonMethods.showLoginErrorPopUp(
+                                                context,
+                                                "Please Select"
+                                            )
+                                        } else {
+                                            area.text = assemblyPointsStringList[checkedItem]
+                                            PreferenceManager.setAssemblyPoint(
+                                                context,
+                                                assemblyPointsList[checkedItem].id
+                                            )
+
+                                        }
 
                                     }
+                                    builder.setNegativeButton("Cancel", null)
+                                    val dialog = builder.create()
+                                    dialog.show()
 
                                 }
-                                builder.setNegativeButton("Cancel", null)
-                                val dialog = builder.create()
-                                dialog.show()
-
+                            } else if (assemblyPointsResponse.responsecode.equals("402")) {
+                                CommonMethods.showLoginErrorPopUp(context, "Session Expired")
+                                CommonMethods.getAccessTokenAPICall(context)
                             }
-                        } else if (assemblyPointsResponse.responsecode.equals("402")) {
-                            CommonMethods.showLoginErrorPopUp(context,"Alert","Session Expired")
-                            CommonMethods.getAccessTokenAPICall(context)
                         }
                     }
-                }
 
-                override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
-                    CommonMethods.showLoginErrorPopUp(context,"Alert","Some Error Occured")
-                }
+                    override fun onFailure(call: Call<AssemblyPointsModel>, t: Throwable) {
+                        CommonMethods.showLoginErrorPopUp(context, "Some Error Occurred")
+                    }
 
-            })
+                })
+            } else{
+                CommonMethods.showLoginErrorPopUp(context,"Check your Internet connection")
+            }
 
         }
         attendenceButton.setOnClickListener{
@@ -200,13 +214,14 @@ class StaffHomeActivity : AppCompatActivity() {
 
 
         val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formatter = DateTimeFormatter.ofPattern("E MMM dd yyyy")
         val currentDate = current.format(formatter)
         greetingSetter()
         date.text = currentDate
         classID = PreferenceManager.getClassID(context)
         className.text = PreferenceManager.getClassName(context)
         staffName.text = PreferenceManager.getStaffName(context)
+        subject.text = PreferenceManager.getSubject(context)
         Log.e("Class ID:",classID)
         studentListCall(classID)
     }
@@ -217,15 +232,15 @@ class StaffHomeActivity : AppCompatActivity() {
         cal.time = date
         val hour: Int = cal.get(Calendar.HOUR_OF_DAY)
         if (hour in 6..12) {
-            greeting.text = "Good Morning"
+            greeting.text = "Good Morning !"
         } else if (hour == 12) {
-            greeting.text = "Noon"
-        } else if (hour in 13..17) {
-            greeting.text = "Good Afternoon"
-        } else if (hour in 17..22) {
-            greeting.text = "Good Evening"
+            greeting.text = "Noon !"
+        } else if (hour in 13..16) {
+            greeting.text = "Good Afternoon !"
+        } else if (hour in 16..22) {
+            greeting.text = "Good Evening !"
         } else {
-            greeting.text = "Good Night"
+            greeting.text = "Good Night !"
         }
     }
 
@@ -298,7 +313,7 @@ class StaffHomeActivity : AppCompatActivity() {
 //                                PreferenceManager.setAbsentList(context,absentStudentList)
 //                            }
                             progressBarPresent.progressDrawable.setColorFilter(
-                                context.resources.getColor(R.color.green), android.graphics.PorterDuff.Mode.SRC_IN)
+                                context.resources.getColor(R.color.blue), android.graphics.PorterDuff.Mode.SRC_IN)
                             progressBarAbsent.progressDrawable.setColorFilter(
                                 context.resources.getColor(R.color.pink), android.graphics.PorterDuff.Mode.SRC_IN)
 

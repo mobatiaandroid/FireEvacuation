@@ -30,7 +30,7 @@ class VideoAdapter(var context: Context, var videosList: ArrayList<com.nas.firee
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.photo_adapter, parent, false)
+            .inflate(R.layout.video_adapter, parent, false)
 
         return MyViewHolder(itemView)
     }
@@ -43,10 +43,20 @@ class VideoAdapter(var context: Context, var videosList: ArrayList<com.nas.firee
             dialog.setCancelable(true)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dialog.setContentView(R.layout.video_view)
+//            val dataUrl = "<html>" +
+//                    "<body>" +
+//                    "<br>" +
+//                    "<iframe width=\"350\" height=\"350\" src=\"" + videosList[position].url + "\" frameborder=\"0\" allowfullscreen/>" +
+//                    "</body>" +
+//                    "</html>"
             val dataUrl = "<html>" +
                     "<body>" +
-                    "<br>" +
-                    "<iframe width=\"350\" height=\"350\" src=\"" + videosList[position].url + "\" frameborder=\"0\" allowfullscreen/>" +
+                    " <iframe width=\"350\" " +
+                    "height=\"350\" src=\""+
+                    videosList[position].url +
+                    "\" frameborder=\"0\" " +
+                    "allowfullscreen>" +
+                    "</iframe>" +
                     "</body>" +
                     "</html>"
             val displayYoutubeVideo = dialog.findViewById<View>(R.id.mWebView) as WebView

@@ -24,10 +24,10 @@ import retrofit2.Response
 
 import com.nas.fireevacuation.activity.evacutation.model.post.Post
 
-
+var pos = 0
 class CommonMethods {
     companion object{
-        fun showLoginErrorPopUp(context: Context, head: String, message: String) {
+        fun showLoginErrorPopUp(context: Context, message: String) {
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setCancelable(true)
@@ -93,7 +93,7 @@ class CommonMethods {
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    showLoginErrorPopUp(context,"Alert","Invalid Grant")
+                    showLoginErrorPopUp(context, "Invalid Grant")
                 }
 
             })
@@ -191,7 +191,12 @@ class CommonMethods {
                 override fun onCancelled(error: DatabaseError) {}
             })
         }
-
+        fun setPos(position: Int){
+            pos = position
+        }
+        fun getPos(): Int {
+            return pos
+        }
 
     }
 }
