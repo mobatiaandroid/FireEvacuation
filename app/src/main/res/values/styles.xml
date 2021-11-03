@@ -5,7 +5,7 @@
     </style>
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">16dp</item>
+        <item name="cornerSize">8dp</item>
     </style>
     <style name="article_shape">
     <item name="cornerSizeTopLeft">20dp</item>

@@ -66,11 +66,11 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".activity.evacutation.EvacuationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+<!--        <activity-->
+<!--            android:name=".activity.evacutation.EvacuationActivity"-->
+<!--            android:exported="true"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />-->
         <activity
             android:name=".activity.session_select.SessionSelectActivity"
             android:exported="true"

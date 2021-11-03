@@ -11,9 +11,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.Query
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.nas.fireevacuation.R
-import com.nas.fireevacuation.activity.evacutation.EvacuationActivity
 import com.nas.fireevacuation.activity.evacutation.StudentEvacuationActivity
+import com.nas.fireevacuation.activity.evacutation.model.evacuation_model.EvacuationModel
 import com.nas.fireevacuation.activity.gallery.GalleryActivity
 import com.nas.fireevacuation.activity.my_profile.MyProfileActivity
 import com.nas.fireevacuation.activity.session_select.SessionSelectActivity
@@ -40,7 +46,6 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var attendenceButton: ImageView
     lateinit var myProfile: ImageView
     lateinit var gallery: ImageView
-//    lateinit var backButton: ImageView
     lateinit var  extras: Bundle
     lateinit var classID: String
     lateinit var staffName: TextView
@@ -64,6 +69,8 @@ class StaffHomeActivity : AppCompatActivity() {
     lateinit var presentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
     lateinit var absentStudentList: ArrayList<com.nas.fireevacuation.activity.staff_home.model.students_model.Lists>
     var progressBarDialog: ProgressBarDialog? = null
+    var database = Firebase.database
+    var reference = database.reference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,7 +128,8 @@ class StaffHomeActivity : AppCompatActivity() {
             if (area.text.equals("Select Assembly Point")) {
                 CommonMethods.showLoginErrorPopUp(context, "Please Select Assembly Point")
             } else {
-                val intent = Intent(context, EvacuationActivity::class.java)
+//                evacuationCall()
+                val intent = Intent(context, StudentEvacuationActivity::class.java)
                 startActivity(intent)
                 overridePendingTransition(0,0)
                 finish()
@@ -224,6 +232,54 @@ class StaffHomeActivity : AppCompatActivity() {
         subject.text = PreferenceManager.getSubject(context)
         Log.e("Class ID:",classID)
         studentListCall(classID)
+    }
+
+    private fun evacuationCall() {
+        var evacuationResponse: EvacuationModel
+        val call: Call<EvacuationModel> = ApiClient.getClient.evacuationStart(
+            PreferenceManager.getAccessToken(context),
+            PreferenceManager.getStaffID(context),
+            PreferenceManager.getClassID(context),
+            PreferenceManager.getAssemblyPoint(context)
+        )
+        progressBarDialog!!.show()
+        call.enqueue(object : Callback<EvacuationModel> {
+            override fun onResponse(
+                call: Call<EvacuationModel>,
+                response: Response<EvacuationModel>
+            ){
+                progressBarDialog!!.hide()
+                if(!response.body()!!.equals("")) {
+                    evacuationResponse = response.body()!!
+                    if (evacuationResponse.responsecode.equals("100")) {
+                        val firebaseReference = evacuationResponse.data.firebase_referance
+                        PreferenceManager.setFireRef(context,firebaseReference)
+                        saveData(firebaseReference)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EvacuationModel>, t: Throwable) {
+                progressBarDialog!!.hide()
+            }
+        })
+    }
+
+    private fun saveData(firebaseReference: String) {
+        val queries: Query = reference.child("evacuations")
+            .child(firebaseReference)
+            .child("students")
+            .orderByChild("student_name")
+        queries.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                Log.e("Snap2", snapshot.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 
     private fun greetingSetter() {

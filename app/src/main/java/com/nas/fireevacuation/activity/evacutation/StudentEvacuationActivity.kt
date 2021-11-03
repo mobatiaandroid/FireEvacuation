@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,8 @@ import androidx.viewpager.widget.ViewPager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.nas.fireevacuation.R
 import com.nas.fireevacuation.activity.evacutation.adapter.FirebaseAdapter
 import com.nas.fireevacuation.activity.evacutation.adapter.SearchAdapter
@@ -54,6 +57,9 @@ class StudentEvacuationActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     var mDatabaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
     lateinit var firebaseAdapter: FirebaseAdapter
+    lateinit var firebaseSearchAdapter: FirebaseAdapter
+
+
 
 
     var tabLayout: TabLayout? = null
@@ -63,6 +69,8 @@ class StudentEvacuationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_student_evacuation)
         context = this
         studentList = ArrayList()
+        Log.e("Firebase Instance", mDatabaseReference.toString())
+        Log.e("Firebase ", Firebase.database.reference.toString())
         tabLayout = findViewById(R.id.tabLayout)
         searchIcon = findViewById(R.id.searchIcon)
         searchView = findViewById(R.id.searchView)
@@ -101,6 +109,7 @@ class StudentEvacuationActivity : AppCompatActivity() {
             searchIcon.visibility = View.VISIBLE
             val searchAdapter = SearchAdapter(context, ArrayList())
             searchRecyclerView.adapter = searchAdapter
+            closeButton.visibility = View.VISIBLE
 //            val adapter = StudentEvacuationAdapter(context, studentList)
 //            recyclerView.adapter = adapter
             searchText.text.clear()
@@ -151,7 +160,7 @@ class StudentEvacuationActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s!!.length > 1) {
+                if (s!!.length > 2) {
                     searchFilter(s.toString())
                     val searchAdapter = SearchAdapter(context, ArrayList())
                     searchRecyclerView.adapter = searchAdapter
@@ -258,13 +267,23 @@ class StudentEvacuationActivity : AppCompatActivity() {
     private fun searchFilter(searchString: String) {
         var studentSearchList: ArrayList<EvacuationStudentModel> = ArrayList()
         var filteredList: ArrayList<EvacuationStudentModel> = ArrayList()
-        val queries: Query = mDatabaseReference.child(PreferenceManager.getFireRef(context))
+        val queries: Query = mDatabaseReference
+            .child("evacuations")
+            .child(PreferenceManager.getFireRef(context))
             .child("students")
             .orderByChild("student_name")
             .startAt(searchString)
             .endAt(searchString+"\uf8ff");
+//        val options2: FirebaseRecyclerOptions<EvacuationStudentModel>
+//                = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
+//            .setQuery(queries, EvacuationStudentModel::class.java)
+//            .build()
+//        firebaseSearchAdapter = FirebaseAdapter(options2)
+//        searchRecyclerView.adapter = firebaseSearchAdapter
+//        mDatabaseReference.keepSynced(true)
         queries.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.e("Students found", snapshot.toString())
                 for (snapshot in snapshot.children){
                     var studentItem: EvacuationStudentModel = EvacuationStudentModel(
                         "",
@@ -302,7 +321,6 @@ class StudentEvacuationActivity : AppCompatActivity() {
                     studentItem.updated_at = snapshot.child("updated_at").value.toString()
                     studentItem.created_by = snapshot.child("created_by").value.toString()
                     studentItem.updated_by = snapshot.child("updated_by").value.toString()
-//                            Log.e("Students added", studentItem.toString())
                     if (!studentSearchList.contains(studentItem)) {
                         studentSearchList.add(studentItem)
                     }
@@ -352,12 +370,12 @@ class StudentEvacuationActivity : AppCompatActivity() {
             }
 
         })
-        var options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
-            .setQuery(queries, EvacuationStudentModel::class.java)
-            .build()
-
-        firebaseAdapter = FirebaseAdapter(options)
-        searchRecyclerView.adapter = firebaseAdapter
+//        var options: FirebaseRecyclerOptions<EvacuationStudentModel> = FirebaseRecyclerOptions.Builder<EvacuationStudentModel>()
+//            .setQuery(queries, EvacuationStudentModel::class.java)
+//            .build()
+//
+//        firebaseAdapter = FirebaseAdapter(options)
+//        searchRecyclerView.adapter = firebaseAdapter
     }
 
     private fun evacuationCall() {

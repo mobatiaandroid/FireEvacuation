@@ -36,7 +36,7 @@ class FirebaseAdapter(
     ) {
         Log.e("Model", model.class_id)
         Glide.with(holder.studentImage!!.context).load(model.photo).into(holder.studentImage!!)
-        holder.studentName!!.text = model.student_name
+//        holder.studentName!!.text = model.student_name
         val studentName: String
         if (model.student_name.length >= 16) {
             studentName = model.student_name.substring(0, 16) + "..."

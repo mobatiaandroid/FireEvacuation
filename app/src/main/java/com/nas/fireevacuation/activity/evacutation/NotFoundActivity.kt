@@ -99,7 +99,7 @@ open class NotFoundActivity() : AppCompatActivity() {
                 try {
                     when(tab!!.position){
                         0 -> {
-                            val intent = Intent(context, EvacuationActivity::class.java)
+                            val intent = Intent(context, StudentEvacuationActivity::class.java)
                             startActivity(intent)
                             overridePendingTransition(0, 0)
                         }
